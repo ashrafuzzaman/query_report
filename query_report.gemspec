@@ -10,7 +10,7 @@ Gem::Specification.new do |gem|
   gem.email         = ["ashrafuzzaman.g2@gmail.com"]
   gem.description   = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
   gem.summary       = %q{Structure you reports}
-  gem.homepage      = ""
+  gem.homepage      = "https://github.com/ashrafuzzaman/query_report"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
