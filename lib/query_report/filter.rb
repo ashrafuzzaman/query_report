@@ -14,11 +14,11 @@ module QueryReport
     end
 
     def self.supported_types
-      [:date_range, :text]
+      [:date, :text]
     end
 
     def keys
-      @keys ||= (@comparators || []).map { |comp| "#{column.to_s}_#{comp}" }
+      @keys ||= (@comparators || {}).keys.map { |comp| "#{column.to_s}_#{comp}" }
     end
 
     supported_types.each do |supported_type|
@@ -30,7 +30,7 @@ module QueryReport
     private
     def detect_comparators(type)
       case type
-        when :date_range
+        when :date
           return {gteq: 'From', lteq: 'To'}
         when :text
           return {cont: @column.to_s.humanize}

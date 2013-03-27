@@ -94,8 +94,8 @@ module QueryReport
       @filters.each do |filter|
         if filter.custom
           param = @params[:custom_search]
-          Rails.logger.debug "@params[:custom_search] :: #{@params[:custom_search].inspect}"
-          Rails.logger.debug "param :: #{param.inspect}"
+          #Rails.logger.debug "@params[:custom_search] :: #{@params[:custom_search].inspect}"
+          #Rails.logger.debug "param :: #{param.inspect}"
           first_val = param[filter.keys.first] rescue nil
           last_val = param[filter.keys.last] rescue nil
           case filter.keys.size

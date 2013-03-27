@@ -3,7 +3,7 @@
         <% if filter.class.supported_types.include?(filter.type) %>
             <% filter.comparators.each do |key, hint| %>
                 <% search_key = "#{filter.column}_#{key}" %>
-                <% if filter.date_range? %>
+                <% if filter.date? %>
                     <%= f.date_field search_key, :placeholder => hint %>
                 <% elsif filter.text? %>
                     <%= f.text_field search_key, placeholder: hint %>
