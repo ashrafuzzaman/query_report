@@ -1,6 +1,6 @@
 module QueryReport
   class Filter
-    attr_reader :column, :type, :comparators
+    attr_reader :column, :type, :comparators, :block, :custom
 
     def initialize(column, options, &block)
       @column = column
@@ -9,10 +9,16 @@ module QueryReport
         @type = options[:type]
         @comparators = options[:comp] || detect_comparators(@type)
       end
+      @block = block
+      @custom = @block ? true : false
     end
 
     def self.supported_types
       [:date_range, :text]
+    end
+
+    def keys
+      @keys ||= (@comparators || []).map { |comp| "#{column.to_s}_#{comp}" }
     end
 
     supported_types.each do |supported_type|
@@ -32,5 +38,4 @@ module QueryReport
       {eq: 'Equal'}
     end
   end
-
 end

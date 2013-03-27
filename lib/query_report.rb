@@ -6,5 +6,8 @@ module QueryReport
   autoload :Helper,                   'query_report/helper'
   autoload :Views,                    'query_report/views'
   autoload :Record,                   'query_report/record'
+  autoload :Filter,                   'query_report/filter'
+  autoload :Column,                   'query_report/column'
+  autoload :BasicChart,               'query_report/chart/basic_chart'
   autoload :PieChart,                 'query_report/chart/pie_chart'
 end
