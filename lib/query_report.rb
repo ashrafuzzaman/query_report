@@ -1,5 +1,7 @@
 require "query_report/version"
 require "query_report/record"
+require 'query_report/chart/pie_chart'
+require 'query_report/chart/custom_chart'
 
 module QueryReport
   autoload :VERSION,                  'query_report/version'
@@ -8,6 +10,4 @@ module QueryReport
   autoload :Record,                   'query_report/record'
   autoload :Filter,                   'query_report/filter'
   autoload :Column,                   'query_report/column'
-  autoload :BasicChart,               'query_report/chart/basic_chart'
-  autoload :PieChart,                 'query_report/chart/pie_chart'
 end

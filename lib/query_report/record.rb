@@ -24,10 +24,10 @@ module QueryReport
     end
 
     def set_query(query)
-      @query = query
+      @query_cache = query
       #apply ransack
       @search = query.search(@params[:q])
-      @query = @search.result
+      @query_cache = @search.result
     end
 
     def columns
@@ -38,14 +38,22 @@ module QueryReport
       @column_names ||= (@columns||[]).collect(&:humanize)
     end
 
-    def records
+    def query
       apply_filters_and_pagination
-      @cached_records ||= map_record(@query)
+      @query_cache
+    end
+
+    def query_without_pagination
+      apply_filters_and_pagination
+      @query_without_pagination_cache
+    end
+
+    def records
+      @cached_records ||= map_record(query)
     end
 
     def all_records
-      apply_filters_and_pagination
-      @cached_all_records ||= map_record(@query_without_pagination)
+      @cached_all_records ||= map_record(query_without_pagination)
     end
 
     def map_record(query)
@@ -65,13 +73,13 @@ module QueryReport
     end
 
     def compare_with_column_chart(title, x_axis, &block)
-      @chart = QueryReport::Chart::CustomChart.new(:column, title, @query_without_pagination)
+      @chart = QueryReport::Chart::CustomChart.new(:column, title, query_without_pagination)
       @chart.add_column x_axis
       @chart.instance_eval &block if block_given?
     end
 
     def pie_chart(title, &block)
-      @chart = QueryReport::Chart::PieChart.new(title, @query_without_pagination)
+      @chart = QueryReport::Chart::PieChart.new(title, query_without_pagination)
       @chart.instance_eval &block if block_given?
     end
 
@@ -88,7 +96,7 @@ module QueryReport
     def apply_filters_and_pagination
       return if @applied_filters_and_pagination
       if @current_scope and !['all', 'delete_all', 'destroy_all'].include?(@current_scope)
-        @query = @query.send(@current_scope)
+        @query_cache = @query_cache.send(@current_scope)
       end
 
       @filters.each do |filter|
@@ -100,16 +108,16 @@ module QueryReport
           last_val = param[filter.keys.last] rescue nil
           case filter.keys.size
             when 1
-              @query = filter.block.call(@query, first_val) if first_val.present?
+              @query_cache = filter.block.call(@query_cache, first_val) if first_val.present?
               break
             when 2
-              @query = filter.block.call(@query, first_val, last_val) if first_val.present? and last_val.present?
+              @query_cache = filter.block.call(@query_cache, first_val, last_val) if first_val.present? and last_val.present?
               break
           end
         end
       end
-      @query_without_pagination = @query
-      @query = @query_without_pagination.page(@params[:page])
+      @query_without_pagination_cache = @query_cache
+      @query_cache = @query_without_pagination_cache.page(@params[:page])
       @applied_filters_and_pagination = true
     end
   end
