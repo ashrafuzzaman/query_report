@@ -4,8 +4,8 @@ require 'query_report/chart/basic_chart'
 require 'query_report/chart/chart_with_total'
 
 module QueryReport
-  class Record
-    attr_accessor :params, :query, :query_without_pagination, :chart,
+  class Report
+    attr_accessor :params, :query, :query_without_pagination, :chart, :charts,
                   :filters, :search, :scopes, :current_scope
 
     def initialize(params, options={}, &block)
@@ -13,6 +13,7 @@ module QueryReport
       @columns = []
       @filters = []
       @scopes = []
+      @charts = []
       @column_separator = options.delete(:separator)
       @current_scope = @params[:scope] || 'all'
       @options = options.delete(:options)
@@ -70,17 +71,20 @@ module QueryReport
 
     def column_chart(title, columns)
       @chart = QueryReport::Chart::BasicChart.new(:column, title, columns, all_records)
+      @charts << @chart
     end
 
     def compare_with_column_chart(title, x_axis, &block)
       @chart = QueryReport::Chart::CustomChart.new(:column, title, query_without_pagination)
       @chart.add_column x_axis
       @chart.instance_eval &block if block_given?
+      @charts << @chart
     end
 
     def pie_chart(title, &block)
       @chart = QueryReport::Chart::PieChart.new(title, query_without_pagination)
       @chart.instance_eval &block if block_given?
+      @charts << @chart
     end
 
     def pie_chart_on_total(title, columns)
