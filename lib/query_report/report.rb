@@ -5,8 +5,7 @@ require 'query_report/chart/chart_with_total'
 
 module QueryReport
   class Report
-    attr_accessor :params, :query, :query_without_pagination, :chart, :charts,
-                  :filters, :search, :scopes, :current_scope
+    attr_accessor :params, :chart, :charts, :filters, :search, :scopes, :current_scope
 
     def initialize(params, options={}, &block)
       @params = params
@@ -24,19 +23,16 @@ module QueryReport
       @columns << Column.new(name, options, block)
     end
 
-    def set_query(query)
-      @query_cache = query
-      #apply ransack
-      @search = query.search(@params[:q])
-      @query_cache = @search.result
-    end
-
     def columns
       @columns
     end
 
     def column_names
       @column_names ||= (@columns||[]).collect(&:humanize)
+    end
+
+    def query=(query)
+      @query_cache = query
     end
 
     def query
@@ -99,15 +95,19 @@ module QueryReport
     private
     def apply_filters_and_pagination
       return if @applied_filters_and_pagination
+      #apply ransack
+      @search = @query_cache.search(@params[:q])
+      @query_cache = @search.result
+
+      #apply scope
       if @current_scope and !['all', 'delete_all', 'destroy_all'].include?(@current_scope)
         @query_cache = @query_cache.send(@current_scope)
       end
 
+      #apply filters
       @filters.each do |filter|
         if filter.custom
           param = @params[:custom_search]
-          #Rails.logger.debug "@params[:custom_search] :: #{@params[:custom_search].inspect}"
-          #Rails.logger.debug "param :: #{param.inspect}"
           first_val = param[filter.keys.first] rescue nil
           last_val = param[filter.keys.last] rescue nil
           case filter.keys.size
@@ -120,6 +120,8 @@ module QueryReport
           end
         end
       end
+
+      #apply pagination
       @query_without_pagination_cache = @query_cache
       @query_cache = @query_without_pagination_cache.page(@params[:page])
       @applied_filters_and_pagination = true

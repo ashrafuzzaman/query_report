@@ -19,4 +19,6 @@ Gem::Specification.new do |gem|
 
   gem.add_dependency 'ransack'
   gem.add_dependency 'google_visualr', '>= 2.1'
+  gem.add_dependency 'rmagick'
+  gem.add_dependency 'gruff'
 end
