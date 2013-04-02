@@ -31,19 +31,25 @@ class ReportPdf
 
   def standard
     pdf_content do
-      @report.charts.each do |chart|
-        if chart.respond_to?(:to_blob)
-          blob = chart.to_blob
-          data = StringIO.new(blob)
-          pdf.image(data)
-        end
-      end
-      
+      render_charts_with @report
       render_table_with(@report.all_records, {font_size: 8, header_font_size: 10})
     end
   end
 
   private
+  def render_charts_with(report)
+    return if report.charts.nil? or !report.chart_on_pdf?
+    report.charts.each do |chart|
+      if chart.respond_to?(:to_blob)
+        blob = chart.to_blob
+        data = StringIO.new(blob)
+        pdf.pad_top(10) do
+          pdf.image(data, :width => 200)
+        end
+      end
+    end
+  end
+
   def table_header_for(table_items, options={})
     table_items.first.keys
   end

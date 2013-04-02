@@ -59,4 +59,4 @@
     <p>No record found</p>
 <% end %>
 
-<%= paginate @record.query %>
+<%= paginate @report.query if @report.paginate? %>

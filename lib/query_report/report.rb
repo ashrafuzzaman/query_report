@@ -4,8 +4,11 @@ require 'query_report/chart/basic_chart'
 require 'query_report/chart/chart_with_total'
 
 module QueryReport
+  DEFAULT_OPTIONS = {
+      chart_on_pdf: true, paginate: true
+  }
   class Report
-    attr_accessor :params, :chart, :charts, :filters, :search, :scopes, :current_scope
+    attr_accessor :params, :chart, :charts, :filters, :search, :scopes, :current_scope, :options
 
     def initialize(params, options={}, &block)
       @params = params
@@ -13,10 +16,17 @@ module QueryReport
       @filters = []
       @scopes = []
       @charts = []
-      @column_separator = options.delete(:separator)
       @current_scope = @params[:scope] || 'all'
-      @options = options.delete(:options)
+      @options = QueryReport::DEFAULT_OPTIONS.merge options
       instance_eval &block if block_given?
+    end
+
+    QueryReport::DEFAULT_OPTIONS.each do |option_name, value|
+      if value.class == TrueClass or value.class == FalseClass
+        define_method "#{option_name.to_s}?" do
+          @options[option_name]
+        end
+      end
     end
 
     def column(name, options={}, &block)
@@ -70,7 +80,7 @@ module QueryReport
       @charts << @chart
     end
 
-    def compare_with_column_chart(title, x_axis, &block)
+    def compare_with_column_chart(title, x_axis='', &block)
       @chart = QueryReport::Chart::CustomChart.new(:column, title, query_without_pagination)
       @chart.add_column x_axis
       @chart.instance_eval &block if block_given?

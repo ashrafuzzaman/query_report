@@ -2,8 +2,8 @@ require 'query_report/report'
 
 module QueryReport
   module Helper
-    def reporter(query, &block)
-      @report ||= QueryReport::Report.new(params)
+    def reporter(query, options={}, &block)
+      @report ||= QueryReport::Report.new(params, options)
       @report.query = query
       @report.instance_eval &block
       render_report
@@ -11,6 +11,7 @@ module QueryReport
 
     def render_report
       respond_to do |format|
+        format.js { render 'query_report/list' }
         format.html { render 'query_report/list' }
         format.json { render json: @report.records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
