@@ -8,7 +8,7 @@ module QueryReport
       chart_on_pdf: true, paginate: true
   }
   class Report
-    attr_accessor :params, :chart, :charts, :filters, :search, :scopes, :current_scope, :options
+    attr_accessor :params, :chart, :charts, :filters, :scopes, :current_scope, :options
 
     def initialize(params, options={}, &block)
       @params = params
@@ -100,6 +100,11 @@ module QueryReport
     def scope(scope)
       @scopes << scope
       @scopes = @scopes.uniq
+    end
+
+    def search
+      apply_filters_and_pagination
+      @search
     end
 
     private
