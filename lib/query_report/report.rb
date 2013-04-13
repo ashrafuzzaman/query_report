@@ -138,7 +138,8 @@ module QueryReport
 
       #apply pagination
       @query_without_pagination_cache = @query_cache
-      @query_cache = @query_without_pagination_cache.page(@params[:page])
+      page_method_name = Kaminari.config.page_method_name
+      @query_cache = @query_without_pagination_cache.send(page_method_name, @params[:page])
       @applied_filters_and_pagination = true
     end
   end
