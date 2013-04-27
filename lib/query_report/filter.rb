@@ -1,8 +1,9 @@
 module QueryReport
   class Filter
-    attr_reader :column, :type, :comparators, :block, :custom
+    attr_reader :params, :column, :type, :comparators, :block, :custom
 
-    def initialize(column, options, &block)
+    def initialize(params, column, options, &block)
+      @params = params
       @column = column
       @type = options if options.kind_of? String
       if options.kind_of? Hash
@@ -27,15 +28,25 @@ module QueryReport
       end
     end
 
+    def filter_with_values
+      hash = {}
+      @comparators.each do |key, filter_name|
+        [key, filter_name]
+        param_key = "#{column.to_s}_#{key.to_s}"
+        hash[filter_name] = @params['q'][param_key] || @params['custom_search'][param_key] rescue ''
+      end
+      hash
+    end
+
     private
     def detect_comparators(type)
       case type
         when :date
-          return {gteq: 'From', lteq: 'To'}
+          return {gteq: I18n.t('query_report.filters.from'), lteq: I18n.t('query_report.filters.to')}
         when :text
           return {cont: @column.to_s.humanize}
       end
-      {eq: 'Equal'}
+      {eq: I18n.t('query_report.filters.equal')}
     end
   end
 end

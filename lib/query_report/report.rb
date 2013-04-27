@@ -87,7 +87,15 @@ module QueryReport
     end
 
     def filter(column, options, &block)
-      @filters << Filter.new(column, options, &block)
+      @filters << Filter.new(@params, column, options, &block)
+    end
+
+    def filter_with_values
+      hash = {}
+      @filters.each do |filter|
+        hash.merge!(filter.filter_with_values)
+      end
+      hash
     end
 
     def column_chart(title, columns)
