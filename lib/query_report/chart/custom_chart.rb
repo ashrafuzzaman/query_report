@@ -30,7 +30,7 @@ module QueryReport
 
       def prepare
         @data_table.add_row(@row)
-        opts = {:width => 500, :height => 240, :title => @title}.merge(options)
+        opts = {:width => 500, :height => 240, :title => @title, backgroundColor: 'transparent'}.merge(options)
         chart_type = "#{type}_chart".classify
         chart_type = "GoogleVisualr::Interactive::#{chart_type}".constantize
         chart_type.new(@data_table, opts)

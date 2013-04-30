@@ -22,7 +22,7 @@ module QueryReport
         @data_table.new_column('string', 'Item')
         @data_table.new_column('number', 'Value')
         @data_table.add_rows(@rows)
-        opts = {:width => 500, :height => 240, :title => @title, :is3D => true}.merge(options)
+        opts = {:width => 500, :height => 240, :title => @title, :is3D => true, backgroundColor: 'transparent'}.merge(options)
         GoogleVisualr::Interactive::PieChart.new(@data_table, opts)
       end
 
