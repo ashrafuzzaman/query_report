@@ -10,10 +10,11 @@ module QueryReport
   class Report
     include ActionView::Helpers
 
-    attr_accessor :params, :chart, :charts, :filters, :scopes, :current_scope, :options
+    attr_accessor :params, :template, :chart, :charts, :filters, :scopes, :current_scope, :options
 
-    def initialize(params, options={}, &block)
+    def initialize(params, template, options={}, &block)
       @params = params
+      @template = template
       @columns = []
       @filters = []
       @scopes = []
@@ -33,10 +34,18 @@ module QueryReport
 
     # to support the helper methods
     def method_missing(meth, *args, &block)
-      if Rails.application.routes.url_helpers.respond_to?(meth)
-        Rails.application.routes.url_helpers.send(meth, *args)
-      elsif ActionController::Base.helpers.respond_to?(meth)
-        ActionController::Base.helpers.send(meth, *args)
+      #if Rails.application.routes.url_helpers.respond_to?(meth)
+      #  Rails.application.routes.url_helpers.send(meth, *args)
+      #elsif ActionController::Base.helpers.respond_to?(meth)
+      #  ActionController::Base.helpers.send(meth, *args)
+      #else
+      #  super # You *must* call super if you don't handle the
+      #        # method, otherwise you'll mess up Ruby's method
+      #        # lookup.
+      #end
+
+      if @template.respond_to?(meth)
+        @template.send(meth, *args)
       else
         super # You *must* call super if you don't handle the
               # method, otherwise you'll mess up Ruby's method
