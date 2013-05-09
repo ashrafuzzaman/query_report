@@ -1,24 +1,20 @@
 require 'query_report/filter'
 require 'query_report/column'
-require 'query_report/chart/basic_chart'
-require 'query_report/chart/chart_with_total'
 
 module QueryReport
   DEFAULT_OPTIONS = {
       chart_on_pdf: true, paginate: true
   }
+
   class Report
-    include ActionView::Helpers
+    include QueryReport::ColumnModule
+    include QueryReport::FilterModule
 
     attr_accessor :params, :template, :chart, :charts, :filters, :scopes, :current_scope, :options
 
     def initialize(params, template, options={}, &block)
-      @params = params
-      @template = template
-      @columns = []
-      @filters = []
-      @scopes = []
-      @charts = []
+      @params, @template = params, template
+      @columns, @filters, @scopes, @charts = [], [], [], []
       @current_scope = @params[:scope] || 'all'
       @options = QueryReport::DEFAULT_OPTIONS.merge options
       instance_eval &block if block_given?
@@ -34,35 +30,11 @@ module QueryReport
 
     # to support the helper methods
     def method_missing(meth, *args, &block)
-      #if Rails.application.routes.url_helpers.respond_to?(meth)
-      #  Rails.application.routes.url_helpers.send(meth, *args)
-      #elsif ActionController::Base.helpers.respond_to?(meth)
-      #  ActionController::Base.helpers.send(meth, *args)
-      #else
-      #  super # You *must* call super if you don't handle the
-      #        # method, otherwise you'll mess up Ruby's method
-      #        # lookup.
-      #end
-
       if @template.respond_to?(meth)
         @template.send(meth, *args)
       else
-        super # You *must* call super if you don't handle the
-              # method, otherwise you'll mess up Ruby's method
-              # lookup.
+        super
       end
-    end
-
-    def column(name, options={}, &block)
-      @columns << Column.new(name, options, block)
-    end
-
-    def columns
-      @columns
-    end
-
-    def column_names
-      @column_names ||= (@columns||[]).collect(&:humanize)
     end
 
     def query=(query)
@@ -95,21 +67,14 @@ module QueryReport
       end
     end
 
-    def filter(column, options, &block)
-      @filters << Filter.new(@params, column, options, &block)
+    def scope(scope)
+      @scopes << scope
+      @scopes = @scopes.uniq
     end
 
-    def filter_with_values
-      hash = {}
-      @filters.each do |filter|
-        hash.merge!(filter.filter_with_values)
-      end
-      hash
-    end
-
-    def column_chart(title, columns)
-      @chart = QueryReport::Chart::BasicChart.new(:column, title, columns, all_records)
-      @charts << @chart
+    def search
+      apply_filters_and_pagination
+      @search
     end
 
     def compare_with_column_chart(title, x_axis='', &block)
@@ -123,20 +88,6 @@ module QueryReport
       @chart = QueryReport::Chart::PieChart.new(title, query_without_pagination)
       @chart.instance_eval &block if block_given?
       @charts << @chart
-    end
-
-    def pie_chart_on_total(title, columns)
-      @chart = QueryReport::Chart::ChartWithTotal.new(:pie, title, columns, all_records, {:is3D => true})
-    end
-
-    def scope(scope)
-      @scopes << scope
-      @scopes = @scopes.uniq
-    end
-
-    def search
-      apply_filters_and_pagination
-      @search
     end
 
     private

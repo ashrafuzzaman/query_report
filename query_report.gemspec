@@ -17,8 +17,15 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib", "app"]
 
+  gem.add_dependency "rails", "~> 3.2.13"
   gem.add_dependency 'ransack'
   gem.add_dependency 'google_visualr', '>= 2.1'
   gem.add_dependency 'rmagick'
   gem.add_dependency 'gruff'
+  gem.add_dependency 'kaminari'
+
+  gem.add_development_dependency "sqlite3"
+  gem.add_development_dependency "jquery-rails"
+  gem.add_development_dependency "bullet"
+  gem.add_development_dependency "rack-mini-profiler"
 end
