@@ -1,6 +1,7 @@
 module QueryReport
   module ColumnModule
     def column(name, options={}, &block)
+      options.merge!(model_name: model_name)
       @columns << Column.new(name, options, block)
     end
 
@@ -23,7 +24,7 @@ module QueryReport
       end
 
       def humanize
-        options[:as] || name.to_s.humanize
+        options[:as] || I18n.t("activerecord.models.#{options[:model_name]}.#{name}", :default => name.to_s.humanize)
       end
     end
 

@@ -37,6 +37,10 @@ module QueryReport
       end
     end
 
+    def model_name
+      query.table.name.singularize
+    end
+
     def query=(query)
       @query_cache = query
     end
