@@ -24,7 +24,7 @@ module QueryReport
       end
 
       def humanize
-        options[:as] || I18n.t("activerecord.models.#{options[:model_name]}.#{name}", :default => name.to_s.humanize)
+        options[:as] || options[:model_name].classify.constantize.human_attribute_name(name)
       end
     end
 
