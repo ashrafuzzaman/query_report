@@ -1,31 +1,31 @@
-# -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'query_report/version'
+$:.push File.expand_path("../lib", __FILE__)
 
-Gem::Specification.new do |gem|
-  gem.name          = "query_report"
-  gem.version       = QueryReport::VERSION
-  gem.authors       = ["A.K.M. Ashrafuzzaman"]
-  gem.email         = ["ashrafuzzaman.g2@gmail.com"]
-  gem.description   = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
-  gem.summary       = %q{Structure you reports}
-  gem.homepage      = "https://github.com/ashrafuzzaman/query_report"
+# Maintain your gem's version:
+require "query_report/version"
 
-  gem.files         = `git ls-files`.split($/)
-  gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }
-  gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
-  gem.require_paths = ["lib", "app"]
+# Describe your gem and declare its dependencies:
+Gem::Specification.new do |s|
+  s.name          = "query_report"
+  s.version       = QueryReport::VERSION
+  s.authors       = ["A.K.M. Ashrafuzzaman"]
+  s.email         = ["ashrafuzzaman.g2@gmail.com"]
+  s.description   = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
+  s.summary       = %q{Structure you reports}
+  s.homepage      = "https://github.com/ashrafuzzaman/query_report"
 
-  gem.add_dependency "rails", "~> 3.2.13"
-  gem.add_dependency 'ransack'
-  gem.add_dependency 'google_visualr', '>= 2.1'
-  gem.add_dependency 'rmagick'
-  gem.add_dependency 'gruff'
-  gem.add_dependency 'kaminari'
+  s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.rdoc"]
+  s.test_files = Dir["test/**/*"]
 
-  gem.add_development_dependency "sqlite3"
-  gem.add_development_dependency "jquery-rails"
-  gem.add_development_dependency "bullet"
-  gem.add_development_dependency "rack-mini-profiler"
+  s.add_dependency "rails", "~> 3.2.13"
+  s.add_dependency 'ransack'
+  s.add_dependency 'google_visualr', '>= 2.1'
+  s.add_dependency 'rmagick'
+  s.add_dependency 'gruff'
+  s.add_dependency 'kaminari'
+
+  s.add_development_dependency "sqlite3"
+  s.add_development_dependency "jquery-rails"
+  s.add_development_dependency "bullet"
+  s.add_development_dependency "rack-mini-profiler"
+  s.add_development_dependency 'rspec-rails', '~> 2.0'
 end

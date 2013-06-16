@@ -1,7 +1,0 @@
-<% if filter.type == :user %>
-    <% search_key = "#{filter.column.to_s}_id_eq"
-       user_id = @record.search.send(search_key)
-       user_name = User.find(user_id).name rescue '' %>
-    <%= user_search_field_tag "#{search_key}_search_field", user_name, :placeholder => filter.column.to_s.humanize, :'sync-id' => "q_#{search_key}" %>
-    <%= f.hidden_field search_key %>
-<% end %>
