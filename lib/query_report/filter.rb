@@ -32,7 +32,7 @@ module QueryReport
         @type = options if options.kind_of? String
         if options.kind_of? Hash
           @type = options[:type]
-          @comparators = options[:comp] #|| detect_comparators(@type)
+          @comparators = options[:comp] || detect_comparators(@type)
         end
         @block = block
         @custom = @block ? true : false
@@ -52,9 +52,9 @@ module QueryReport
           when :date
             return {gteq: I18n.t('query_report.filters.from'), lteq: I18n.t('query_report.filters.to')}
           when :text
-            return {cont: I18n.t("query_report.filters.#{@column.to_s}")}
+            return {cont: I18n.t("query_report.filters.#{@column.to_s}.contains")}
         end
-        {eq: I18n.t('query_report.filters.equal')}
+        {eq: I18n.t("query_report.filters.#{@column.to_s}.equals")}
       end
     end
   end
