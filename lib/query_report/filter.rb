@@ -14,7 +14,7 @@ module QueryReport
     # +options+:: Options can have the following,
     #             options[:type] => date | text | whatever
     #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
-    def filter(column, options, &block)
+    def filter(column, options={}, &block)
       @filters ||= []
       @filters << Filter.new(@params, column, options, &block)
     end

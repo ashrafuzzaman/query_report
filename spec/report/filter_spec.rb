@@ -23,8 +23,6 @@ describe QueryReport::FilterModule do
 
         filter.column.should be :created_at
         filter.type.should be :text
-        filter.comparators.keys.should =~ [:cont]
-        filter.comparators.values.should =~ [I18n.t('query_report.filters.created_at.contains')]
         filter.custom?.should be false
       end
 
@@ -34,8 +32,6 @@ describe QueryReport::FilterModule do
 
         filter.column.should be :created_at
         filter.type.should be :date
-        filter.comparators.keys.should =~ [:gteq, :lteq]
-        filter.comparators.values.should =~ [I18n.t('query_report.filters.from'), I18n.t('query_report.filters.to')]
         filter.custom?.should be false
       end
 
@@ -62,6 +58,32 @@ describe QueryReport::FilterModule do
       filter.comparators.keys.should =~ [:eq]
       filter.comparators.values.should =~ ['Filter user']
       filter.custom?.should be true
+    end
+
+    describe 'detect comparators' do
+      it 'should be able detect for text type' do
+        @object.filter(:created_at, type: :text)
+
+        filter = @object.filters.first
+        filter.comparators.keys.should =~ [:cont]
+        filter.comparators.values.should =~ [I18n.t('query_report.filters.created_at.contains')]
+      end
+
+      it 'should be able detect for date type' do
+        @object.filter(:created_at, type: :date)
+
+        filter = @object.filters.first
+        filter.comparators.keys.should =~ [:gteq, :lteq]
+        filter.comparators.values.should =~ [I18n.t('query_report.filters.from'), I18n.t('query_report.filters.to')]
+      end
+
+      it 'should set eq as default type' do
+        @object.filter :created_at
+
+        filter = @object.filters.first
+        filter.comparators.keys.should =~ [:eq]
+        filter.comparators.values.should =~ [I18n.t("query_report.filters.created_at.equals")]
+      end
     end
   end
 end
