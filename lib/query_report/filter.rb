@@ -25,7 +25,6 @@ module QueryReport
       # Initializes filter with the proper parameters
       # Params:
       # +params+:: The params from the http request
-
       def initialize(params, column, options, &block)
         @params = params
         @column = column

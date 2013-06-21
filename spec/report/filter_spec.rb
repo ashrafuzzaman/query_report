@@ -1,8 +1,7 @@
 require 'spec_helper'
-require 'query_report/report'
 require 'query_report/filter'
 
-describe QueryReport::Report do
+describe QueryReport::FilterModule do
   class DummyClass
     include QueryReport::FilterModule
   end
@@ -52,7 +51,7 @@ describe QueryReport::Report do
       end
     end
 
-    it 'should be able to add custom filter with one arity' do
+    it 'should be able to add custom filter' do
       @object.filter(:user_id, type: :user_auto_complete, comp: {eq: 'Filter user'}) do |query, user_id|
         query.where(user_id: user_id)
       end
