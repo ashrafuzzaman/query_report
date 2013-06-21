@@ -15,9 +15,9 @@ describe QueryReport::ColumnModule do
   end
 
   it 'should support to define columns' do
-    DummyActiveRecordClass.should_receive(:columns_hash).and_return({name: double('name_column', type: :string)})
+    DummyActiveRecordClass.stub(:columns_hash).and_return({'name' => stub(type: :string)})
 
-    @object.should_receive(:model_class).and_return(DummyActiveRecordClass)
+    @object.stub(:model_class).and_return(DummyActiveRecordClass)
     @object.columns = []
 
     @object.column :name
