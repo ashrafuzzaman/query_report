@@ -15,7 +15,6 @@ describe QueryReport::ColumnModule do
 
   it 'should support to define columns' do
     DummyActiveRecordClass.stub(:columns_hash).and_return({'user_id' => stub(type: :integer)})
-
     @object.stub(:model_class).and_return(DummyActiveRecordClass)
     @object.columns = []
 
@@ -28,7 +27,6 @@ describe QueryReport::ColumnModule do
 
   it 'should support to define columns with custom definition' do
     DummyActiveRecordClass.stub(:columns_hash).and_return({})
-
     @object.stub(:model_class).and_return(DummyActiveRecordClass)
     @object.columns = []
 
@@ -40,5 +38,24 @@ describe QueryReport::ColumnModule do
     column.name.should be :user
     column.type.should be :integer
     column.data.should_not be nil
+  end
+
+  describe 'humanize' do
+    before(:each) do
+      DummyActiveRecordClass.stub(:columns_hash).and_return({})
+      DummyActiveRecordClass.stub(:human_attribute_name).and_return('User')
+      @object.stub(:model_class).and_return(DummyActiveRecordClass)
+      @object.columns = []
+    end
+
+    it 'should support the built in rails human_attribute_name' do
+      @object.column :user_id
+      @object.columns.first.humanize.should == 'User'
+    end
+
+    it 'should support the override with as param' do
+      @object.column :user_id, as: 'Admin'
+      @object.columns.first.humanize.should == 'Admin'
+    end
   end
 end
