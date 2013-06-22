@@ -19,6 +19,28 @@ module QueryReport
       @filters << Filter.new(@params, column, options, &block)
     end
 
+    def apply_filters(query, params)
+      @search = query.search(params[:q])
+      query = @search.result
+
+      @filters.each do |filter|
+        if filter.custom?
+          param = params[:custom_search]
+          first_val = param[filter.keys.first] rescue nil
+          last_val = param[filter.keys.last] rescue nil
+          case filter.keys.size
+            when 1
+              query = filter.block.call(query, first_val) if first_val.present?
+              break
+            when 2
+              query = filter.block.call(query, first_val, last_val) if first_val.present? and last_val.present?
+              break
+          end
+        end
+      end
+      query
+    end
+
     class Filter
       attr_reader :params, :column, :type, :comparators, :block, :custom
 

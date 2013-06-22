@@ -23,6 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'gruff'
   s.add_dependency 'kaminari'
 
+  s.add_development_dependency "kaminari"
+  s.add_development_dependency "ransack"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "jquery-rails"
   s.add_development_dependency "bullet"

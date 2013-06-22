@@ -33,6 +33,10 @@ module QueryReport
       def humanize
         options[:as] || @report.model_class.human_attribute_name(name)
       end
+
+      def value(record)
+        self.data.kind_of?(Symbol) ? record.send(self.name) : self.data.call(record)
+      end
     end
   end
 end
