@@ -37,7 +37,7 @@
 <br/>
 <br/>
 
-<% if @report.filtered_query.count > 0 %>
+<% if @report.records.size > 0 %>
     <table class="table table-bordered table-striped">
       <thead>
       <% @report.columns.each do |column| %>
@@ -59,4 +59,4 @@
     <p>No record found</p>
 <% end %>
 
-<%#= paginate @report.query if @report.paginate? %>
+<%= paginate @report.paginated_query if @report.paginate? %>
