@@ -19,6 +19,11 @@ module QueryReport
       @filters << Filter.new(@params, column, options, &block)
     end
 
+    def search
+      apply
+      @search
+    end
+
     def apply_filters(query, params)
       @search = query.search(params[:q])
       query = @search.result
@@ -61,6 +66,12 @@ module QueryReport
 
       def self.supported_types
         [:date, :text]
+      end
+
+      supported_types.each do |supported_type|
+        define_method("#{supported_type.to_s}?") do
+          @type == supported_type
+        end
       end
 
       def custom?

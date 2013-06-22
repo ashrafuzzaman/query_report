@@ -2,19 +2,16 @@ require 'query_report/helper'
 
 class UsersController < ApplicationController
   include QueryReport::Helper
-  # GET /users
-  # GET /users.json
+
   def index
     @users = User.scoped
 
     reporter(@users) do
-      column :email
-    end
+      filter :email, type: :text
 
-    #respond_to do |format|
-    #  format.html # index.html.erb
-    #  format.json { render json: @users }
-    #end
+      column :email
+      column :name
+    end
   end
 
   # GET /users/1

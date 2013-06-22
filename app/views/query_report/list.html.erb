@@ -1,21 +1,21 @@
-<%#= search_form_for @report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
-    <%# @report.filters.each do |filter| %>
-        <%# if filter.class.supported_types.include?(filter.type) %>
-            <%# filter.comparators.each do |key, hint| %>
-                <%# search_key = "#{filter.column}_#{key}" %>
-                <%# if filter.date? %>
-                    <%#= f.date_field search_key, :placeholder => hint %>
-                <%# elsif filter.text? %>
-                    <%#= f.text_field search_key, placeholder: hint %>
-                <%# end %>
-            <%# end %>
-        <%# else %>
-            <%#= render :partial => "query_report/custom_filters", locals: {f: f, filter: filter} %>
-        <%# end %>
-    <%# end %>
+<%= search_form_for @report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
+    <% @report.filters.each do |filter| %>
+        <% if filter.class.supported_types.include?(filter.type) %>
+            <% filter.comparators.each do |key, hint| %>
+                <% search_key = "#{filter.column}_#{key}" %>
+                <% if filter.date? %>
+                    <%= f.date_field search_key, :placeholder => hint %>
+                <% elsif filter.text? %>
+                    <%= f.text_field search_key, placeholder: hint %>
+                <% end %>
+            <% end %>
+        <% else %>
+            <%= render :partial => "query_report/custom_filters", locals: {f: f, filter: filter} %>
+        <% end %>
+    <% end %>
 
-    <%#= f.submit 'Search', :class => 'btn' %>
-<%# end %>
+    <%= f.submit 'Search', :class => 'btn' %>
+<% end %>
 
 <br/>
 <%#= link_to_download_report_pdf %>
