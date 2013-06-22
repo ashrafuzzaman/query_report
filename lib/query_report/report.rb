@@ -1,5 +1,6 @@
 require 'query_report/column'
 require 'query_report/filter'
+require 'query_report/paginate'
 
 module QueryReport
   DEFAULT_OPTIONS = {chart_on_pdf: true, paginate: true}
@@ -7,6 +8,7 @@ module QueryReport
   class Report
     include QueryReport::ColumnModule
     include QueryReport::FilterModule
+    include QueryReport::PaginateModule
 
     attr_reader :params, :template, :options
 

@@ -1,7 +1,7 @@
 require 'spec_helper'
 require 'query_report/report'
 
-describe QueryReport::FilterModule do
+describe QueryReport::Report do
   it 'initialize' do
     params = {}
     template = Object.new
