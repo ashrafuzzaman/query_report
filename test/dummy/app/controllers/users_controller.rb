@@ -8,6 +8,10 @@ class UsersController < ApplicationController
 
     reporter(@users) do
       filter :email, type: :text
+      filter :name, type: :text do |query, name|
+        query.where("name LIKE '%#{name}%'")
+      end
+      filter :created_at, type: :date
 
       column :email
       column :name

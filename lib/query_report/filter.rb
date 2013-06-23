@@ -31,9 +31,10 @@ module QueryReport
       @filters.each do |filter|
         if filter.custom?
           param = params[:custom_search]
-          first_val = param[filter.keys.first] rescue nil
-          last_val = param[filter.keys.last] rescue nil
-          case filter.keys.size
+          first_val = param[filter.search_keys.first] rescue nil
+          last_val = param[filter.search_keys.last] rescue nil
+
+          case filter.comparators.size
             when 1
               query = filter.block.call(query, first_val) if first_val.present?
               break
@@ -76,6 +77,10 @@ module QueryReport
 
       def custom?
         @block ? true : false
+      end
+
+      def search_keys
+        comparators.keys.collect { |comp| "#{column.to_s}_#{comp.to_s}" }
       end
 
       private

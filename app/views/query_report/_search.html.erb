@@ -1,0 +1,30 @@
+<%= search_form_for report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
+    <% report.filters.each do |filter| %>
+        <% if filter.class.supported_types.include?(filter.type) %>
+            <% filter.comparators.each do |key, hint| %>
+                <% search_key = "#{filter.column}_#{key}" %>
+                <% custom_search_key = "custom_search[#{search_key}]" %>
+                <% if filter.date? %>
+                    <% if filter.custom? %>
+                        <% value = params[:custom_search][search_key] rescue nil %>
+                        <%= send :"query_report_#{filter.type.to_s}_filter", custom_search_key, value, :placeholder => hint %>
+                    <% else %>
+                        <% value = params[:q][search_key] rescue nil %>
+                        <%= send :"query_report_#{filter.type.to_s}_filter", "q[#{search_key}]", value, :placeholder => hint %>
+                    <% end %>
+                <% elsif filter.text? %>
+                    <% if filter.custom? %>
+                        <% value = params[:custom_search][search_key] rescue nil %>
+                        <%= text_field_tag custom_search_key, value, :placeholder => hint %>
+                    <% else %>
+                        <% value = params[:q][search_key] rescue nil %>
+                        <%= send :"query_report_#{filter.type.to_s}_filter", "q[#{search_key}]", value, :placeholder => hint %>
+                    <% end %>
+                <% end %>
+            <% end %>
+        <% else %>
+            <%= render :partial => "query_report/custom_filters", locals: {f: f, filter: filter} %>
+        <% end %>
+    <% end %>
+    <%= f.submit 'Search', :class => 'btn' %>
+<% end %>
