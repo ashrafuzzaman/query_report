@@ -3,25 +3,21 @@
 #
 module QueryReport
   class ReportPdf
-    attr_accessor :pdf, :default_options
+    attr_reader :pdf, :options, :report
 
     def initialize(report)
       @report = report
-      self.default_options = {alternate_row_bg_color: ["DDDDDD", "FFFFFF"],
-                              header_bg_color: 'AAAAAA',
-                              color: '000000',
-                              light_color: '555555'}
-      self.pdf = Prawn::Document.new
+      @options = {alternate_row_bg_color: ["DDDDDD", "FFFFFF"],
+                  header_bg_color: 'AAAAAA',
+                  color: '000000',
+                  light_color: '555555',
+                  font_size: 8,
+                  header_font_size: 10}
+
+      @pdf = Prawn::Document.new
     end
 
-    def render_header(options={})
-      #pdf.font("Times-Roman", size: 10) do
-      #  pdf.text_box current_institute.address.to_s,
-      #               :at => [400, pdf.cursor+20],
-      #               :inline_format => true,
-      #               :height => 100,
-      #               :width => 100
-      #end
+    def render_header()
     end
 
     def pdf_content(&code)
@@ -33,7 +29,7 @@ module QueryReport
     def standard
       pdf_content do
         #render_charts_with @report
-        render_table_with(@report, {font_size: 8, header_font_size: 10})
+        render_table_with(@report)
       end
     end
 
@@ -51,68 +47,41 @@ module QueryReport
       end
     end
 
-    def table_header_for(table_items, options={})
+    def table_header_for(table_items)
       table_items.first.keys
     end
 
-    def humanized_table_header_for(report, options={})
+    def humanized_table_header_for(report)
       report.columns.collect(&:humanize)
-      #table_items.first.keys.collect(&:humanize) rescue table_header_for(table_items, options)
     end
 
-    def table_content_for(table_items, options)
+    def table_content_for(report)
+      table_items = report.all_records
       table_items.map do |item|
         item_values = []
 
-        options[:table_header].each do |header|
-          item_values << cell_for(item, header)
+        report.columns.collect(&:name).each do |column|
+          item_values << item[column]
         end
         item_values
       end
     end
 
-    def cell_for(item, prop)
-      val = item.respond_to?(prop) ? item.send(prop) : item[prop]
-      #if val.kind_of? Array
-      #  val.collect { |v| [v] }
-      #  return pdf.make_table(val)
-      #end
-      val.to_s
+    def render_table_with(report)
+      items = [humanized_table_header_for(report)]
+      items += table_content_for(report)
+      render_table(items)
     end
 
-    def render_table_with(report, options={})
-      table_items = report.all_records
-      if table_items.present?
-        options[:table_header] ||= table_header_for(table_items, options)
-        items = [humanized_table_header_for(report)]
-        items += table_content_for(table_items, options)
-        items += table_footer_for(table_items, options)
-        options[:bold_footer] = options[:titles_of_column_to_sum].present?
-        render_table(items, options)
-      end
-      pdf
-    end
-
-    def render_table(items, options={})
-      options = default_options.merge options
-      header_bg_color = options[:header_bg_color]
+    def render_table(items)
+      header_bg_color = @options[:header_bg_color]
+      alternate_row_bg_color = @options[:alternate_row_bg_color]
+      font_size = @options[:font_size]
+      header_font_size = @options[:header_font_size]
       pdf.move_down 10
-      ap items
-      pdf.table(items, :row_colors => options[:alternate_row_bg_color], :header => true, :cell_style => {:inline_format => true, :size => options[:font_size] || 10}) do
-        row(0).style(:font_style => :bold, :background_color => header_bg_color, :size => options[:header_font_size] || 14)
-        row(items.size-1).style(:font_style => :bold) if options[:bold_footer]
+      pdf.table(items, :row_colors => alternate_row_bg_color, :header => true, :cell_style => {:inline_format => true, :size => font_size}) do
+        row(0).style(:font_style => :bold, :background_color => header_bg_color, :size => header_font_size)
       end
     end
-
-    def table_footer_for(table_items, options)
-      return [] if options[:titles_of_column_to_sum].blank?
-      total_hash = {} #for calculating total for a column
-      options[:titles_of_column_to_sum].each do |col|
-        total_hash[col] = table_items.sum { |i| (i.respond_to?(col) ? i.send(col) : i[col]) || 0 }
-      end
-
-      render_footer_with_col_span(total_hash, options)
-    end
-
   end
 end
