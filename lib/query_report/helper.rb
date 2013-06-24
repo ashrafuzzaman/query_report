@@ -22,7 +22,7 @@ module QueryReport
         format.html { render 'query_report/list' }
         format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
-        format.pdf { render_pdf(QueryReport::ReportPdf.new(@report).standard) }
+        format.pdf { send_data QueryReport::ReportPdf.new(@report).standard.render }
       end
     end
 
