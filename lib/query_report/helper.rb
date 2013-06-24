@@ -1,9 +1,11 @@
 # Author::    A.K.M. Ashrafuzzaman  (mailto:ashrafuzzaman.g2@gmail.com)
 # License::   MIT-LICENSE
 
-# The purpose of the column module is to define columns that are displayed in the views
+# The purpose of the helper module is to help controllers with the responders
 
+require 'csv'
 require 'query_report/report'
+require 'query_report/report_pdf'
 
 module QueryReport
   module Helper
@@ -18,9 +20,9 @@ module QueryReport
       respond_to do |format|
         format.js { render 'query_report/list' }
         format.html { render 'query_report/list' }
-        format.json { render json: @report.records }
+        format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
-        format.pdf { render_pdf(ReportPdf.new(@report).standard) }
+        format.pdf { render_pdf(QueryReport::ReportPdf.new(@report).standard) }
       end
     end
 

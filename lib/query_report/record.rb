@@ -25,6 +25,10 @@ module QueryReport
       @records ||= map_record(paginated_query)
     end
 
+    def all_records
+      @all_records ||= map_record(filtered_query)
+    end
+
     def map_record(query)
       query.map do |record|
         array = @columns.collect { |column| [column.name, column.value(record)] }
