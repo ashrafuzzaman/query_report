@@ -1,19 +1,10 @@
-#require "prawn"
-#require "open-uri"
-#
 module QueryReport
   class ReportPdf
     attr_reader :pdf, :options, :report
 
     def initialize(report)
       @report = report
-      @options = {alternate_row_bg_color: ["DDDDDD", "FFFFFF"],
-                  header_bg_color: 'AAAAAA',
-                  color: '000000',
-                  light_color: '555555',
-                  font_size: 8,
-                  header_font_size: 10}
-
+      @options = QueryReport.pdf_options
       @pdf = Prawn::Document.new
     end
 
@@ -61,7 +52,7 @@ module QueryReport
         item_values = []
 
         report.columns.collect(&:name).each do |column|
-          item_values << item[column]
+          item_values << item[column].to_s
         end
         item_values
       end
@@ -74,10 +65,10 @@ module QueryReport
     end
 
     def render_table(items)
-      header_bg_color = @options[:header_bg_color]
-      alternate_row_bg_color = @options[:alternate_row_bg_color]
+      header_bg_color = @options[:table][:header][:bg_color]
+      alternate_row_bg_color = [@options[:table][:row][:odd_bg_color], @options[:table][:row][:even_bg_color]]
       font_size = @options[:font_size]
-      header_font_size = @options[:header_font_size]
+      header_font_size = @options[:table][:header][:font_size]
       pdf.move_down 10
       pdf.table(items, :row_colors => alternate_row_bg_color, :header => true, :cell_style => {:inline_format => true, :size => font_size}) do
         row(0).style(:font_style => :bold, :background_color => header_bg_color, :size => header_font_size)
