@@ -4,7 +4,7 @@ module QueryReport
 
     def initialize(report)
       @report = report
-      @options = QueryReport.pdf_options
+      @options = QueryReport.config.pdf_options
       @pdf = Prawn::Document.new
     end
 
@@ -51,7 +51,7 @@ module QueryReport
       table_items.map do |item|
         item_values = []
 
-        report.columns.collect(&:name).each do |column|
+        report.columns.collect(&:humanize).each do |column|
           item_values << item[column].to_s
         end
         item_values

@@ -31,7 +31,7 @@ module QueryReport
 
     def map_record(query)
       query.map do |record|
-        array = @columns.collect { |column| [column.name, column.value(record)] }
+        array = @columns.collect { |column| [column.humanize, column.value(record)] }
         Hash[*array.flatten]
       end
     end

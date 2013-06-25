@@ -27,7 +27,7 @@
       <% @report.records.each do |record| %>
           <tr>
             <% @report.columns.each do |column| %>
-                <td><%= record[column.name] %></td>
+                <td><%= record[column.humanize] %></td>
             <% end %>
           </tr>
       <% end %>

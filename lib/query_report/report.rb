@@ -1,9 +1,9 @@
-require 'query_report/column'
-require 'query_report/filter'
-require 'query_report/paginate'
-require 'query_report/record'
-
 module QueryReport
+  autoload :ColumnModule, 'query_report/column'
+  autoload :FilterModule, 'query_report/filter'
+  autoload :PaginateModule, 'query_report/paginate'
+  autoload :Record, 'query_report/record'
+
   DEFAULT_OPTIONS = {chart_on_pdf: true, paginate: true}
 
   class Report

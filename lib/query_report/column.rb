@@ -31,7 +31,7 @@ module QueryReport
       end
 
       def humanize
-        options[:as] || @report.model_class.human_attribute_name(name)
+        @humanize ||= options[:as] || @report.model_class.human_attribute_name(name)
       end
 
       def value(record)
