@@ -3,6 +3,7 @@ module QueryReport
   autoload :FilterModule, 'query_report/filter'
   autoload :PaginateModule, 'query_report/paginate'
   autoload :Record, 'query_report/record'
+  autoload :ColumnChartModule, 'query_report/chart/column_chart'
 
   DEFAULT_OPTIONS = {chart_on_pdf: true, paginate: true}
 
@@ -11,8 +12,9 @@ module QueryReport
     include QueryReport::FilterModule
     include QueryReport::PaginateModule
     include QueryReport::Record
+    include QueryReport::ColumnChartModule
 
-    attr_reader :params, :template, :options
+    attr_reader :params, :template, :options, :charts
 
     def initialize(params, template, options={}, &block)
       @params, @template = params, template
