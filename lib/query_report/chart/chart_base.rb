@@ -37,14 +37,14 @@ module QueryReport
       end
 
       def to_blob(type)
-        chart_type = type.classify
+        chart_type = type.to_s.classify
         chart_type = "Gruff::#{chart_type}".constantize
 
         @gruff = chart_type.new(@options[:width])
         @gruff.title = title
         @gruff.theme = QueryReport::Chart::Themes::GOOGLE_CHART
-        @data.each do |row|
-          @gruff.data(row.name.humanize, row.value)
+        @data.each_with_index do |value, i|
+          @gruff.data(@columns[i].title, value)
         end
 
         @gruff.to_blob

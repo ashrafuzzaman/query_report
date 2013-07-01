@@ -25,6 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'prawn'
 
 
+  s.add_development_dependency 'gruff'
   s.add_development_dependency 'awesome_print'
   s.add_development_dependency 'prawn'
   s.add_development_dependency 'kaminari'

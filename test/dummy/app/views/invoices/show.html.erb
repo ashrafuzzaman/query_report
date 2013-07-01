@@ -1,0 +1,25 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Title:</b>
+  <%= @invoice.title %>
+</p>
+
+<p>
+  <b>Total paid:</b>
+  <%= @invoice.total_paid %>
+</p>
+
+<p>
+  <b>Total charged:</b>
+  <%= @invoice.total_charged %>
+</p>
+
+<p>
+  <b>Paid:</b>
+  <%= @invoice.paid %>
+</p>
+
+
+<%= link_to 'Edit', edit_invoice_path(@invoice) %> |
+<%= link_to 'Back', invoices_path %>

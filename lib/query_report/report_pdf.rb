@@ -19,14 +19,14 @@ module QueryReport
 
     def standard
       pdf_content do
-        #render_charts_with @report
-        render_table_with(@report)
+        render_charts_with @report
+        render_table_with @report
       end
     end
 
     private
     def render_charts_with(report)
-      return if report.charts.nil? or !report.chart_on_pdf?
+      return if report.charts.empty? #or !report.chart_on_pdf?
       report.charts.each do |chart|
         if chart.respond_to?(:to_blob)
           blob = chart.to_blob
