@@ -11,12 +11,14 @@ class InvoicesController < ApplicationController
       filter :title, type: :text
       filter :created_at, type: :date
 
-      column :title
+      column :title do |invoice|
+        link_to invoice.title, invoice
+      end
       column :total_paid
       column :total_charged
       column :paid
 
-      compare_with_column_chart('Unpaid VS Paid') do
+      column_chart('Unpaid VS Paid') do
         add 'Unpaid' do |query|
           query.sum('total_charged').to_f - query.sum('total_paid').to_f
         end

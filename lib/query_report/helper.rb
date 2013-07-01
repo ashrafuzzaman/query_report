@@ -32,7 +32,7 @@ module QueryReport
         CSV.generate do |csv|
           csv << columns
           records.each do |record|
-            csv << record.values
+            csv << record.values.collect { |val| val.kind_of?(String) ? view_context.strip_links(val) : val }
           end
         end
       else

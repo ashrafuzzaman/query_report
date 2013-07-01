@@ -37,6 +37,15 @@ module QueryReport
       def value(record)
         self.data.kind_of?(Symbol) ? record.send(self.name) : self.data.call(record)
       end
+
+      # to support the helper methods
+      def method_missing(meth, *args, &block)
+        if @report.template.respond_to?(meth)
+          @report.template.send(meth, *args)
+        else
+          super
+        end
+      end
     end
   end
 end
