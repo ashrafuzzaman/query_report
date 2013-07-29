@@ -31,5 +31,14 @@ module QueryReport
         end
       end
     end
+
+    # to support the helper methods
+    def method_missing(meth, *args, &block)
+      if @template.respond_to?(meth)
+        @template.send(meth, *args)
+      else
+        super
+      end
+    end
   end
 end
