@@ -12,7 +12,7 @@ describe QueryReport::FilterModule do
 
   describe 'filter' do
     it 'should have date and text in the supported list' do
-      QueryReport::FilterModule::Filter.supported_types.should =~ [:date, :text]
+      QueryReport::FilterModule::Filter.supported_types.should =~ [:date, :boolean, :text]
     end
 
     describe 'with supported types' do

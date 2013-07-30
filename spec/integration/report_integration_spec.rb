@@ -104,7 +104,7 @@ describe DummyInvoiceController do
       def index
         @invoices = DummyInvoice.scoped
         reporter(@invoices) do
-          filter :paid
+          filter :paid, default: ''
 
           column :title
           column :total_paid
@@ -112,14 +112,16 @@ describe DummyInvoiceController do
       end
     end
 
-    #it "should initialize without any filter applied" do
-    #  controller = DummyInvoiceController.new
-    #  controller.index
-    #  report = controller.instance_eval { @report }
-    #  report.records.should == [{'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
-    #                            {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
-    #end
-    #
+    it "should initialize without any filter applied" do
+      controller = DummyInvoiceController.new
+      controller.index
+      report = controller.instance_eval { @report }
+      ap report.filtered_query.to_sql
+      report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid},
+                                {'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
+                                {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
+    end
+
     #it "should initialize without any filter applied" do
     #  controller = DummyInvoiceController.new
     #  controller.params[:q] = {paid_eq: '1'}
@@ -128,5 +130,4 @@ describe DummyInvoiceController do
     #  report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid}]
     #end
   end
-
 end

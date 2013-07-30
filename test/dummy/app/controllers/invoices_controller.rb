@@ -10,6 +10,7 @@ class InvoicesController < ApplicationController
     reporter(@invoices) do
       filter :title, type: :text
       filter :created_at, type: :date
+      filter :paid, type: :boolean, default: 'false'
 
       column :title do |invoice|
         link_to invoice.title, invoice

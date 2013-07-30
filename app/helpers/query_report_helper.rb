@@ -4,7 +4,11 @@ module QueryReportHelper
   def query_report_render_filter(filter, key, hint)
     search_key = "#{filter.column}_#{key}"
     search_tag_name = filter.custom? ? "custom_search[#{search_key}]" : "q[#{search_key}]"
-    value = (filter.custom? ? params[:custom_search][search_key] : params[:q][search_key]) rescue ''
+    if filter.custom?
+      value = params[:custom_search] ? params[:custom_search][search_key] : filter.options[:default]
+    else
+      value = params[:q] ? params[:q][search_key] : filter.options[:default]
+    end
     if self.respond_to? :"query_report_#{filter.type.to_s}_filter"
       send :"query_report_#{filter.type.to_s}_filter", search_tag_name, value, :placeholder => hint
     else

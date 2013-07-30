@@ -24,7 +24,17 @@ module QueryReport
       @search
     end
 
-    def apply_filters(query, params)
+    def apply_filters(query, http_params)
+      # apply default filter
+      params = http_params.clone
+      params = params.merge(q: {}) if params[:q].nil?
+      @filters.each do |filter|
+        if filter.comparators.size == 1 and filter.options[:default].present?
+          params[:q][filter.search_keys.first] = filter.options[:default]
+        end
+        params[:q]
+      end
+
       @search = query.search(params[:q])
       query = @search.result
 
@@ -48,7 +58,7 @@ module QueryReport
     end
 
     class Filter
-      attr_reader :params, :column, :type, :comparators, :block, :custom
+      attr_reader :params, :column, :type, :comparators, :block, :custom, :options
 
       # Initializes filter with the proper parameters
       # Params:
@@ -56,6 +66,7 @@ module QueryReport
       def initialize(params, column, options, &block)
         @params = params
         @column = column
+        @options = options
         @type = options if options.kind_of? String
         if options.kind_of? Hash
           @type = options[:type]
@@ -66,7 +77,7 @@ module QueryReport
       end
 
       def self.supported_types
-        [:date, :text]
+        [:date, :text, :boolean]
       end
 
       supported_types.each do |supported_type|
