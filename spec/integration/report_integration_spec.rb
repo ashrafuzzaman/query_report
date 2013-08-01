@@ -64,7 +64,7 @@ describe DummyInvoiceController do
 
   it "should only show selected columns with readable names" do
     class DummyInvoiceController
-      def index
+      def index_with_readable_names
         @invoices = DummyInvoice.scoped
         reporter(@invoices) do
           column :title
@@ -74,37 +74,20 @@ describe DummyInvoiceController do
     end
 
     controller = DummyInvoiceController.new
-    controller.index
+    controller.index_with_readable_names
     report = controller.instance_eval { @report }
     report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid},
                               {'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
                               {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
   end
 
-  it "should initialize with the given query" do
-    class DummyInvoiceController
-      def index
-        @invoices = DummyInvoice.where(paid: false)
-        reporter(@invoices) do
-          column :title
-          column :total_paid
-        end
-      end
-    end
-
-    controller = DummyInvoiceController.new
-    controller.index
-    report = controller.instance_eval { @report }
-    report.records.should == [{'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
-                              {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
-  end
-
   context 'filter' do
     class DummyInvoiceController
-      def index
+      def index_with_default_filter
         @invoices = DummyInvoice.scoped
         reporter(@invoices) do
           filter :paid, default: ''
+          filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
 
           column :title
           column :total_paid
@@ -114,20 +97,20 @@ describe DummyInvoiceController do
 
     it "should initialize without any filter applied" do
       controller = DummyInvoiceController.new
-      controller.index
+      controller.index_with_default_filter
       report = controller.instance_eval { @report }
-      ap report.filtered_query.to_sql
       report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid},
                                 {'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
                                 {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
     end
 
-    #it "should initialize without any filter applied" do
-    #  controller = DummyInvoiceController.new
-    #  controller.params[:q] = {paid_eq: '1'}
-    #  controller.index
-    #  report = controller.instance_eval { @report }
-    #  report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid}]
-    #end
+    it "should initialize with filter applied" do
+      controller = DummyInvoiceController.new
+      controller.params[:q] = {paid_eq: '1'}
+      controller.index_with_default_filter
+      report = controller.instance_eval { @report }
+      report.records.should == [{'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
+                                {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
+    end
   end
 end

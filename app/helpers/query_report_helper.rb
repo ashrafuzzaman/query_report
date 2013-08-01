@@ -1,13 +1,14 @@
 require 'query_report/errors'
 
 module QueryReportHelper
-  def query_report_render_filter(filter, key, hint)
+  def query_report_render_filter(filter, index, key, hint)
     search_key = "#{filter.column}_#{key}"
     search_tag_name = filter.custom? ? "custom_search[#{search_key}]" : "q[#{search_key}]"
+    default_value = filter.options[:default].kind_of?(Array) ? filter.options[:default][index] : filter.options[:default]
     if filter.custom?
-      value = params[:custom_search] ? params[:custom_search][search_key] : filter.options[:default]
+      value = params[:custom_search] ? params[:custom_search][search_key] : default_value
     else
-      value = params[:q] ? params[:q][search_key] : filter.options[:default]
+      value = params[:q] ? params[:q][search_key] : default_value
     end
     if self.respond_to? :"query_report_#{filter.type.to_s}_filter"
       send :"query_report_#{filter.type.to_s}_filter", search_tag_name, value, :placeholder => hint

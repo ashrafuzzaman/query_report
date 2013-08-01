@@ -27,12 +27,20 @@ module QueryReport
     def apply_filters(query, http_params)
       # apply default filter
       params = http_params.clone
-      params = params.merge(q: {}) if params[:q].nil?
+      params = params.merge(q: {}) unless params[:q]
+      params = params.merge(custom_search: {}) unless params[:custom_search]
       @filters.each do |filter|
-        if filter.comparators.size == 1 and filter.options[:default].present?
-          params[:q][filter.search_keys.first] = filter.options[:default]
+        default_filters = filter.options[:default]
+        default_filters = [default_filters] unless default_filters.kind_of?(Array)
+        if filter.options[:default].present?
+          filter.search_keys.each_with_index do |search_key, i|
+            if filter.custom?
+              params[:custom_search][search_key] ||= default_filters[i]
+            else
+              params[:q][search_key] ||= default_filters[i]
+            end
+          end
         end
-        params[:q]
       end
 
       @search = query.search(params[:q])
