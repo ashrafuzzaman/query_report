@@ -6,7 +6,7 @@
 
 module QueryReport
   module FilterModule
-    attr_accessor :filters
+    attr_accessor :filters, :search
 
     # Creates a filter and adds to the filters
     # Params:

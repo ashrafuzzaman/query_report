@@ -19,7 +19,8 @@
     <table class="table table-bordered table-striped">
       <thead>
       <% @report.columns.each do |column| %>
-          <th><%= column.humanize %></th>
+          <th><%= sort_link(@report.search, column.name) %></th>
+          <!--<th><%#= column.humanize %></th>-->
       <% end %>
       </thead>
 
