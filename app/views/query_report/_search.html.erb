@@ -1,11 +1,7 @@
 <%= search_form_for report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
     <% report.filters.each do |filter| %>
-        <% filter.comparators.each_with_index do |key_value, i| %>
-            <%
-               key = key_value[0]
-               hint = key_value[1]
-            %>
-            <%= query_report_render_filter(filter, i, key, hint) %>
+        <% filter.comparators.each do |comparator| %>
+            <%= query_report_render_filter(filter, comparator) %>
         <% end %>
     <% end %>
     <%= f.submit 'Search', :class => 'btn' %>

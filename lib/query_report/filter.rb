@@ -30,15 +30,9 @@ module QueryReport
       params = params.merge(q: {}) unless params[:q]
       params = params.merge(custom_search: {}) unless params[:custom_search]
       @filters.each do |filter|
-        default_filters = filter.options[:default]
-        default_filters = [default_filters] unless default_filters.kind_of?(Array)
-        if filter.options[:default].present?
-          filter.search_keys.each_with_index do |search_key, i|
-            if filter.custom?
-              params[:custom_search][search_key] ||= default_filters[i]
-            else
-              params[:q][search_key] ||= default_filters[i]
-            end
+        if filter.has_default?
+          filter.comparators.each do |comparator|
+            params[filter.params_key][comparator.search_key] ||= comparator.default
           end
         end
       end
@@ -65,6 +59,22 @@ module QueryReport
       query
     end
 
+    class Comparator
+      attr_reader :filter, :type, :name, :default
+
+      def initialize(filter, type, name, default=nil)
+        @filter, @type, @name, @default = filter, type, name, default
+      end
+
+      def search_key
+        "#{@filter.column.to_s}_#{@type}"
+      end
+
+      def has_default?
+        !@default.nil?
+      end
+    end
+
     class Filter
       attr_reader :params, :column, :type, :comparators, :block, :custom, :options
 
@@ -78,8 +88,9 @@ module QueryReport
         @type = options if options.kind_of? String
         if options.kind_of? Hash
           @type = options[:type]
-          @comparators = options[:comp] || detect_comparators(@type)
         end
+        @comparators = []
+        generate_comparators
         @block = block
         @custom = @block ? true : false
       end
@@ -99,18 +110,35 @@ module QueryReport
       end
 
       def search_keys
-        comparators.keys.collect { |comp| "#{column.to_s}_#{comp.to_s}" }
+        @comparators.collect(&:search_key)
+      end
+
+      def has_default?
+        @comparators.any?(&:has_default?)
+      end
+
+      def params_key
+        custom? ? :custom_search : :q
       end
 
       private
-      def detect_comparators(type)
-        case type
-          when :date
-            return {gteq: I18n.t('query_report.filters.from'), lteq: I18n.t('query_report.filters.to')}
-          when :text
-            return {cont: I18n.t("query_report.filters.#{@column.to_s}.contains")}
+      def generate_comparators
+        @options[:comp] ||= case @type
+                              when :date
+                                {gteq: I18n.t('query_report.filters.from'), lteq: I18n.t('query_report.filters.to')}
+                              when :text
+                                {cont: I18n.t("query_report.filters.#{@column.to_s}.contains")}
+                              else
+                                {eq: I18n.t("query_report.filters.#{@column.to_s}.equals")}
+                            end
+
+        if @options[:comp]
+          @options[:comp].each_with_index do |(search_key, filter_name), i|
+            default = nil
+            default = @options[:default].kind_of?(Array) ? @options[:default][i] : @options[:default] if @options[:default]
+            @comparators << Comparator.new(self, search_key, filter_name, default)
+          end
         end
-        {eq: I18n.t("query_report.filters.#{@column.to_s}.equals")}
       end
     end
   end

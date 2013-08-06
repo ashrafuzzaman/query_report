@@ -20,7 +20,6 @@
       <thead>
       <% @report.columns.each do |column| %>
           <th><%= sort_link(@report.search, column.name) %></th>
-          <!--<th><%#= column.humanize %></th>-->
       <% end %>
       </thead>
 

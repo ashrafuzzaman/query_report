@@ -25,8 +25,7 @@ module QueryReport
         @name = column_name
         @options = options
 
-        @type = @report.model_class.columns_hash[column_name.to_s].try(:type) ||
-            options[:type] || :string
+        @type = @report.model_class.columns_hash[column_name.to_s].try(:type) || options[:type] || :string
         @data = block || column_name.to_sym
       end
 
