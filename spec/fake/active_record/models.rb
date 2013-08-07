@@ -1,4 +1,4 @@
-require 'fake_app/active_record/config'
+require 'fake/active_record/config'
 # models
 class User < ActiveRecord::Base
   has_many :authorships

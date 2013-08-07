@@ -26,16 +26,7 @@ module QueryReport
 
     def apply_filters(query, http_params)
       # apply default filter
-      params = http_params.clone
-      params = params.merge(q: {}) unless params[:q]
-      params = params.merge(custom_search: {}) unless params[:custom_search]
-      @filters.each do |filter|
-        if filter.has_default?
-          filter.comparators.each do |comparator|
-            params[filter.params_key][comparator.search_key] ||= comparator.default
-          end
-        end
-      end
+      params = load_default_values_in_param(http_params)
 
       @search = query.search(params[:q])
       query = @search.result
@@ -57,6 +48,20 @@ module QueryReport
         end
       end
       query
+    end
+
+    def load_default_values_in_param(http_params)
+      params = http_params.clone
+      params = params.merge(q: {}) unless params[:q]
+      params = params.merge(custom_search: {}) unless params[:custom_search]
+      @filters.each do |filter|
+        if filter.has_default?
+          filter.comparators.each do |comparator|
+            params[filter.params_key][comparator.search_key] ||= comparator.default
+          end
+        end
+      end
+      params
     end
 
     class Comparator

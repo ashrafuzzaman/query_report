@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'query_report/helper'
-require 'fake_app/active_record/models'
+require 'fake/active_record/models'
 
 class UserController
   attr_accessor :params, :view_context
