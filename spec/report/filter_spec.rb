@@ -15,7 +15,7 @@ describe QueryReport::FilterModule do
   end
 
   describe 'supported types' do
-    it 'should be able to filter with type text' do
+    it 'filters with type text' do
       @object.filter(:created_at, type: :text)
       @object.filters.size.should be 1
       filter = @object.filters.first
@@ -25,7 +25,7 @@ describe QueryReport::FilterModule do
       filter.custom?.should be false
     end
 
-    it 'should be able to filter with type date' do
+    it 'filters with type date' do
       @object.filter(:created_at, type: :date)
       filter = @object.filters.first
 
@@ -34,7 +34,7 @@ describe QueryReport::FilterModule do
       filter.custom?.should be false
     end
 
-    it 'should be able to filter with type other types which does not have custom query' do
+    it 'filters with default type' do
       @object.filter(:user_id, type: :user)
       filter = @object.filters.first
 
@@ -46,21 +46,23 @@ describe QueryReport::FilterModule do
     end
   end
 
-  it 'should be able to add custom filter' do
-    @object.filter(:user_id, type: :user_auto_complete, comp: {eq: 'Filter user'}) do |query, user_id|
-      query.where(user_id: user_id)
-    end
-    filter = @object.filters.first
+  context 'custom filter' do
+    it 'filters with given block' do
+      @object.filter(:user_id, type: :user_auto_complete, comp: {eq: 'Filter user'}) do |query, user_id|
+        query.where(user_id: user_id)
+      end
+      filter = @object.filters.first
 
-    filter.column.should be :user_id
-    filter.type.should be :user_auto_complete
-    filter.comparators.collect(&:type).should =~ [:eq]
-    filter.comparators.collect(&:name).should =~ ['Filter user']
-    filter.custom?.should be true
+      filter.column.should be :user_id
+      filter.type.should be :user_auto_complete
+      filter.comparators.collect(&:type).should =~ [:eq]
+      filter.comparators.collect(&:name).should =~ ['Filter user']
+      filter.custom?.should be true
+    end
   end
 
   describe 'detect comparators' do
-    it 'should be able detect for text type' do
+    it 'detects for text type' do
       @object.filter(:created_at, type: :text)
 
       filter = @object.filters.first
@@ -68,7 +70,7 @@ describe QueryReport::FilterModule do
       filter.comparators.collect(&:name).should =~ [I18n.t('query_report.filters.created_at.contains')]
     end
 
-    it 'should be able detect for date type' do
+    it 'detects for date type' do
       @object.filter(:created_at, type: :date)
 
       filter = @object.filters.first
@@ -76,7 +78,7 @@ describe QueryReport::FilterModule do
       filter.comparators.collect(&:name).should =~ [I18n.t('query_report.filters.from'), I18n.t('query_report.filters.to')]
     end
 
-    it 'should set eq as default type' do
+    it 'sets default comparator' do
       @object.filter :created_at
 
       filter = @object.filters.first
@@ -85,7 +87,7 @@ describe QueryReport::FilterModule do
     end
   end
 
-  it 'should be able to have default value' do
+  it 'supports initial filter value' do
     from = 1.weeks.ago
     to = Time.now
     @object.filter(:created_at, type: :date, default: [from, to])
