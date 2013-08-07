@@ -3,8 +3,6 @@
 require File.expand_path("../../test/dummy/config/environment.rb",  __FILE__)
 #require 'rspec/rails'
 require 'rspec/autorun'
-require 'nulldb_rspec'
-include NullDB::RSpec::NullifiedDatabase
 # Requires supporting ruby files with custom matchers and macros, etc,
 # in spec/support/ and its subdirectories.
 #Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }

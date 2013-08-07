@@ -1,23 +1,8 @@
 require 'spec_helper'
 require 'query_report/helper'
-require 'nulldb_rspec'
+require 'fake_app/active_record/models'
 
-#Temping.create :dummy_invoice do
-#  with_columns do |t|
-#    t.string :title
-#    t.float :total_paid, :total_charged
-#    t.boolean :paid
-#    t.date :created_at
-#  end
-#
-#  attr_accessible :title, :total_charged, :total_paid, :paid
-#end
-
-class Invoice < ActiveRecord::Base
-  attr_accessible :title, :total_paid, :total_charged, :paid
-end
-
-class InvoiceController
+class UserController
   attr_accessor :params, :view_context
   include QueryReport::Helper
 
@@ -31,91 +16,63 @@ class InvoiceController
 
   def render_report #override the existing renderer
   end
-
-  #def index
-  #  @invoices = Invoice.scoped
-  #
-  #  reporter(@invoices) do
-  #    filter :title, type: :text
-  #    filter :created_at, type: :date
-  #
-  #    column :title do |invoice|
-  #      #link_to invoice.title, invoice
-  #      invoice.title
-  #    end
-  #    column :total_paid
-  #    column :total_charged
-  #    column :paid
-  #
-  #    column_chart('Unpaid VS Paid') do
-  #      add 'Unpaid' do |query|
-  #        query.sum('total_charged').to_f - query.sum('total_paid').to_f
-  #      end
-  #      add 'Paid' do |query|
-  #        query.sum('total_paid').to_f
-  #      end
-  #    end
-  #  end
-  #end
 end
 
-describe InvoiceController do
+describe UserController do
   before(:each) do
-    Invoice.scoped.destroy_all
-    @inv1 = Invoice.create(title: 'Invoice#1', total_charged: 100, total_paid: 100, paid: true)
-    @inv2 = Invoice.create(title: 'Invoice#2', total_charged: 200, total_paid: 80, paid: false)
-    @inv3 = Invoice.create(title: 'Invoice#3', total_charged: 340, total_paid: 12.5, paid: false)
+    User.scoped.destroy_all
+    @user1 = User.create(name: 'User#1', age: 10)
+    @user2 = User.create(name: 'User#2', age: 20)
+    @user3 = User.create(name: 'User#3', age: 34)
   end
 
   it "should only show selected columns with readable names" do
-    class InvoiceController
+    class UserController
       def index_with_readable_names
-        @invoices = Invoice.scoped
-        reporter(@invoices) do
-          column :title
-          column :total_paid
+        @useroices = User.scoped
+        reporter(@useroices) do
+          column :name
+          column :age
         end
       end
     end
 
-    controller = InvoiceController.new
+    controller = UserController.new
     controller.index_with_readable_names
     report = controller.instance_eval { @report }
-    report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid},
-                              {'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
-                              {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
+    report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age},
+                              {'Name' => @user2.name, 'Age' => @user2.age},
+                              {'Name' => @user3.name, 'Age' => @user3.age}]
   end
 
   context 'filter' do
-    class InvoiceController
+    class UserController
       def index_with_default_filter
-        @invoices = Invoice.scoped
-        reporter(@invoices) do
-          filter :paid, default: ''
+        ap params
+        @useroices = User.scoped
+        reporter(@useroices) do
+          filter :age, default: 10
           filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
 
-          column :title
-          column :total_paid
+          column :name
+          column :age
         end
       end
     end
 
     it "should initialize without any filter applied" do
-      controller = InvoiceController.new
+      controller = UserController.new
       controller.index_with_default_filter
       report = controller.instance_eval { @report }
-      report.records.should == [{'Title' => @inv1.title, 'Total paid' => @inv1.total_paid},
-                                {'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
-                                {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
+      report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age}]
     end
 
     it "should initialize with filter applied" do
-      controller = InvoiceController.new
-      controller.params[:q] = {paid_eq: '1'}
+      controller = UserController.new
+      controller.params[:q] = {age_eq: '34'}
       controller.index_with_default_filter
       report = controller.instance_eval { @report }
-      report.records.should == [{'Title' => @inv2.title, 'Total paid' => @inv2.total_paid},
-                                {'Title' => @inv3.title, 'Total paid' => @inv3.total_paid}]
+      report.records.should == [{'Name' => @user3.name, 'Age' => @user3.age}]
     end
   end
 end

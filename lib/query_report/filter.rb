@@ -67,7 +67,7 @@ module QueryReport
       end
 
       def search_key
-        "#{@filter.column.to_s}_#{@type}"
+        "#{@filter.column.to_s}_#{@type}".to_sym
       end
 
       def has_default?

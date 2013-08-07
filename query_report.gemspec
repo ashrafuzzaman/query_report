@@ -37,5 +37,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
-  s.add_development_dependency 'activerecord-nulldb-adapter'
 end
