@@ -48,7 +48,6 @@ describe UserController do
   context 'filter' do
     class UserController
       def index_with_default_filter
-        ap params
         @useroices = User.scoped
         reporter(@useroices) do
           filter :age, default: 10
