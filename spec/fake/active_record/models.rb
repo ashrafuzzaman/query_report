@@ -30,6 +30,8 @@ end
 class Readership < ActiveRecord::Base
   belongs_to :user
   belongs_to :book
+
+  attr_accessible :user_id, :book_id
 end
 class Book < ActiveRecord::Base
   has_many :authorships

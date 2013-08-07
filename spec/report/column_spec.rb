@@ -1,61 +1,65 @@
 require 'spec_helper'
 require 'query_report/column'
+require 'fake/active_record/models'
 
 describe QueryReport::ColumnModule do
-  class DummyActiveRecordClass
-  end
-
   class DummyClass
     include QueryReport::ColumnModule
   end
-
-  before(:each) do
-    @object = DummyClass.new
+  let(:object) { DummyClass.new }
+  before do
+    object.columns = []
+    object.stub(:model_class).and_return(Readership)
   end
 
-  it 'should support to define columns' do
-    DummyActiveRecordClass.stub(:columns_hash).and_return({'user_id' => stub(type: :integer)})
-    @object.stub(:model_class).and_return(DummyActiveRecordClass)
-    @object.columns = []
-
-    @object.column :user_id
-
-    column = @object.columns.first
-    column.name.should be :user_id
-    column.type.should be :integer
+  context 'defined columns' do
+    it 'detects type' do
+      object.column :user_id
+      column = object.columns.first
+      column.name.should be :user_id
+      column.type.should be :integer
+    end
   end
 
-  it 'should support to define columns with custom definition' do
-    DummyActiveRecordClass.stub(:columns_hash).and_return({})
-    @object.stub(:model_class).and_return(DummyActiveRecordClass)
-    @object.columns = []
+  context 'custom columns' do
+    it 'supports to define column with type' do
+      object.column :user, type: :integer do |obj|
+        link_to obj.user.name, obj.user
+      end
 
-    @object.column :user, type: :integer do |obj|
-      link_to obj.user.name, obj.user
+      column = object.columns.first
+      column.name.should be :user
+      column.type.should be :integer
+      column.data.should_not be nil
     end
-
-    column = @object.columns.first
-    column.name.should be :user
-    column.type.should be :integer
-    column.data.should_not be nil
   end
 
-  describe 'humanize' do
-    before(:each) do
-      DummyActiveRecordClass.stub(:columns_hash).and_return({})
-      DummyActiveRecordClass.stub(:human_attribute_name).and_return('User')
-      @object.stub(:model_class).and_return(DummyActiveRecordClass)
-      @object.columns = []
+  describe '#humanize' do
+    it 'supports rails human_attribute_name' do
+      object.column :user_id
+      object.columns.first.humanize.should == 'User'
     end
 
-    it 'should support the built in rails human_attribute_name' do
-      @object.column :user_id
-      @object.columns.first.humanize.should == 'User'
+    it 'supports custom column name' do
+      object.column :user_id, as: 'Admin'
+      object.columns.first.humanize.should == 'Admin'
+    end
+  end
+
+  describe '#value' do
+    it 'fetches property value' do
+      object.column :user_id
+      record = Readership.new(user_id: 1)
+      object.columns.first.value(record).should == 1
     end
 
-    it 'should support the override with as param' do
-      @object.column :user_id, as: 'Admin'
-      @object.columns.first.humanize.should == 'Admin'
+    it 'fetches value with the block given' do
+      user = User.create(name: 'Jitu', age: 30)
+      record = Readership.create!(user_id: user.id)
+      object.column :user, type: :string do |obj|
+        "#{obj.user.name} is @#{obj.user.age}"
+      end
+      object.columns.first.value(record).should == 'Jitu is @30'
     end
   end
 end
