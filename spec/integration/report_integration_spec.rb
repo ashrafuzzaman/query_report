@@ -19,11 +19,20 @@ class UserController
 end
 
 describe UserController do
+  before(:suite) do
+    DatabaseCleaner.strategy = :transaction
+    DatabaseCleaner.clean_with(:truncation)
+  end
+
   before(:each) do
-    User.scoped.destroy_all
-    @user1 = User.create(name: 'User#1', age: 10)
-    @user2 = User.create(name: 'User#2', age: 20)
-    @user3 = User.create(name: 'User#3', age: 34)
+    DatabaseCleaner.start
+    @user1 = User.create(name: 'User#1', age: 10, dob: 10.years.ago)
+    @user2 = User.create(name: 'User#2', age: 20, dob: 20.years.ago)
+    @user3 = User.create(name: 'User#3', age: 34, dob: 34.years.ago)
+  end
+
+  after(:each) do
+    DatabaseCleaner.clean
   end
 
   it "should only show selected columns with readable names" do

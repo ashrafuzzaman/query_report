@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
   has_many :books_read, :through => :readerships, :source => :book
   has_many :addresses, :class_name => 'User::Address'
 
-  attr_accessible :name, :age
+  attr_accessible :name, :age, :dob
 
   def readers
     User.joins(:books_read => :authors).where(:authors_books => {:id => self})
@@ -49,7 +49,7 @@ end
 class CreateAllTables < ActiveRecord::Migration
   def self.up
     create_table(:gem_defined_models) { |t| t.string :name; t.integer :age }
-    create_table(:users) {|t| t.string :name; t.integer :age; t.timestamps }
+    create_table(:users) {|t| t.string :name; t.integer :age; t.datetime :dob; t.timestamps }
     create_table(:books) {|t| t.string :title}
     create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
     create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
