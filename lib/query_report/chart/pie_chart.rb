@@ -2,9 +2,9 @@ require 'query_report/chart/themes'
 require 'query_report/chart/chart_base'
 
 module QueryReport
-  module ColumnChartModule
-    def column_chart(title, &block)
-      chart = QueryReport::Chart::ColumnChart.new(title, self.filtered_query)
+  module PieChartModule
+    def pie_chart(title, &block)
+      chart = QueryReport::Chart::PieChart.new(title, self.filtered_query)
       chart.instance_eval &block if block_given?
       @charts ||= []
       @charts << chart
@@ -12,7 +12,7 @@ module QueryReport
   end
 
   module Chart
-    class ColumnChart < QueryReport::Chart::ChartBase
+    class PieChart < QueryReport::Chart::ChartBase
       def initialize(title, query, options={})
         super(title, query, options)
       end
@@ -21,19 +21,20 @@ module QueryReport
         @data_table = GoogleVisualr::DataTable.new
 
         ##### Adding column header #####
-        @data_table.new_column('string', '')
-        @columns.each do |col|
-          @data_table.new_column(col.type.to_s, col.title)
-        end
+        @data_table.new_column('string', 'Item')
+        @data_table.new_column('number', 'Value')
         ##### Adding column header #####
 
-        @data_table.add_row([''] + @data)
+        @columns.each_with_index do |column, i|
+          @data_table.add_row([column.title, @data[i]])
+        end
+
         options = {:title => title, backgroundColor: 'transparent'}.merge(@options)
-        GoogleVisualr::Interactive::ColumnChart.new(@data_table, options)
+        GoogleVisualr::Interactive::PieChart.new(@data_table, options)
       end
 
       def to_blob
-        super(:bar)
+        super(:pie)
       end
     end
   end

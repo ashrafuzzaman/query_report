@@ -20,19 +20,25 @@ module QueryReport
         @data << val
       end
 
-      def prepare(type)
+      def prepare_visualr(type)
         @data_table = GoogleVisualr::DataTable.new
 
         ##### Adding column header #####
+        @data_table.new_column('string', '') if type == :column
         @columns.each do |col|
           @data_table.new_column(col.type.to_s, col.title)
         end
-        @data_table.add_row(@columns.collect { |col| col.title })
         ##### Adding column header #####
+
+        ##### Adding value #####
+        chart_row_data = type == :column ? [''] + @data : @data
+        @data_table.add_row(chart_row_data)
+        ##### Adding value #####
 
         options = {:title => title, backgroundColor: 'transparent'}.merge(@options)
         chart_type = "#{type}_chart".classify
         chart_type = "GoogleVisualr::Interactive::#{chart_type}".constantize
+        ap @data_table.as_json
         chart_type.new(@data_table, options)
       end
 

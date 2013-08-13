@@ -4,8 +4,9 @@ module QueryReport
   autoload :PaginateModule, 'query_report/paginate'
   autoload :Record, 'query_report/record'
   autoload :ColumnChartModule, 'query_report/chart/column_chart'
+  autoload :PieChartModule, 'query_report/chart/pie_chart'
 
-  DEFAULT_OPTIONS = {chart_on_pdf: true, paginate: true}
+  DEFAULT_OPTIONS = {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true}
 
   class Report
     include QueryReport::ColumnModule
@@ -13,6 +14,7 @@ module QueryReport
     include QueryReport::PaginateModule
     include QueryReport::Record
     include QueryReport::ColumnChartModule
+    include QueryReport::PieChartModule
 
     attr_reader :params, :template, :options, :charts
 

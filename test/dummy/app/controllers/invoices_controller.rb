@@ -21,7 +21,16 @@ class InvoicesController < ApplicationController
 
       column_chart('Unpaid VS Paid') do
         add 'Unpaid' do |query|
-          query.sum('total_charged').to_f - query.sum('total_paid').to_f
+          (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
+        end
+        add 'Paid' do |query|
+          query.sum('total_paid').to_f
+        end
+      end
+
+      pie_chart('Unpaid VS Paid') do
+        add 'Unpaid' do |query|
+          (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
         end
         add 'Paid' do |query|
           query.sum('total_paid').to_f

@@ -2,9 +2,19 @@
 <%= link_to_download_report_pdf %>
 <%= link_to_download_report_csv %>
 
+<% if @report.enable_chart? and @report.chart_on_web? %>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<div id='chart' style="margin-left:auto;margin-right:auto;width:600px;"></div>
-<%#= render_chart(@report.chart.prepare, 'chart') if @report.chart %>
+<div class="row-fluid">
+  <% @report.charts.each_with_index do |chart, i| %>
+      <% chart_id = "chart#{i}" %>
+      <div class="span6">
+        <div id="<%= chart_id %>" style="text-align: center;"></div>
+      </div>
+      <%= render_chart(chart.prepare_visualr, chart_id) %>
+  <% end %>
+  <div class="clearfix"></div>
+</div>
+<% end %>
 
 <br/>
 <%# if @report.scopes.size > 0 %>

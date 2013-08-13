@@ -38,4 +38,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
   s.add_development_dependency 'database_cleaner'
+  s.add_development_dependency 'google_visualr', '~> 2.1.7'
 end
