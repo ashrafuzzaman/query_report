@@ -35,30 +35,33 @@ describe UserController do
     DatabaseCleaner.clean
   end
 
-  it "should only show selected columns with readable names" do
-    class UserController
-      def index_with_readable_names
-        @useroices = User.scoped
-        reporter(@useroices) do
-          column :name
-          column :age
+  context 'with selected columns' do
+    it "shows with readable names" do
+      class UserController
+        def index_with_readable_names
+          @users = User.scoped
+          reporter(@users) do
+            column :name
+            column :age
+          end
         end
       end
-    end
 
-    controller = UserController.new
-    controller.index_with_readable_names
-    report = controller.instance_eval { @report }
-    report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age},
-                              {'Name' => @user2.name, 'Age' => @user2.age},
-                              {'Name' => @user3.name, 'Age' => @user3.age}]
+      controller = UserController.new
+      controller.index_with_readable_names
+      report = controller.instance_eval { @report }
+      report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age},
+                                {'Name' => @user2.name, 'Age' => @user2.age},
+                                {'Name' => @user3.name, 'Age' => @user3.age}]
+    end
   end
 
-  context 'filter' do
+
+  describe 'filter' do
     class UserController
       def index_with_default_filter
-        @useroices = User.scoped
-        reporter(@useroices) do
+        @users = User.scoped
+        reporter(@users) do
           filter :age, default: 10
           filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
 
@@ -68,19 +71,25 @@ describe UserController do
       end
     end
 
-    it "should initialize without any filter applied" do
-      controller = UserController.new
-      controller.index_with_default_filter
-      report = controller.instance_eval { @report }
-      report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age}]
+    context 'without any filter applied' do
+      let(:controller) { UserController.new }
+
+      it "initializes" do
+        controller.index_with_default_filter
+        report = controller.instance_eval { @report }
+        report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age}]
+      end
     end
 
-    it "should initialize with filter applied" do
-      controller = UserController.new
-      controller.params[:q] = {age_eq: '34'}
-      controller.index_with_default_filter
-      report = controller.instance_eval { @report }
-      report.records.should == [{'Name' => @user3.name, 'Age' => @user3.age}]
+    context 'with filter applied' do
+      let(:controller) { UserController.new }
+
+      it "initializes" do
+        controller.params[:q] = {age_eq: '34'}
+        controller.index_with_default_filter
+        report = controller.instance_eval { @report }
+        report.records.should == [{'Name' => @user3.name, 'Age' => @user3.age}]
+      end
     end
   end
 end

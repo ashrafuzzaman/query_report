@@ -2,37 +2,45 @@ require 'spec_helper'
 require 'query_report/report'
 
 describe QueryReport::Report do
-  it 'initialize' do
-    params = {}
-    template = Object.new
-    report = QueryReport::Report.new(params, template)
-    report.params.should be(params)
-    report.template.should be(template)
-    report.options.should == {chart_on_pdf: true, paginate: true}
+  describe '#initialize' do
+    let(:params) { {} }
+    let(:template) { Object.new }
+    let(:report) { QueryReport::Report.new(params, template) }
+    subject { report }
+
+    its(:params) { should be params }
+    its(:template) { should be template }
+    its(:options) { should == {chart_on_pdf: true, paginate: true} }
   end
 
-  it 'should not eval when block not given' do
-    QueryReport::Report.any_instance.should_not_receive(:instance_eval).and_return(nil)
-    QueryReport::Report.new({}, Object.new)
-  end
-
-  it 'should eval when block given' do
-    QueryReport::Report.any_instance.should_receive(:instance_eval).and_return(nil)
-    QueryReport::Report.new({}, Object.new) do
+  context 'when block not given' do
+    it 'does not eval' do
+      QueryReport::Report.any_instance.should_not_receive(:instance_eval).and_return(nil)
+      QueryReport::Report.new({}, Object.new)
     end
   end
 
-  describe 'should provide methods from default options' do
-    it 'with out options' do
-      report = QueryReport::Report.new({}, Object.new)
-      report.chart_on_pdf?.should == true
-      report.paginate?.should == true
+  context 'when block given' do
+    it 'does eval block' do
+      QueryReport::Report.any_instance.should_receive(:instance_eval).and_return(nil)
+      QueryReport::Report.new({}, Object.new) do
+      end
+    end
+  end
+
+  describe 'methods from default options' do
+    context 'with out options' do
+      let(:report) { QueryReport::Report.new({}, Object.new) }
+      subject { report }
+      its(:chart_on_pdf?) { should == true }
+      its(:paginate?) { should == true }
     end
 
-    it 'with options' do
-      report = QueryReport::Report.new({}, Object.new, {chart_on_pdf: false, paginate: true})
-      report.chart_on_pdf?.should == false
-      report.paginate?.should == true
+    context 'with options' do
+      let(:report) { QueryReport::Report.new({}, Object.new, {chart_on_pdf: false, paginate: true}) }
+      subject { report }
+      its(:chart_on_pdf?) { should == false }
+      its(:paginate?) { should == true }
     end
   end
 end

@@ -13,53 +13,62 @@ describe QueryReport::ColumnModule do
   end
 
   context 'defined columns' do
-    it 'detects type' do
-      object.column :user_id
-      column = object.columns.first
-      column.name.should be :user_id
-      column.type.should be :integer
-    end
+    before { object.column :user_id }
+    subject { object.columns.first }
+    its(:name) { should be :user_id }
+    its(:type) { should be :integer }
   end
 
   context 'custom columns' do
-    it 'supports to define column with type' do
+    before do
       object.column :user, type: :integer do |obj|
         link_to obj.user.name, obj.user
       end
-
-      column = object.columns.first
-      column.name.should be :user
-      column.type.should be :integer
-      column.data.should_not be nil
     end
+    subject { object.columns.first }
+    its(:name) { should be :user }
+    its(:type) { should be :integer }
+    its(:data) { should_not be nil }
   end
 
   describe '#humanize' do
-    it 'supports rails human_attribute_name' do
-      object.column :user_id
-      object.columns.first.humanize.should == 'User'
+    context 'with built in readable column name' do
+      before { object.column :user_id }
+      subject { object.columns.first }
+      its(:humanize) { should == 'User' }
     end
 
-    it 'supports custom column name' do
-      object.column :user_id, as: 'Admin'
-      object.columns.first.humanize.should == 'Admin'
+    context 'with custom column name' do
+      before { object.column :user_id, as: 'Admin' }
+      subject { object.columns.first }
+      its(:humanize) { should == 'Admin' }
     end
   end
 
   describe '#value' do
-    it 'fetches property value' do
-      object.column :user_id
-      record = Readership.new(user_id: 1)
-      object.columns.first.value(record).should == 1
+    context 'with value from db property' do
+      let(:record) { Readership.new(user_id: 1) }
+      before { object.column :user_id }
+      subject { object.columns.first }
+
+      it 'fetches property value' do
+        subject.value(record).should == 1
+      end
     end
 
-    it 'fetches value with the block given' do
-      user = User.create(name: 'Jitu', age: 30)
-      record = Readership.create!(user_id: user.id)
-      object.column :user, type: :string do |obj|
-        "#{obj.user.name} is @#{obj.user.age}"
+    context 'with value from given block' do
+      let(:user)   { User.create(name: 'Jitu', age: 30) }
+      let(:record) { Readership.create!(user_id: user.id) }
+      before do
+        object.column :user, type: :string do |obj|
+          "#{obj.user.name} is @#{obj.user.age}"
+        end
       end
-      object.columns.first.value(record).should == 'Jitu is @30'
+      subject { object.columns.first }
+
+      it 'evaluates block value' do
+        subject.value(record).should == 'Jitu is @30'
+      end
     end
   end
 end
