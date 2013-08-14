@@ -22,14 +22,16 @@ module QueryReport
     end
 
     def records
-      @records ||= map_record(paginated_query)
+      @records ||= map_record(paginated_query, true)
     end
 
     def all_records
-      @all_records ||= map_record(filtered_query)
+      @all_records ||= map_record(filtered_query, false)
     end
 
-    def map_record(query)
+    def map_record(query, render_from_view)
+      @columns = @columns.delete_if { |col| col.options[:only_on_web] == true } unless render_from_view
+
       query.map do |record|
         array = @columns.collect { |column| [column.humanize, column.value(record)] }
         Hash[*array.flatten]
