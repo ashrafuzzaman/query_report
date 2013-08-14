@@ -1,27 +1,20 @@
 <%= render :partial => "query_report/search", locals: {report: @report} %>
+<br/>
+
 <%= link_to_download_report_pdf %>
 <%= link_to_download_report_csv %>
 
-<% if @report.enable_chart? and @report.chart_on_web? %>
-<script type="text/javascript" src="https://www.google.com/jsapi"></script>
-<div class="row-fluid">
-  <% @report.charts.each_with_index do |chart, i| %>
-      <% chart_id = "chart#{i}" %>
-      <div class="span6">
-        <div id="<%= chart_id %>" style="text-align: center;"></div>
-      </div>
-      <%= render_chart(chart.prepare_visualr, chart_id) %>
-  <% end %>
-  <div class="clearfix"></div>
-</div>
+<% if @report.has_chart? and @report.enable_chart? and @report.chart_on_web? %>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <%= render :partial => "query_report/charts", locals: {report: @report} %>
 <% end %>
 
 <br/>
 <%# if @report.scopes.size > 0 %>
-    <%#= link_to_with_scope('all', @report.current_scope) %>
-    <%# @report.scopes.each do |scope| %>
-        <%#= link_to_with_scope(scope, @report.current_scope) %>
-    <%# end %>
+<%#= link_to_with_scope('all', @report.current_scope) %>
+<%# @report.scopes.each do |scope| %>
+<%#= link_to_with_scope(scope, @report.current_scope) %>
+<%# end %>
 <%# end %>
 <br/>
 

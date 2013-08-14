@@ -20,7 +20,7 @@ module QueryReport
 
     def initialize(params, template, options={}, &block)
       @params, @template = params, template
-      @columns, @filters = [], []
+      @columns, @filters, @charts = [], [], []
       @options = QueryReport::DEFAULT_OPTIONS.merge options
       instance_eval &block if block_given?
     end
@@ -32,6 +32,10 @@ module QueryReport
           @options[option_name]
         end
       end
+    end
+
+    def has_chart?
+      !@charts.empty?
     end
 
     # to support the helper methods

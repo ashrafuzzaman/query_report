@@ -7,10 +7,13 @@ module QueryReportHelper
     search_tag_name = "#{filter.params_key}[#{search_key}]"
     value = params[filter.params_key] ? params[filter.params_key][comparator.search_key] : comparator.default
 
-    if self.respond_to? :"query_report_#{filter.type.to_s}_filter"
-      send :"query_report_#{filter.type.to_s}_filter", search_tag_name, value, :placeholder => hint
+    method_name = :"query_report_#{filter.type.to_s}_filter"
+    if main_app.respond_to? method_name
+      main_app.send method_name, search_tag_name, value, :placeholder => hint
+    elsif self.respond_to? method_name
+      self.send method_name, search_tag_name, value, :placeholder => hint
     else
-      raise QueryReport::FilterNotDefined
+      raise QueryReport::FilterNotDefined, "#{filter.type.to_s} filter is not defined"
     end
   end
 
