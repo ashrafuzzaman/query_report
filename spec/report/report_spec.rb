@@ -10,7 +10,7 @@ describe QueryReport::Report do
 
     its(:params) { should be params }
     its(:template) { should be template }
-    its(:options) { should == {chart_on_pdf: true, paginate: true} }
+    its(:options) { should == {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true} }
   end
 
   context 'when block not given' do

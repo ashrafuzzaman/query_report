@@ -16,10 +16,10 @@ class User < ActiveRecord::Base
   scope :by_name, order(:name)
   scope :by_read_count, lambda {
     cols = if connection.adapter_name == "PostgreSQL"
-      column_names.map { |column| %{"users"."#{column}"} }.join(", ")
-    else
-      '"users"."id"'
-    end
+             column_names.map { |column| %{"users"."#{column}"} }.join(", ")
+           else
+             '"users"."id"'
+           end
     group(cols).select("count(readerships.id) AS read_count, #{cols}").order('read_count DESC')
   }
 end
@@ -51,11 +51,11 @@ end
 class CreateAllTables < ActiveRecord::Migration
   def self.up
     create_table(:gem_defined_models) { |t| t.string :name; t.integer :age }
-    create_table(:users) {|t| t.string :name; t.integer :age; t.datetime :dob; t.timestamps }
-    create_table(:books) {|t| t.string :title}
-    create_table(:readerships) {|t| t.integer :user_id; t.integer :book_id }
-    create_table(:authorships) {|t| t.integer :user_id; t.integer :book_id }
-    create_table(:user_addresses) {|t| t.string :street; t.integer :user_id }
+    create_table(:users) { |t| t.string :name; t.integer :age; t.datetime :dob; t.timestamps }
+    create_table(:books) { |t| t.string :title }
+    create_table(:readerships) { |t| t.integer :user_id; t.integer :book_id }
+    create_table(:authorships) { |t| t.integer :user_id; t.integer :book_id }
+    create_table(:user_addresses) { |t| t.string :street; t.integer :user_id }
   end
 end
 ActiveRecord::Migration.verbose = false

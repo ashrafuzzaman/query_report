@@ -9,30 +9,18 @@ class UserController
   def initialize
     @params = {}
     @view_context = Object.new
-    #@view_context.define_method(:link_to) do |text, *args|
-    #  text
-    #end
   end
 
   def render_report #override the existing renderer
   end
 end
 
-describe UserController do
-  before(:suite) do
-    DatabaseCleaner.strategy = :transaction
-    DatabaseCleaner.clean_with(:truncation)
-  end
-
+describe 'Integration' do
   before(:each) do
-    DatabaseCleaner.start
+    User.destroy_all
     @user1 = User.create(name: 'User#1', age: 10, dob: 10.years.ago)
     @user2 = User.create(name: 'User#2', age: 20, dob: 20.years.ago)
     @user3 = User.create(name: 'User#3', age: 34, dob: 34.years.ago)
-  end
-
-  after(:each) do
-    DatabaseCleaner.clean
   end
 
   context 'with selected columns' do
