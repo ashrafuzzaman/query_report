@@ -42,7 +42,7 @@ module QueryReport
       table_items.first.keys
     end
 
-    def humanized_table_header_for(report)
+    def humanized_table_header
       report_columns.collect(&:humanize)
     end
 
@@ -59,7 +59,7 @@ module QueryReport
     end
 
     def render_table_with(report)
-      items = [humanized_table_header_for(report)]
+      items = [humanized_table_header]
       items += table_content_for(report)
       render_table(items)
     end

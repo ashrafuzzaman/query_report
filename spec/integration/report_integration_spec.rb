@@ -30,7 +30,7 @@ describe 'Integration' do
           @users = User.scoped
           reporter(@users) do
             column :name
-            column :age
+            column :age, only_on_web: true
           end
         end
       end
@@ -41,9 +41,13 @@ describe 'Integration' do
       report.records.should == [{'Name' => @user1.name, 'Age' => @user1.age},
                                 {'Name' => @user2.name, 'Age' => @user2.age},
                                 {'Name' => @user3.name, 'Age' => @user3.age}]
+
+      #should not contain only on web column
+      report.all_records.should == [{'Name' => @user1.name},
+                                    {'Name' => @user2.name},
+                                    {'Name' => @user3.name}]
     end
   end
-
 
   describe 'filter' do
     class UserController
