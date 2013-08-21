@@ -8,12 +8,19 @@ module QueryReport
       @pdf = Prawn::Document.new
     end
 
-    def render_header()
+    #render the header from the template class
+    def render_header
+      template.try(:render_header)
+    end
+
+    def render_footer
+      template.try(:render_footer)
     end
 
     def pdf_content(&code)
       render_header
       code.call(pdf)
+      render_footer
       pdf
     end
 
@@ -27,13 +34,20 @@ module QueryReport
     private
     def render_charts_with(report)
       return if report.charts.empty? #or !report.chart_on_pdf?
-      report.charts.each do |chart|
-        if chart.respond_to?(:to_blob)
-          blob = chart.to_blob
-          data = StringIO.new(blob)
-          pdf.pad_top(10) do
-            pdf.image(data, :width => 200)
-          end
+      height = @options[:chart][:height] * (report.charts.size.to_f/2).ceil
+      pdf.column_box([0, pdf.cursor], :columns => 2, :width => pdf.bounds.width, :height => height) do
+        report.charts.each do |chart|
+          render_chart(chart)
+        end
+      end
+    end
+
+    def render_chart(chart)
+      if chart.respond_to?(:to_blob)
+        blob = chart.to_blob
+        data = StringIO.new(blob)
+        pdf.pad_top(10) do
+          pdf.image(data, :width => @options[:chart][:width])
         end
       end
     end
@@ -78,6 +92,14 @@ module QueryReport
     private
     def report_columns
       report.columns.select { |c| c.options[:only_on_web] != true }
+    end
+
+    def template
+      if @options[:template_class]
+        @template ||= @options[:template_class].to_s.constantize.new(@report, @pdf)
+        return @template
+      end
+      nil
     end
   end
 end

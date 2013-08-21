@@ -13,6 +13,7 @@ module QueryReport
     # +options+:: Options can have the following,
     #             options[:type] => date | text | whatever
     #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
+    #             options[:only_on_web] => the column will appear on the web and not appear in PDF or csv if set to true
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
