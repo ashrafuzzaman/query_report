@@ -22,8 +22,17 @@ module QueryReport
         format.html { render 'query_report/list' }
         format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
-        format.pdf { send_data QueryReport::ReportPdf.new(@report).standard.render }
+        format.pdf { send_data query_report_pdf_template_class.new(@report).to_pdf.render }
       end
+    end
+
+    def query_report_pdf_template_class
+      options = QueryReport.config.pdf_options
+      if options[:template_class]
+        @template_class ||= options[:template_class].to_s.constantize
+        return @template_class
+      end
+      reurn QueryReport::ReportPdf
     end
 
     def generate_csv_for_report(records)

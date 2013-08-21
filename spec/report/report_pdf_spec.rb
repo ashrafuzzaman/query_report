@@ -33,7 +33,7 @@ describe QueryReport::ReportPdf do
                                      {'Name' => @user2.name},
                                      {'Name' => @user3.name}]
 
-      pdf = QueryReport::ReportPdf.new(@report).standard
+      pdf = QueryReport::ReportPdf.new(@report).to_pdf
     end
   end
 
@@ -69,7 +69,7 @@ describe QueryReport::ReportPdf do
                                      {'Name' => @user2.name},
                                      {'Name' => @user3.name}]
 
-      pdf = QueryReport::ReportPdf.new(@report).standard
+      pdf = QueryReport::ReportPdf.new(@report).to_pdf
     end
     after do
       QueryReport.configure do |c|

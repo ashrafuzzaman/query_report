@@ -18,13 +18,13 @@ module QueryReport
     end
 
     def pdf_content(&code)
-      render_header
+      #render_header
       code.call(pdf)
-      render_footer
+      #render_footer
       pdf
     end
 
-    def standard
+    def to_pdf
       pdf_content do
         render_charts_with @report
         render_table_with @report
