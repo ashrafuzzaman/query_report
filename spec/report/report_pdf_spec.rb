@@ -18,9 +18,9 @@ describe QueryReport::ReportPdf do
 
   context 'with selected columns' do
     it "generates PDF report" do
-      QueryReport.configure do |c|
-        c.pdf_options[:template_class] = 'Test'
-      end
+      #QueryReport.configure do |c|
+      #  c.pdf_options[:template_class] = 'Test'
+      #end
 
       @report.query = User.scoped
       @report.instance_eval do
@@ -34,6 +34,47 @@ describe QueryReport::ReportPdf do
                                      {'Name' => @user3.name}]
 
       pdf = QueryReport::ReportPdf.new(@report).standard
+    end
+  end
+
+  context 'with custom layout' do
+    before do
+      class PdfReportTemplateTest
+        def initialize(report, pdf)
+          @report, @pdf = report, pdf
+        end
+
+        def render_header
+          @pdf.text "Test title", :size => 20, :style => :bold
+        end
+
+        def render_footer
+          @pdf.text "Copyright to @ashraf", :size => 12
+        end
+      end
+
+      QueryReport.configure do |c|
+        c.pdf_options[:template_class] = PdfReportTemplateTest
+      end
+    end
+    it "generates PDF report" do
+      @report.query = User.scoped
+      @report.instance_eval do
+        column :name
+        column :age, only_on_web: true
+      end
+
+      #should not contain only on web column
+      @report.all_records.should == [{'Name' => @user1.name},
+                                     {'Name' => @user2.name},
+                                     {'Name' => @user3.name}]
+
+      pdf = QueryReport::ReportPdf.new(@report).standard
+    end
+    after do
+      QueryReport.configure do |c|
+        c.pdf_options[:template_class] = nil
+      end
     end
   end
 

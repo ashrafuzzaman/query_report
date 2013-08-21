@@ -75,6 +75,14 @@ module QueryReport
         "#{@filter.column.to_s}_#{@type}".to_sym
       end
 
+      def search_tag_name
+        "#{@filter.params_key}[#{search_key.to_s}]"
+      end
+
+      def param_value
+        @filter.params[@filter.params_key] ? @filter.params[@filter.params_key][search_key] : default
+      end
+
       def has_default?
         !@default.nil?
       end

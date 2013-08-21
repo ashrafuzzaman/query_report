@@ -3,9 +3,9 @@ require 'query_report/errors'
 module QueryReportHelper
   def query_report_render_filter(filter, comparator)
     hint = comparator.name
-    search_key = comparator.search_key
-    search_tag_name = "#{filter.params_key}[#{search_key}]"
-    value = params[filter.params_key] ? params[filter.params_key][comparator.search_key] : comparator.default
+    #search_key = comparator.search_key
+    search_tag_name = comparator.search_tag_name #"#{filter.params_key}[#{search_key}]"
+    value = comparator.param_value #params[filter.params_key] ? params[filter.params_key][comparator.search_key] : comparator.default
 
     method_name = :"query_report_#{filter.type.to_s}_filter"
     if main_app.respond_to? method_name
