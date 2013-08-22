@@ -30,7 +30,7 @@ module QueryReport
     end
 
     def map_record(query, render_from_view)
-      @columns = @columns.delete_if { |col| col.options[:only_on_web] == true } unless render_from_view
+      @columns = @columns.delete_if { |col| col.only_on_web? } unless render_from_view
 
       query.map do |record|
         array = @columns.collect { |column| [column.humanize, column.value(record)] }

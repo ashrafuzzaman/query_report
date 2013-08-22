@@ -71,4 +71,19 @@ describe QueryReport::ColumnModule do
       end
     end
   end
+
+  describe '#only_on_web?' do
+    context 'with set to true' do
+      before { object.column :user_id, only_on_web: true }
+      subject { object.columns.first }
+      its(:only_on_web?) { should == true }
+    end
+
+    context 'with not set' do
+      before { object.column :user_id }
+      subject { object.columns.first }
+      its(:only_on_web?) { should == false }
+    end
+  end
+
 end

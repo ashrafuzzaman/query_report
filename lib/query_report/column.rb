@@ -30,6 +30,10 @@ module QueryReport
         @data = block || column_name.to_sym
       end
 
+      def only_on_web?
+        @options[:only_on_web] == true
+      end
+
       def humanize
         @humanize ||= options[:as] || @report.model_class.human_attribute_name(name)
       end

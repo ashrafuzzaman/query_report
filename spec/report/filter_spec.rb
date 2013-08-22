@@ -23,11 +23,14 @@ describe QueryReport::FilterModule do
       its(:column) { should be :created_at }
       its(:type) { should be :text }
       its(:custom?) { should be false }
+      its(:params_key) { should be :q }
 
       it 'has proper comparators' do
         comps = subject.comparators
         comps.collect(&:type).should =~ [:cont]
         comps.collect(&:name).should =~ [I18n.t('query_report.filters.created_at.contains')]
+        comps.collect(&:search_key).should =~ [:created_at_cont]
+        comps.collect(&:search_tag_name).should =~ ['q[created_at_cont]']
       end
     end
 
@@ -40,11 +43,14 @@ describe QueryReport::FilterModule do
       its(:column) { should be :created_at }
       its(:type) { should be :date }
       its(:custom?) { should be false }
+      its(:params_key) { should be :q }
 
       it 'has proper comparators' do
         comps = subject.comparators
         comps.collect(&:type).should =~ [:gteq, :lteq]
         comps.collect(&:name).should =~ [I18n.t('query_report.filters.from'), I18n.t('query_report.filters.to')]
+        comps.collect(&:search_key).should =~ [:created_at_gteq, :created_at_lteq]
+        comps.collect(&:search_tag_name).should =~ ['q[created_at_gteq]', 'q[created_at_lteq]']
       end
     end
 
@@ -57,11 +63,14 @@ describe QueryReport::FilterModule do
       its(:column) { should be :user_id }
       its(:type) { should be :user }
       its(:custom?) { should be false }
+      its(:params_key) { should be :q }
 
       it 'has proper comparators' do
         comps = subject.comparators
         comps.collect(&:type).should =~ [:eq]
         comps.collect(&:name).should =~ [I18n.t('query_report.filters.user_id.equals')]
+        comps.collect(&:search_key).should =~ [:user_id_eq]
+        comps.collect(&:search_tag_name).should =~ ['q[user_id_eq]']
       end
     end
   end
@@ -77,11 +86,14 @@ describe QueryReport::FilterModule do
     its(:column) { should be :user_id }
     its(:type) { should be :user_auto_complete }
     its(:custom?) { should be true }
+    its(:params_key) { should be :custom_search }
 
     it 'has given comparator' do
       comps = subject.comparators
       comps.collect(&:type).should =~ [:eq]
       comps.collect(&:name).should =~ ['Filter user']
+      comps.collect(&:search_key).should =~ [:user_id_eq]
+      comps.collect(&:search_tag_name).should =~ ['custom_search[user_id_eq]']
     end
   end
 

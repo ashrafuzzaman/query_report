@@ -91,7 +91,7 @@ module QueryReport
 
     private
     def report_columns
-      report.columns.select { |c| c.options[:only_on_web] != true }
+      report.columns.select { |c| !c.only_on_web? }
     end
 
     def template
