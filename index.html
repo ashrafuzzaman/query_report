@@ -1,94 +1,29 @@
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset='utf-8'>
-    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+---
+layout: default
+title: Query report by ashrafuzzaman
+---
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+{% highlight ruby %}
+require 'query_report/helper'  #need to require the helper
 
-    <title>Query report by ashrafuzzaman</title>
-  </head>
+class InvoicesController < ApplicationController
+  include QueryReport::Helper  #need to include it
 
-  <body>
+  def index
+    @invoices = Invoice.scoped
 
-    <header>
-      <div class="container">
-        <h1>Query report</h1>
-        <h2>This is a gem to help you to structure common reports of you application just by writing in the controller</h2>
+    reporter(@invoices) do
+      filter :title, type: :text
+      filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
+      filter :paid, type: :boolean, default: false
 
-        <section id="downloads">
-          <a href="https://github.com/ashrafuzzaman/query_report/zipball/master" class="btn">Download as .zip</a>
-          <a href="https://github.com/ashrafuzzaman/query_report/tarball/master" class="btn">Download as .tar.gz</a>
-          <a href="https://github.com/ashrafuzzaman/query_report" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
-        </section>
-      </div>
-    </header>
-
-    <div class="container">
-      <section id="main_content">
-        <p>Query report By <a href="http://www.ashrafuzzaman.com">Ashrafuzzaman</a>.</p>
-
-<p>Query report is a reporting tool, which does the following:</p>
-
-<ul>
-<li>Generate paginated HTML view with filters, defined columns with sorting</li>
-<li>Generate PDF, CSV, JSON</li>
-<li>Provide feature to define re usable custom filter</li>
-</ul><p>As built in filter I have used <a href="https://github.com/ernie/ransack">ransack</a> and pagination with <a href="https://github.com/amatsuda/kaminari">kaminari</a></p>
-
-<h2>
-<a name="the-purpose" class="anchor" href="#the-purpose"><span class="octicon octicon-link"></span></a>The purpose</h2>
-
-<p>The purpose of this gem is to produce consistent reports quickly and manage them easily. Because all we need to
-concentrate in a report is the query and filter.</p>
-
-<h2>
-<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting started</h2>
-
-<p>Query report is tested with Rails 3. You can add it to your Gemfile with:</p>
-
-<div class="highlight"><pre><span class="n">gem</span> <span class="s1">'query_report'</span>
-</pre></div>
-
-<p>Run the bundle command to install it.</p>
-
-<p>Here is a sample controller which uses query report.</p>
-
-<div class="highlight"><pre>
-    <span class="nb">require</span> <span class="s1">'query_report/helper'</span>  <span class="c1">#need to require the helper</span>
-
-    <span class="k">class</span> <span class="nc">InvoicesController</span> <span class="o">&lt;</span> <span class="no">ApplicationController</span>
-      <span class="kp">include</span> <span class="ss">QueryReport</span><span class="p">:</span><span class="ss">:Helper</span>  <span class="c1">#need to include it</span>
-
-      <span class="k">def</span> <span class="nf">index</span>
-        <span class="vi">@invoices</span> <span class="o">=</span> <span class="no">Invoice</span><span class="o">.</span><span class="n">scoped</span>
-
-        <span class="n">reporter</span><span class="p">(</span><span class="vi">@invoices</span><span class="p">)</span> <span class="k">do</span>
-          <span class="n">filter</span> <span class="ss">:title</span><span class="p">,</span> <span class="ss">type</span><span class="p">:</span> <span class="ss">:text</span>
-          <span class="n">filter</span> <span class="ss">:created_at</span><span class="p">,</span> <span class="ss">type</span><span class="p">:</span> <span class="ss">:date</span><span class="p">,</span> <span class="ss">default</span><span class="p">:</span> <span class="o">[</span><span class="mi">5</span><span class="o">.</span><span class="n">months</span><span class="o">.</span><span class="n">ago</span><span class="o">.</span><span class="n">to_date</span><span class="o">.</span><span class="n">to_s</span><span class="p">(</span><span class="ss">:db</span><span class="p">),</span> <span class="mi">1</span><span class="o">.</span><span class="n">months</span><span class="o">.</span><span class="n">from_now</span><span class="o">.</span><span class="n">to_date</span><span class="o">.</span><span class="n">to_s</span><span class="p">(</span><span class="ss">:db</span><span class="p">)</span><span class="o">]</span>
-          <span class="n">filter</span> <span class="ss">:paid</span><span class="p">,</span> <span class="ss">type</span><span class="p">:</span> <span class="ss">:boolean</span><span class="p">,</span> <span class="ss">default</span><span class="p">:</span> <span class="kp">false</span>
-
-          <span class="n">column</span> <span class="ss">:title</span> <span class="k">do</span> <span class="o">|</span><span class="n">invoice</span><span class="o">|</span>
-            <span class="n">link_to</span> <span class="n">invoice</span><span class="o">.</span><span class="n">title</span><span class="p">,</span> <span class="n">invoice</span>
-          <span class="k">end</span>
-          <span class="n">column</span> <span class="ss">:total_paid</span>
-          <span class="n">column</span> <span class="ss">:total_charged</span>
-          <span class="n">column</span> <span class="ss">:paid</span>
-        <span class="k">end</span>
-      <span class="k">end</span>
-    <span class="k">end</span>
-</pre></div>
-
-<h2>
-<a name="license" class="anchor" href="#license"><span class="octicon octicon-link"></span></a>License</h2>
-
-<p>MIT License. Copyright 2013-2013 <a href="http://www.ashrafuzzaman.com">Ashrafuzzaman</a>.
-You are not granted rights or licenses to the trademarks of the Query report, including without limitation the Query report name.</p>
-      </section>
-    </div>
-
-    
-  </body>
-</html>
+      column :title do |invoice|
+        link_to invoice.title, invoice
+      end
+      column :total_paid
+      column :total_charged
+      column :paid
+    end
+  end
+end
+{% endhighlight %}
