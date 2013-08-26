@@ -7,7 +7,7 @@ class InvoicesController < ApplicationController
   def index
     @invoices = Invoice.scoped
 
-    reporter(@invoices) do
+    reporter(@invoices, pdf_template_class: '') do
       filter :title, type: :text
       filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
       filter :paid, type: :boolean, default: 'false'
