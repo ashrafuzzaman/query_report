@@ -22,10 +22,7 @@ module QueryReport
       attr_reader :report, :name, :options, :type, :data
 
       def initialize(report, column_name, options={}, block = nil)
-        @report = report
-        @name = column_name
-        @options = options
-
+        @report, @name, @options = report, column_name, options
         @type = @report.model_class.columns_hash[column_name.to_s].try(:type) || options[:type] || :string
         @data = block || column_name.to_sym
       end

@@ -97,19 +97,38 @@ describe QueryReport::FilterModule do
     end
   end
 
-  context 'with date type and default values' do
-    subject do
-      object.filter(:created_at, type: :date, default: [1.weeks.ago, Time.zone.now])
-      object.filters.first
+  describe 'default values' do
+    context 'with date type' do
+      subject do
+        object.filter(:created_at, type: :date, default: [1.weeks.ago, Time.zone.now])
+        object.filters.first
+      end
+
+      its(:column) { should be :created_at }
+      its(:type)   { should be :date }
+
+      it 'has proper comparator' do
+        comps = subject.comparators
+        comps.collect(&:type).should =~ [:lteq, :gteq]
+        comps.first.has_default?.should be true
+      end
     end
 
-    its(:column) { should be :created_at }
-    its(:type)   { should be :date }
+    context 'with boolean type' do
+      subject do
+        object.filter(:paid, type: :boolean, default: true)
+        object.filters.first
+      end
 
-    it 'has proper comparator' do
-      comps = subject.comparators
-      comps.collect(&:type).should =~ [:lteq, :gteq]
-      expect(comps.first.has_default?).to be true
+      its(:column) { should be :paid }
+      its(:type)   { should be :boolean }
+
+      it 'has proper comparator' do
+        comps = subject.comparators
+        comps.collect(&:type).should =~ [:eq]
+        comps.first.has_default?.should be true
+        comps.first.default.should == 'true'
+      end
     end
   end
 end

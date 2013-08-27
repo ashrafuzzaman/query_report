@@ -19,32 +19,24 @@ module QueryReport
       @filters << Filter.new(@params, column, options, &block)
     end
 
-    def search
-      apply
-      @search
-    end
-
     def apply_filters(query, http_params)
       # apply default filter
-      params = load_default_values_in_param(http_params)
+      params = load_default_values_in_param(http_params) #need for ransack filter
 
       @search = query.search(params[:q])
       query = @search.result
 
       @filters.each do |filter|
         if filter.custom?
-          param = params[:custom_search]
-          first_val = param[filter.search_keys.first] rescue nil
-          last_val = param[filter.search_keys.last] rescue nil
-
-          case filter.comparators.size
-            when 1
-              query = filter.block.call(query, first_val) if first_val.present?
-              break
-            when 2
-              query = filter.block.call(query, first_val, last_val) if first_val.present? and last_val.present?
-              break
+          ordered_custom_param_values = filter.search_keys.collect do |key|
+            if filter.boolean?
+              params[:custom_search][key].present? ? params[:custom_search][key] == 'true' : nil
+            else
+              params[:custom_search][key]
+            end
           end
+          #filter only if there is a given input
+          query = filter.block.call(query, *ordered_custom_param_values) unless ordered_custom_param_values.all? { |p| p.nil? or p == '' }
         end
       end
       query
@@ -57,7 +49,7 @@ module QueryReport
       @filters.each do |filter|
         if filter.has_default?
           filter.comparators.each do |comparator|
-            params[filter.params_key][comparator.search_key] ||= comparator.default
+            params[filter.params_key][comparator.search_key] ||= comparator.default.to_s
           end
         end
       end
@@ -68,7 +60,7 @@ module QueryReport
       attr_reader :filter, :type, :name, :default
 
       def initialize(filter, type, name, default=nil)
-        @filter, @type, @name, @default = filter, type, name, default
+        @filter, @type, @name, @default = filter, type, name, default.to_s
       end
 
       def search_key

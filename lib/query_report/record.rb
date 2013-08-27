@@ -16,6 +16,11 @@ module QueryReport
       @paginated_query
     end
 
+    def search
+      apply
+      @search
+    end
+
     def apply
       @filtered_query ||= apply_filters(query.clone, @params)
       @paginated_query ||= apply_pagination(@filtered_query, @params)
