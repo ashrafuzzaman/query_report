@@ -21,32 +21,31 @@ gem 'query_report'
 
 Run the bundle command to install it.
 
-Here is a sample controller which uses query report.
+Here is a sample controller which uses query report. And that is all you need, query report will generate all the view for you.
 
 ```ruby
+require 'query_report/helper'  #need to require the helper
 
-    require 'query_report/helper'  #need to require the helper
+class InvoicesController < ApplicationController
+  include QueryReport::Helper  #need to include it
 
-    class InvoicesController < ApplicationController
-      include QueryReport::Helper  #need to include it
+  def index
+    @invoices = Invoice.scoped
 
-      def index
-        @invoices = Invoice.scoped
+    reporter(@invoices) do
+      filter :title, type: :text
+      filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
+      filter :paid, type: :boolean, default: false
 
-        reporter(@invoices) do
-          filter :title, type: :text
-          filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
-          filter :paid, type: :boolean, default: false
-
-          column :title do |invoice|
-            link_to invoice.title, invoice
-          end
-          column :total_paid
-          column :total_charged
-          column :paid
-        end
+      column :title do |invoice|
+        link_to invoice.title, invoice
       end
+      column :total_paid
+      column :total_charged
+      column :paid
     end
+  end
+end
 ```
 
 ## License
