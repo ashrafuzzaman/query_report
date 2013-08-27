@@ -50,5 +50,4 @@ Here is a sample controller which uses query report.
 ```
 
 ## License
-MIT License. Copyright 2013-2013 [Ashrafuzzaman](http://www.ashrafuzzaman.com).
-You are not granted rights or licenses to the trademarks of the Query report, including without limitation the Query report name.
+MIT License. Copyright © 2013 [Ashrafuzzaman](http://www.ashrafuzzaman.com). See MIT-LICENSE for further details.
