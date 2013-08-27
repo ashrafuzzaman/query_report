@@ -20,15 +20,15 @@ concentrate in a report is the query and filter.
 ## Getting started
 Query report is tested with Rails 3. You can add it to your Gemfile with:
 
-{% highlight ruby %}
+```ruby
 gem 'query_report'
-{% endhighlight %}
+```
 
 Run the bundle command to install it.
 
 Here is a sample controller which uses query report.
 
-{% highlight ruby %}
+```ruby
 require 'query_report/helper'  #need to require the helper
 
 class InvoicesController < ApplicationController
@@ -51,7 +51,7 @@ class InvoicesController < ApplicationController
     end
   end
 end
-{% endhighlight %}
+```
 
 ## License
 MIT License. Copyright 2013-2013 [Ashrafuzzaman](http://www.ashrafuzzaman.com).
