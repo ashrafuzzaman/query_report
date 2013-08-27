@@ -4,14 +4,16 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
 
-    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen"/>
-    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen"/>
-    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/stylesheet.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/pygment_trac.css" media="screen"/>
+    <link rel="stylesheet" type="text/css" href="/stylesheets/print.css" media="print"/>
     <title>{{ page.title }}</title>
 </head>
 
 <body>
-<a href="https://github.com/ashrafuzzaman/query_report"><img style="position: absolute; top: 0; left: 0; border: 0;" src="images/forkme_left_orange_ff7600.png" alt="Fork me on GitHub"></a>
+<a href="https://github.com/ashrafuzzaman/query_report"><img style="position: absolute; top: 0; left: 0; border: 0;"
+                                                             src="/images/forkme_left_orange_ff7600.png"
+                                                             alt="Fork me on GitHub"></a>
 <header>
     <div class="container">
         <h1>Query report</h1>
@@ -22,11 +24,16 @@
 </header>
 
 <div class="container">
+    <section id="menu_content">
+        <ul>
+            {% for post in site.posts %}
+            <li><a href="{{ post.url }}">{{ post.title }}</a></li>
+            {% endfor %}
+        </ul>
+    </section>
     <section id="main_content">
         {{ content }}
     </section>
 </div>
-
-
 </body>
 </html>

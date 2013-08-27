@@ -3,7 +3,7 @@ layout: default
 title: Query report by ashrafuzzaman
 ---
 
-Query report By [Ashrafuzzaman](http://www.ashrafuzzaman.com).
+[Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://www.ashrafuzzaman.com).
 
 Query report is a reporting tool, which does the following:
 
@@ -26,7 +26,7 @@ gem 'query_report'
 
 Run the bundle command to install it.
 
-Here is a sample controller which uses query report.
+Here is a sample controller which uses query report. And that is all you need, query report will generate all the view for you.
 
 ```ruby
 require 'query_report/helper'  #need to require the helper
@@ -53,7 +53,3 @@ class InvoicesController < ApplicationController
   end
 end
 ```
-
-## License
-MIT License. Copyright 2013-2013 [Ashrafuzzaman](http://www.ashrafuzzaman.com).
-You are not granted rights or licenses to the trademarks of the Query report, including without limitation the Query report name.
