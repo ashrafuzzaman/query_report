@@ -1,4 +1,4 @@
-Query report By [Ashrafuzzaman](http://www.ashrafuzzaman.com).
+[Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://www.ashrafuzzaman.com).
 
 Query report is a reporting tool, which does the following:
 
