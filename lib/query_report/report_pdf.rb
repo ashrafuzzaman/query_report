@@ -18,14 +18,15 @@ module QueryReport
     end
 
     def to_pdf
-      render_charts_with @report
-      render_table_with @report
+      render_charts_with report
+      render_table_with report
+      pdf
     end
 
     private
     def render_charts_with(report)
       return if report.charts.empty? #or !report.chart_on_pdf?
-      height = @options[:chart][:height] * (report.charts.size.to_f/2).ceil
+      height = options[:chart][:height] * (report.charts.size.to_f/2).ceil
       pdf.column_box([0, pdf.cursor], :columns => 2, :width => pdf.bounds.width, :height => height) do
         report.charts.each do |chart|
           render_chart(chart)
@@ -38,7 +39,7 @@ module QueryReport
         blob = chart.to_blob
         data = StringIO.new(blob)
         pdf.pad_top(10) do
-          pdf.image(data, :width => @options[:chart][:width])
+          pdf.image(data, :width => options[:chart][:width])
         end
       end
     end
@@ -70,10 +71,10 @@ module QueryReport
     end
 
     def render_table(items)
-      header_bg_color = @options[:table][:header][:bg_color]
-      alternate_row_bg_color = [@options[:table][:row][:odd_bg_color], @options[:table][:row][:even_bg_color]]
-      font_size = @options[:font_size]
-      header_font_size = @options[:table][:header][:font_size]
+      header_bg_color = options[:table][:header][:bg_color]
+      alternate_row_bg_color = [options[:table][:row][:odd_bg_color], options[:table][:row][:even_bg_color]]
+      font_size = options[:font_size]
+      header_font_size = options[:table][:header][:font_size]
       pdf.move_down 10
       pdf.table(items, :row_colors => alternate_row_bg_color, :header => true, :cell_style => {:inline_format => true, :size => font_size}) do
         row(0).style(:font_style => :bold, :background_color => header_bg_color, :size => header_font_size)
@@ -86,8 +87,8 @@ module QueryReport
     end
 
     def template
-      if @options[:template_class]
-        @template ||= @options[:template_class].to_s.constantize.new(@report, @pdf)
+      if options[:template_class]
+        @template ||= options[:template_class].to_s.constantize.new(report, pdf)
         return @template
       end
       nil
