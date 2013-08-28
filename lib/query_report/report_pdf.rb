@@ -17,18 +17,9 @@ module QueryReport
       template.try(:render_footer)
     end
 
-    def pdf_content(&code)
-      #render_header
-      code.call(pdf)
-      #render_footer
-      pdf
-    end
-
     def to_pdf
-      pdf_content do
-        render_charts_with @report
-        render_table_with @report
-      end
+      render_charts_with @report
+      render_table_with @report
     end
 
     private

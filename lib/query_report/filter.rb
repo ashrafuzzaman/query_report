@@ -81,23 +81,18 @@ module QueryReport
     end
 
     class Filter
-      attr_reader :params, :column, :type, :comparators, :block, :custom, :options
+      attr_reader :params, :column, :type, :comparators, :block, :options
 
       # Initializes filter with the proper parameters
       # Params:
       # +params+:: The params from the http request
       def initialize(params, column, options, &block)
-        @params = params
-        @column = column
-        @options = options
+        @params, @column, @options, @comparators, @block = params, column, options, [], block
         @type = options if options.kind_of? String
         if options.kind_of? Hash
           @type = options[:type]
         end
-        @comparators = []
         generate_comparators
-        @block = block
-        @custom = @block ? true : false
       end
 
       def self.supported_types
