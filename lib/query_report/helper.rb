@@ -32,7 +32,7 @@ module QueryReport
         @template_class ||= options[:template_class].to_s.constantize
         return @template_class
       end
-      reurn QueryReport::ReportPdf
+      return QueryReport::ReportPdf
     end
 
     def generate_csv_for_report(records)

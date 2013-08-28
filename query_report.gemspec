@@ -25,11 +25,7 @@ Gem::Specification.new do |s|
   s.add_dependency 'prawn'
 
 
-  s.add_development_dependency 'gruff'
   s.add_development_dependency 'awesome_print'
-  s.add_development_dependency 'prawn'
-  s.add_development_dependency 'kaminari'
-  s.add_development_dependency 'ransack'
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'jquery-rails'
   s.add_development_dependency 'bullet'
@@ -37,5 +33,4 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
-  s.add_development_dependency 'google_visualr', '~> 2.1.7'
 end
