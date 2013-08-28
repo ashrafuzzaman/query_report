@@ -16,17 +16,16 @@
                                                              alt="Fork me on GitHub"></a>
 <header>
     <div class="container">
-        <h1>Query report</h1>
-
-        <h2>This is a gem to help you to structure common reports of you application just by writing in the
-            controller</h2>
+        <a href="/"><h1>Query report</h1></a>
+        <h2>It helps you to structure reports of you application, and make them DRY</h2>
     </div>
 </header>
 
 <div class="container">
     <section id="menu_content">
+        <h1>Customize</h1>
         <ul>
-            {% for post in site.posts %}
+            {% for post in site.posts reversed %}
             <li><a href="{{ post.url }}">{{ post.title }}</a></li>
             {% endfor %}
         </ul>
@@ -34,6 +33,7 @@
     <section id="main_content">
         {{ content }}
     </section>
+    <p>MIT License. Copyright © 2013 <a href="http://www.ashrafuzzaman.com">Ashrafuzzaman</a>. See MIT-LICENSE for further details.</p>
 </div>
 </body>
 </html>

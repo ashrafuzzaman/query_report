@@ -55,6 +55,10 @@ header h1 {
     -webkit-font-smoothing: antialiased;
 }
 
+header a {
+    text-decoration: none;
+}
+
 /*header h1:before {*/
 /*content: "./ ";*/
 /*font-size: 24px;*/
@@ -75,7 +79,7 @@ header h2 {
 /* Main Content
 */
 
-#menu_content{
+#menu_content {
     float: left;
     width: 200px;
 }
