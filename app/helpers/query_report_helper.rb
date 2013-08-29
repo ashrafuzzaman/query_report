@@ -3,9 +3,8 @@ require 'query_report/errors'
 module QueryReportHelper
   def query_report_render_filter(filter, comparator)
     hint = comparator.name
-    #search_key = comparator.search_key
-    search_tag_name = comparator.search_tag_name #"#{filter.params_key}[#{search_key}]"
-    value = comparator.param_value #params[filter.params_key] ? params[filter.params_key][comparator.search_key] : comparator.default
+    search_tag_name = comparator.search_tag_name
+    value = comparator.param_value
 
     method_name = :"query_report_#{filter.type.to_s}_filter"
     if main_app.respond_to? method_name
@@ -18,12 +17,6 @@ module QueryReportHelper
   end
 
   def export_report_url_with_format(format)
-    url = request.url
-    if url.match(/(\?)/) and !url["format="]
-      url = "#{url}&format=#{format}"
-    else
-      url = "#{url}?format=#{format}"
-    end
-    url.gsub(/format=(\w*)/, "format=#{format}")
+    url_for(params.merge(format: format))
   end
 end
