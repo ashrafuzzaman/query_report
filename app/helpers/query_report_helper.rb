@@ -19,13 +19,11 @@ module QueryReportHelper
 
   def export_report_url_with_format(format)
     url = request.url
-    if url.match(/(\.\w*\?)/)
-      url = url.gsub(/(\?)/, ".#{format}?")
-    elsif url.match(/(\?)/)
-      url = url.gsub(/(\?)/, ".#{format}?")
+    if url.match(/(\?)/) and !url["format="]
+      url = "#{url}&format=#{format}"
     else
-      url = "#{url}.#{format}"
+      url = "#{url}?format=#{format}"
     end
-    url.gsub(/format=(\w*)/, 'format=#{format}')
+    url.gsub(/format=(\w*)/, "format=#{format}")
   end
 end
