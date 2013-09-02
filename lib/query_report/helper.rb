@@ -13,26 +13,26 @@ module QueryReport
       @report ||= QueryReport::Report.new(params, view_context, options)
       @report.query = query
       @report.instance_eval &block
-      render_report
+      render_report(options)
     end
 
-    def render_report
+    def render_report(options)
       respond_to do |format|
         format.js { render 'query_report/list' }
         format.html { render 'query_report/list' }
         format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
-        format.pdf { send_data query_report_pdf_template_class.new(@report).to_pdf.render }
+        format.pdf { send_data query_report_pdf_template_class(options).new(@report).to_pdf.render }
       end
     end
 
-    def query_report_pdf_template_class
-      options = QueryReport.config.pdf_options
+    def query_report_pdf_template_class(options)
+      options = QueryReport.config.pdf_options.merge(options)
       if options[:template_class]
         @template_class ||= options[:template_class].to_s.constantize
         return @template_class
       end
-      return QueryReport::ReportPdf
+      QueryReport::ReportPdf
     end
 
     def generate_csv_for_report(records)
