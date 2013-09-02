@@ -1,10 +1,4 @@
-<div class="row-fluid">
-  <% report.charts.each_with_index do |chart, i| %>
-      <% chart_id = "chart#{i}" %>
-      <div class="span6">
-        <div id="<%= chart_id %>" style="text-align: center;"></div>
-      </div>
-      <%= render_chart(chart.prepare_visualr, chart_id) %>
-  <% end %>
-  <div class="clearfix"></div>
-</div>
+<% if report.has_chart? and report.enable_chart? and report.chart_on_web? %>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <%= render :partial => "query_report/chart", locals: {report: report} %>
+<% end %>

@@ -1,0 +1,10 @@
+<div class="row-fluid">
+  <% report.charts.each_with_index do |chart, i| %>
+      <% chart_id = "chart#{i}" %>
+      <div class="span6">
+        <div id="<%= chart_id %>" style="text-align: center;"></div>
+      </div>
+      <%= render_chart(chart.prepare_visualr, chart_id) %>
+  <% end %>
+  <div class="clearfix"></div>
+</div>
