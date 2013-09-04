@@ -39,7 +39,7 @@ describe 'Integration' do
       @report.query = User.scoped
       @report.instance_eval do
         filter :age, default: 10
-        filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
+        filter :created_at, type: :date, default: [5.months.ago.to_date, 1.months.from_now.to_date]
 
         column :name
         column :age

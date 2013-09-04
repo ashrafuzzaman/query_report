@@ -27,24 +27,16 @@ module QueryReport
 
       #apply custom filter
       @filters.select(&:custom?).each do |filter|
-        ordered_custom_param_values = ordered_param_values(filter, params)
+        ordered_custom_param_values = ordered_param_value_objects(filter)
         has_no_user_input = ordered_custom_param_values.all? { |p| p.nil? or p == '' }
         query = filter.block.call(query, *ordered_custom_param_values) unless has_no_user_input
       end
       query
     end
 
-    def ordered_param_values(filter, params)
-      #filter.search_keys.collect do |key|
-      #  if filter.boolean?
-      #    params[:custom_search][key].present? ? params[:custom_search][key] == 'true' : nil
-      #  else
-      #    params[:custom_search][key]
-      #  end
-      #end
-
+    def ordered_param_value_objects(filter)
       filter.comparators.collect do |comp|
-        comp.param_value
+        comp.objectified_param_value
       end
     end
 
@@ -85,11 +77,23 @@ module QueryReport
 
       def stringified_default
         @stringified_default ||= case @filter.type
-          when :date
-            @default.to_s(:db)
-          else
-            @default.to_s
-        end
+                                   when :date
+                                     @default.kind_of?(String) ? @default : @default.to_s(:db)
+                                   else
+                                     @default.to_s
+                                 end
+      end
+
+      #convert param value which is a string to object like date and boolean
+      def objectified_param_value
+        @stringified_default ||= case @filter.type
+                                   when :date
+                                     @default.to_date
+                                   when :boolean
+                                     @default.to_boolean
+                                   else
+                                     @default
+                                 end
       end
     end
 
