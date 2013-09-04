@@ -116,8 +116,9 @@ describe QueryReport::FilterModule do
 
     context 'with boolean type' do
       subject do
-        object.filter(:paid, type: :boolean, default: true)
-        object.filters.first
+        object.filter(:created_at, type: :date, default: [1.weeks.ago, Time.zone.now])
+        object.filter(:paid, type: :boolean, default: false)
+        object.filters.last
       end
 
       its(:column) { should be :paid }
@@ -127,7 +128,7 @@ describe QueryReport::FilterModule do
         comps = subject.comparators
         comps.collect(&:type).should =~ [:eq]
         comps.first.has_default?.should be true
-        comps.first.default.should == 'true'
+        comps.first.default.should == false
       end
     end
   end

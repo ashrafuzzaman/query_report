@@ -9,8 +9,8 @@ class InvoicesController < ApplicationController
 
     reporter(@invoices) do
       filter :title, type: :text
-      filter :created_at, type: :date, default: [5.months.ago.to_date.to_s(:db), 1.months.from_now.to_date.to_s(:db)]
-      filter :paid, type: :boolean
+      filter :created_at, type: :date, default: [5.months.ago.to_date, 1.months.from_now.to_date]
+      filter :paid, type: :boolean, default: false
 
       column :title do |invoice|
         link_to invoice.title, invoice
@@ -19,24 +19,26 @@ class InvoicesController < ApplicationController
       column :total_charged
       column :paid
 
-      column_chart('Unpaid VS Paid') do
-        add 'Unpaid' do |query|
-          (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
-        end
-        add 'Paid' do |query|
-          query.sum('total_paid').to_f
-        end
-      end
-
-      pie_chart('Unpaid VS Paid') do
-        add 'Unpaid' do |query|
-          (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
-        end
-        add 'Paid' do |query|
-          query.sum('total_paid').to_f
-        end
-      end
+      #column_chart('Unpaid VS Paid') do
+      #  add 'Unpaid' do |query|
+      #    (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
+      #  end
+      #  add 'Paid' do |query|
+      #    query.sum('total_paid').to_f
+      #  end
+      #end
+      #
+      #pie_chart('Unpaid VS Paid') do
+      #  add 'Unpaid' do |query|
+      #    (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
+      #  end
+      #  add 'Paid' do |query|
+      #    query.sum('total_paid').to_f
+      #  end
+      #end
     end
+    #ap @report.filters.last.comparators.first.default
+    #ap @report.filters.last.comparators.first.param_value
   end
 
   # GET /invoices/1

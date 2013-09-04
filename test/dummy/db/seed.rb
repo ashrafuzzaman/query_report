@@ -1,4 +1,8 @@
-r = Random.new
-1.upto(100) do |i|
-  Invoice.create(title: "Invoice ##{i}", total_paid: r.rand(100) + 200, total_charged: r.rand(500) + 200)
+Invoice.scoped.destroy_all
+
+1.upto(200) do |i|
+  total_paid = 100 + Random.rand(100)
+  total_charged = 100 + Random.rand(100)
+  Invoice.create!(title: "Invoice ##{i}", total_paid: total_paid, total_charged: total_charged,
+                  paid: total_paid >= total_charged)
 end

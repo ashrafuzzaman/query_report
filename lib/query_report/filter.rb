@@ -22,24 +22,30 @@ module QueryReport
     def apply_filters(query, http_params)
       # apply default filter
       params = load_default_values_in_param(http_params) #need for ransack filter
-
       @search = query.search(params[:q])
       query = @search.result
 
-      @filters.each do |filter|
-        if filter.custom?
-          ordered_custom_param_values = filter.search_keys.collect do |key|
-            if filter.boolean?
-              params[:custom_search][key].present? ? params[:custom_search][key] == 'true' : nil
-            else
-              params[:custom_search][key]
-            end
-          end
-          #filter only if there is a given input
-          query = filter.block.call(query, *ordered_custom_param_values) unless ordered_custom_param_values.all? { |p| p.nil? or p == '' }
-        end
+      #apply custom filter
+      @filters.select(&:custom?).each do |filter|
+        ordered_custom_param_values = ordered_param_values(filter, params)
+        has_no_user_input = ordered_custom_param_values.all? { |p| p.nil? or p == '' }
+        query = filter.block.call(query, *ordered_custom_param_values) unless has_no_user_input
       end
       query
+    end
+
+    def ordered_param_values(filter, params)
+      #filter.search_keys.collect do |key|
+      #  if filter.boolean?
+      #    params[:custom_search][key].present? ? params[:custom_search][key] == 'true' : nil
+      #  else
+      #    params[:custom_search][key]
+      #  end
+      #end
+
+      filter.comparators.collect do |comp|
+        comp.param_value
+      end
     end
 
     def load_default_values_in_param(http_params)
@@ -47,10 +53,8 @@ module QueryReport
       params = params.merge(q: {}) unless params[:q]
       params = params.merge(custom_search: {}) unless params[:custom_search]
       @filters.each do |filter|
-        if filter.has_default?
-          filter.comparators.each do |comparator|
-            params[filter.params_key][comparator.search_key] ||= comparator.default.to_s
-          end
+        filter.comparators.each do |comparator|
+          params[filter.params_key][comparator.search_key] ||= comparator.param_value
         end
       end
       params
@@ -60,7 +64,7 @@ module QueryReport
       attr_reader :filter, :type, :name, :default
 
       def initialize(filter, type, name, default=nil)
-        @filter, @type, @name, @default = filter, type, name, default.to_s
+        @filter, @type, @name, @default = filter, type, name, default
       end
 
       def search_key
@@ -72,11 +76,20 @@ module QueryReport
       end
 
       def param_value
-        @filter.params[@filter.params_key] ? @filter.params[@filter.params_key][search_key] : default
+        @filter.params[@filter.params_key] ? @filter.params[@filter.params_key][search_key] : stringified_default
       end
 
       def has_default?
         !@default.nil?
+      end
+
+      def stringified_default
+        @stringified_default ||= case @filter.type
+          when :date
+            @default.to_s(:db)
+          else
+            @default.to_s
+        end
       end
     end
 
@@ -88,10 +101,7 @@ module QueryReport
       # +params+:: The params from the http request
       def initialize(params, column, options, &block)
         @params, @column, @options, @comparators, @block = params, column, options, [], block
-        @type = options if options.kind_of? String
-        if options.kind_of? Hash
-          @type = options[:type]
-        end
+        @type = options.kind_of?(String) ? options : options[:type]
         generate_comparators
       end
 
@@ -133,10 +143,10 @@ module QueryReport
                             end
 
         if @options[:comp]
-          @options[:comp].each_with_index do |(search_key, filter_name), i|
+          @options[:comp].each_with_index do |(ransack_search_key, filter_name), i|
             default = nil
-            default = @options[:default].kind_of?(Array) ? @options[:default][i] : @options[:default] if @options[:default]
-            @comparators << Comparator.new(self, search_key, filter_name, default)
+            default = @options[:default].kind_of?(Array) ? @options[:default][i] : @options[:default] unless @options[:default].nil?
+            @comparators << Comparator.new(self, ransack_search_key, filter_name, default)
           end
         end
       end
