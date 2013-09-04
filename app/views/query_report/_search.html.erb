@@ -1,8 +1,10 @@
-<%= search_form_for report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
-    <% report.filters.each do |filter| %>
-        <% filter.comparators.each do |comparator| %>
-            <%= query_report_render_filter(filter, comparator) %>
+<% if report.has_filter? %>
+    <%= search_form_for report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
+        <% report.filters.each do |filter| %>
+            <% filter.comparators.each do |comparator| %>
+                <%= query_report_render_filter(filter, comparator) %>
+            <% end %>
         <% end %>
+        <%= f.submit 'Search', :class => 'btn btn-blue' %>
     <% end %>
-    <%= f.submit 'Search', :class => 'btn btn-blue' %>
 <% end %>

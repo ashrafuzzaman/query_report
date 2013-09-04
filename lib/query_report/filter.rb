@@ -19,6 +19,10 @@ module QueryReport
       @filters << Filter.new(@params, column, options, &block)
     end
 
+    def has_filter?
+      filters.present?
+    end
+
     def apply_filters(query, http_params)
       # apply default filter
       params = load_default_values_in_param(http_params) #need for ransack filter

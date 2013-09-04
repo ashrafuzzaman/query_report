@@ -132,4 +132,20 @@ describe QueryReport::FilterModule do
       end
     end
   end
+
+  describe '#has_filter?' do
+    context 'with filters' do
+      subject do
+        object.filter(:created_at, type: :date)
+        object
+      end
+
+      its(:has_filter?) { should be true }
+    end
+
+    context 'with out filters' do
+      subject { object }
+      its(:has_filter?) { should be false }
+    end
+  end
 end
