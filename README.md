@@ -1,5 +1,7 @@
 [Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://www.ashrafuzzaman.com).
 
+[![Build Status](https://api.travis-ci.org/ashrafuzzaman/query_report.png?branch=master)](http://travis-ci.org/ashrafuzzaman/query_report)
+
 Query report is a reporting tool, which does the following:
 
 * Generate paginated HTML view with filters, defined columns with sorting
