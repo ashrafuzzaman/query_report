@@ -22,5 +22,7 @@ module QueryReport
         },
         chart: { height: 160, width: 200 }
     }
+    config.date_format = :default
+    config.datetime_format = :default
   end
 end

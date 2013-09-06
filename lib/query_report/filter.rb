@@ -4,6 +4,8 @@
 # The purpose of the filter module is to add feature
 # to support report tool to add custom and predefined filters
 
+require 'query_report/comparator'
+
 module QueryReport
   module FilterModule
     attr_accessor :filters, :search
@@ -56,51 +58,6 @@ module QueryReport
       params
     end
 
-    class Comparator
-      attr_reader :filter, :type, :name, :default
-
-      def initialize(filter, type, name, default=nil)
-        @filter, @type, @name, @default = filter, type, name, default
-      end
-
-      def search_key
-        "#{@filter.column.to_s}_#{@type}".to_sym
-      end
-
-      def search_tag_name
-        "#{@filter.params_key}[#{search_key.to_s}]"
-      end
-
-      def param_value
-        @filter.params[@filter.params_key] ? @filter.params[@filter.params_key][search_key] : stringified_default
-      end
-
-      def has_default?
-        !@default.nil?
-      end
-
-      def stringified_default
-        @stringified_default ||= case @filter.type
-                                   when :date
-                                     @default.kind_of?(String) ? @default : @default.to_s(:db)
-                                   else
-                                     @default.to_s
-                                 end
-      end
-
-      #convert param value which is a string to object like date and boolean
-      def objectified_param_value
-        @stringified_default ||= case @filter.type
-                                   when :date
-                                     @default.to_date
-                                   when :boolean
-                                     @default.to_boolean
-                                   else
-                                     @default
-                                 end
-      end
-    end
-
     class Filter
       attr_reader :params, :column, :type, :comparators, :block, :options
 
@@ -143,6 +100,8 @@ module QueryReport
       def generate_comparators
         @options[:comp] ||= case @type
                               when :date
+                                {gteq: I18n.t('query_report.filters.from'), lteq: I18n.t('query_report.filters.to')}
+                              when :datetime
                                 {gteq: I18n.t('query_report.filters.from'), lteq: I18n.t('query_report.filters.to')}
                               when :text
                                 {cont: I18n.t("query_report.filters.#{@column.to_s}.contains")}
