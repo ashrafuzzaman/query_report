@@ -10,7 +10,7 @@ describe QueryReport::FilterModule do
 
   describe 'supported list' do
     subject { QueryReport::FilterModule::Filter }
-    its(:supported_types) { should =~ [:date, :boolean, :text] }
+    its(:supported_types) { should =~ [:date, :datetime, :boolean, :text] }
   end
 
   describe 'supported types' do
@@ -42,6 +42,26 @@ describe QueryReport::FilterModule do
 
       its(:column) { should be :created_at }
       its(:type) { should be :date }
+      its(:custom?) { should be false }
+      its(:params_key) { should be :q }
+
+      it 'has proper comparators' do
+        comps = subject.comparators
+        comps.collect(&:type).should =~ [:gteq, :lteq]
+        comps.collect(&:name).should =~ [I18n.t('query_report.filters.from'), I18n.t('query_report.filters.to')]
+        comps.collect(&:search_key).should =~ [:created_at_gteq, :created_at_lteq]
+        comps.collect(&:search_tag_name).should =~ ['q[created_at_gteq]', 'q[created_at_lteq]']
+      end
+    end
+
+    context 'with datetime type' do
+      subject do
+        object.filter(:created_at, type: :datetime)
+        object.filters.first
+      end
+
+      its(:column) { should be :created_at }
+      its(:type) { should be :datetime }
       its(:custom?) { should be false }
       its(:params_key) { should be :q }
 

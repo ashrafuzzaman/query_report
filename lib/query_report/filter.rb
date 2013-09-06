@@ -71,7 +71,7 @@ module QueryReport
       end
 
       def self.supported_types
-        [:date, :text, :boolean]
+        [:date, :datetime, :text, :boolean]
       end
 
       supported_types.each do |supported_type|
