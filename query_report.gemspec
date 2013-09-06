@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.email         = ["ashrafuzzaman.g2@gmail.com"]
   s.description   = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
   s.summary       = %q{Structure you reports}
-  s.homepage      = "https://github.com/ashrafuzzaman/query_report"
+  s.homepage      = "http://ashrafuzzaman.github.io/query_report"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.license = 'MIT'
@@ -30,7 +30,6 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'jquery-rails'
   s.add_development_dependency 'bullet'
-  s.add_development_dependency 'rack-mini-profiler'
   s.add_development_dependency 'rspec'
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
