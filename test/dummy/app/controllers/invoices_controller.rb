@@ -18,9 +18,7 @@ class InvoicesController < ApplicationController
       column :total_paid
       column :total_charged
       column :paid
-      column :received_by_id do |invoice|
-        invoice.received_by.name
-      end
+      column :received_by
 
       #column_chart('Unpaid VS Paid') do
       #  add 'Unpaid' do |query|
