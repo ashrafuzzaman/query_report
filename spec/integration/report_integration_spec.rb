@@ -12,7 +12,7 @@ describe 'Integration' do
     User.destroy_all
     @user1 = User.create(name: 'User#1', age: 10, dob: 10.years.ago)
     @user2 = User.create(name: 'User#2', age: 20, dob: 20.years.ago)
-    @user3 = User.create(name: 'User#3', age: 34, dob: 34.years.ago)
+    @user3 = User.create(name: 'User#3', age: 34)
   end
 
   context 'with selected columns' do
@@ -38,8 +38,8 @@ describe 'Integration' do
     before do
       @report.query = User.scoped
       @report.instance_eval do
-        filter :age, default: 10
-        filter :created_at, type: :date, default: [5.months.ago.to_date, 1.months.from_now.to_date]
+        filter :age
+        filter :dob, type: :datetime, default: [21.years.ago.to_date, 1.months.from_now.to_date]
 
         column :name
         column :age
@@ -48,7 +48,8 @@ describe 'Integration' do
     subject { @report }
 
     context 'without any filter applied' do
-      its(:records) { should == [{'Name' => @user1.name, 'Age' => @user1.age}] }
+      its(:records) { should == [{'Name' => @user1.name, 'Age' => @user1.age},
+                                 {'Name' => @user2.name, 'Age' => @user2.age}] }
     end
 
     context 'with filter applied' do

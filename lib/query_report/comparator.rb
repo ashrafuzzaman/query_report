@@ -29,9 +29,9 @@ module QueryReport
       def stringified_default
         @stringified_default ||= case @filter.type
                                    when :date
-                                     @default.kind_of?(String) ? @default : I18n.l(@default, format: QueryReport.config.date_format)
+                                     @default.kind_of?(String) ? @default : (I18n.l(@default, format: QueryReport.config.date_format) rescue @default)
                                    when :datetime
-                                     @default.kind_of?(String) ? @default : I18n.l(@default, format: QueryReport.config.datetime_format)
+                                     @default.kind_of?(String) ? @default : (I18n.l(@default, format: QueryReport.config.datetime_format) rescue @default)
                                    else
                                      @default.to_s
                                  end
