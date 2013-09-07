@@ -4,7 +4,7 @@ module QueryReportFilterHelper
   end
 
   def query_report_date_filter(name, value, options={})
-    text_field_tag name, value, options.merge(type: :date)
+    text_field_tag name, value, options.merge(class: :date)
   end
 
   def query_report_datetime_filter(name, value, options={})
