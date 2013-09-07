@@ -19,7 +19,7 @@ concentrate in a report is the query and filter.
 Query report is tested with Rails 3. You can add it to your Gemfile with:
 
 ```ruby
-gem "query_report", "~> 1.0.2"
+gem "query_report", "~> 1.0.3"
 ```
 
 Run the bundle command to install it.
