@@ -39,7 +39,7 @@ describe 'Integration' do
       @report.query = User.scoped
       @report.instance_eval do
         filter :age
-        filter :dob, type: :datetime, default: [21.years.ago.to_date, 1.months.from_now.to_date]
+        filter :dob, type: :datetime, default: [21.years.ago, 1.months.from_now]
 
         column :name
         column :age

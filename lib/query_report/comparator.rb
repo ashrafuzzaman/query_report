@@ -41,9 +41,9 @@ module QueryReport
       def objectified_param_value
         @stringified_default ||= case @filter.type
                                    when :date
-                                     Date.current.parse(@default)
+                                     @default.kind_of?(String) ? Date.current.parse(@default) : @default
                                    when :datetime
-                                     Time.zone.parse(@default)
+                                     @default.kind_of?(String) ? Time.zone.parse(@default) : @default
                                    when :boolean
                                      @default.to_boolean
                                    else
