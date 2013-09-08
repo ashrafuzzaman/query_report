@@ -75,5 +75,17 @@ describe QueryReport::FilterModule::Comparator do
       its(:stringified_default) { should == default_value_str }
       its(:objectified_param_value) { should == default_value }
     end
+
+    context 'with datetime type' do
+      let(:filter) { QueryReport::FilterModule::Filter.new({}, :name, {type: :text}) }
+      let(:default_value) { 'Ashraf' }
+      let(:default_value_str) { default_value }
+      subject { QueryReport::FilterModule::Comparator.new(filter, :eq, 'Name', default_value) }
+
+      its(:param_value) { should == default_value_str }
+      its(:has_default?) { should be true }
+      its(:stringified_default) { should == default_value_str }
+      its(:objectified_param_value) { should == default_value }
+    end
   end
 end
