@@ -15,10 +15,10 @@ module QueryReport
     config.pdf_options = {
         template_class: nil,
         color: '000000',
-        font_size: 12,
+        font_size: 8,
         table: {
             row: {odd_bg_color: "DDDDDD", even_bg_color: "FFFFFF"},
-            header: {bg_color: 'AAAAAA', font_size: 12}
+            header: {bg_color: 'AAAAAA', font_size: 8}
         },
         chart: { height: 160, width: 200 }
     }

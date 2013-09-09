@@ -1,4 +1,3 @@
-User.scoped.destroy_all
 Invoice.scoped.destroy_all
 
 1.upto(200) do |i|

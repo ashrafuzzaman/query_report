@@ -20,23 +20,23 @@ class InvoicesController < ApplicationController
       column :paid
       column :received_by
 
-      #column_chart('Unpaid VS Paid') do
-      #  add 'Unpaid' do |query|
-      #    (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
-      #  end
-      #  add 'Paid' do |query|
-      #    query.sum('total_paid').to_f
-      #  end
-      #end
-      #
-      #pie_chart('Unpaid VS Paid') do
-      #  add 'Unpaid' do |query|
-      #    (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
-      #  end
-      #  add 'Paid' do |query|
-      #    query.sum('total_paid').to_f
-      #  end
-      #end
+      column_chart('Unpaid VS Paid') do
+        add 'Unpaid' do |query|
+          (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
+        end
+        add 'Paid' do |query|
+          query.sum('total_paid').to_f
+        end
+      end
+
+      pie_chart('Unpaid VS Paid') do
+        add 'Unpaid' do |query|
+          (query.sum('total_charged').to_f - query.sum('total_paid').to_f).to_f
+        end
+        add 'Paid' do |query|
+          query.sum('total_paid').to_f
+        end
+      end
     end
     #ap @report.filters.last.comparators.first.default
     #ap @report.filters.last.comparators.first.param_value

@@ -21,8 +21,8 @@ ActiveRecord::Schema.define(:version => 20130630132513) do
     t.string   "received_by"
     t.date     "invoiced_on"
     t.date     "paid_on"
-    t.datetime "created_at",     :null => false
-    t.datetime "updated_at",     :null => false
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
 end

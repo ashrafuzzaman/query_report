@@ -26,21 +26,21 @@ module QueryReport
     private
     def render_charts_with(report)
       return if report.charts.empty? #or !report.chart_on_pdf?
-      height = options[:chart][:height] * (report.charts.size.to_f/2).ceil
-      pdf.column_box([0, pdf.cursor], :columns => 2, :width => pdf.bounds.width, :height => height) do
+      #height = 420 * (report.charts.size.to_f/2).ceil
+      #pdf.column_box([0, pdf.cursor], :columns => 2, :width => pdf.bounds.width, :height => height) do
         report.charts.each do |chart|
           render_chart(chart)
         end
-      end
+      #end
     end
 
     def render_chart(chart)
       if chart.respond_to?(:to_blob)
         blob = chart.to_blob
         data = StringIO.new(blob)
-        pdf.pad_top(10) do
-          pdf.image(data, :width => options[:chart][:width])
-        end
+        #pdf.pad_top(10) do
+          pdf.image(data, :width => pdf.bounds.width/2)
+        #end
       end
     end
 
