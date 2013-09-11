@@ -40,7 +40,7 @@ module QueryReport
         blob = chart.to_blob
         data = StringIO.new(blob)
         #pdf.pad_top(10) do
-          pdf.image(data, :width => pdf.bounds.width)
+        pdf.image(data, :width => pdf.bounds.width)
         #end
       end
     end
@@ -55,7 +55,7 @@ module QueryReport
 
     def table_content_for(report)
       table_items = report.all_records
-      table_items.map do |item|
+      items = table_items.map do |item|
         item_values = []
 
         report_columns.collect(&:humanize).each do |column|
@@ -63,6 +63,13 @@ module QueryReport
         end
         item_values
       end
+
+      if report.has_total?
+        items = items << report.column_total_with_colspan.collect do |total|
+          total[:colspan] ? total : total[:content]
+        end
+      end
+      items
     end
 
     def render_table_with(report)

@@ -1,0 +1,9 @@
+<% if report.has_total? %>
+    <tfoot>
+    <tr>
+      <% report.column_total_with_colspan.each do |total_with_colspan| %>
+          <td colspan="<%= total_with_colspan[:colspan] %>"><%= total_with_colspan[:content] %></td>
+      <% end %>
+    </tr>
+    </tfoot>
+<% end %>

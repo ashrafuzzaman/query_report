@@ -15,8 +15,8 @@ class InvoicesController < ApplicationController
       column :title do |invoice|
         link_to invoice.title, invoice
       end
-      column :total_paid
-      column :total_charged
+      column :total_paid, show_total: true
+      column :total_charged, show_total: true
       column :paid
       column :received_by
 

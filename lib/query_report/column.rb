@@ -18,6 +18,29 @@ module QueryReport
       @columns << Column.new(self, name, options, block)
     end
 
+    def column_total_with_colspan
+      total_with_colspan = []
+      colspan = 0
+      total_text_printed = false
+      columns.each do |column|
+        if column.has_total?
+          if colspan > 0
+            title = total_text_printed ? '' : I18n.t('query_report.total')
+            total_with_colspan << (colspan == 1 ? {content: title} : {content: title, colspan: colspan})
+          end
+          total_with_colspan << {content: column.total}
+          total_text_printed = true
+          colspan = 0
+        else
+          colspan += 1
+        end
+      end
+      if colspan > 0
+        total_with_colspan << {content: '', colspan: colspan}
+      end
+      total_with_colspan
+    end
+
     class Column
       attr_reader :report, :name, :options, :type, :data
 
@@ -37,6 +60,14 @@ module QueryReport
 
       def value(record)
         self.data.kind_of?(Symbol) ? record.send(self.name) : self.data.call(record)
+      end
+
+      def has_total?
+        @options[:show_total] == true
+      end
+
+      def total
+        @total ||= has_total? ? report.filtered_query.sum(name) : nil
       end
     end
   end
