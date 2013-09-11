@@ -9,6 +9,7 @@ Query report is a reporting tool, which does the following:
 * Provide feature to define re usable custom filter
 
 As built in filter I have used [ransack](https://github.com/ernie/ransack) and pagination with [kaminari](https://github.com/amatsuda/kaminari)
+
 For a demo see [here](http://query-report-demo.herokuapp.com)
 
 ## The purpose
@@ -19,7 +20,7 @@ concentrate in a report is the query and filter.
 Query report is tested with Rails 3. You can add it to your Gemfile with:
 
 ```ruby
-gem "query_report", "~> 1.0.3"
+gem "query_report", "~> 1.0.4"
 ```
 
 Run the bundle command to install it.
