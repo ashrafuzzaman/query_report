@@ -12,6 +12,7 @@ Query report is a reporting tool, which does the following:
 * Provide feature to define re usable custom filter
 
 As built in filter I have used [ransack](https://github.com/ernie/ransack) and pagination with [kaminari](https://github.com/amatsuda/kaminari)
+
 For a demo see [here](http://query-report-demo.herokuapp.com)
 
 ## The purpose
