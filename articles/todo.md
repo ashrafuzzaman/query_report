@@ -10,3 +10,4 @@ categories: todo
 Things that I am planning to have next
 
 * Complete the online documentation :P
+* Add feature to calculate total and show it in bottom of page and PDF
