@@ -7,6 +7,6 @@ categories: pdf
 
 ## PDF Customization
 
-Please view the demo implementation [https://github.com/ashrafuzzaman/query_report_demo](here).
+Please view the demo implementation [here](https://github.com/ashrafuzzaman/query_report_demo).
 
 I will be adding detailed explanation soon.
