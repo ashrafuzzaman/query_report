@@ -3,7 +3,7 @@ layout: default
 title: Query report by ashrafuzzaman
 ---
 
-[Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://www.ashrafuzzaman.com).
+[Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://ashrafuzzaman.github.io/site).
 
 Query report is a reporting tool, which does the following:
 
