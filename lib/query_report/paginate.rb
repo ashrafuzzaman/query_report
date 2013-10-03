@@ -6,8 +6,12 @@
 module QueryReport
   module PaginateModule
     def apply_pagination(query, params)
-      page_method_name = Kaminari.config.page_method_name
-      query.send(page_method_name, params[:page])
+      if paginate?
+        page_method_name = Kaminari.config.page_method_name
+        query.send(page_method_name, params[:page])
+      else
+        query
+      end
     end
   end
 end

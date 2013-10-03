@@ -42,6 +42,11 @@ module QueryReport
       @columns.any?(&:has_total?)
     end
 
+    def paginate?
+      return true if @options[:paginate].nil?
+      @options[:paginate]
+    end
+
     # to support the helper methods
     def method_missing(meth, *args, &block)
       if @template.respond_to?(meth)

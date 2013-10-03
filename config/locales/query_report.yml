@@ -7,3 +7,5 @@ en:
       to: 'To'
     total:
       Total
+    labels:
+      search: Search
