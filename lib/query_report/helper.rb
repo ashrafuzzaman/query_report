@@ -17,13 +17,25 @@ module QueryReport
     end
 
     def render_report(options)
+      if (params[:send_as_email].to_i > 0)
+        send_pdf_email(params[:email_to], params[:subject], params[:message], action_name, pdf_for_report(options))
+      end
+
+      @remote = false
       respond_to do |format|
-        format.js { render 'query_report/list' }
+        format.js do
+          @remote = true
+          render 'query_report/list'
+        end
         format.html { render 'query_report/list' }
         format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
-        format.pdf { send_data query_report_pdf_template_class(options).new(@report).to_pdf.render }
+        format.pdf { send_data pdf_for_report(options) }
       end
+    end
+
+    def pdf_for_report(options)
+      query_report_pdf_template_class(options).new(@report).to_pdf.render
     end
 
     def query_report_pdf_template_class(options)
@@ -47,6 +59,12 @@ module QueryReport
       else
         nil
       end
+    end
+
+    def send_pdf_email(email, subject, message, file_name, attachment)
+      @user = current_user
+      to = email.split(',')
+      ReportMailer.send_report(@user, to, subject, message, file_name, attachment).deliver
     end
   end
 end

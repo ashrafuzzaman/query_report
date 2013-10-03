@@ -1,10 +1,13 @@
-<% if report.has_filter? %>
-    <%= search_form_for report.search, :url => url_for, :html => {:method => :get, :class => 'form-inline'} do |f| %>
-        <% report.filters.each do |filter| %>
-            <% filter.comparators.each do |comparator| %>
-                <%= query_report_render_filter(filter, comparator) %>
-            <% end %>
+<%= search_form_for report.search, url: url_for, remote: @remote, html: {:method => :get, :class => 'form-inline'} do |f| %>
+    <% report.filters.each do |filter| %>
+        <% filter.comparators.each do |comparator| %>
+            <%= query_report_render_filter(filter, comparator) %>
         <% end %>
-        <%= f.submit 'Search', :class => 'btn btn-blue' %>
     <% end %>
+    <%= hidden_field_tag :send_as_email, false %>
+    <%= hidden_field_tag :email_to %>
+    <%= hidden_field_tag :subject %>
+    <%= hidden_field_tag :message %>
+    <%= hidden_field_tag :target_dom_id, @target_dom_id %>
+    <%= f.submit 'Search', :class => 'btn btn-blue', :onclick => "$('#{@target_dom_id} #send_as_email').val(0);" %>
 <% end %>

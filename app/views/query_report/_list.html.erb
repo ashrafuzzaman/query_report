@@ -1,0 +1,15 @@
+<% uuid = Time.now.to_i
+   @target_dom_id = params[:target_dom_id] || "report_#{uuid}" %>
+<div class="query_report" id="<%= @target_dom_id %>">
+  <div class="query_report_header">
+    <div class="query_report_search_form" style="<%= report.has_filter? ? '' : 'display: none;' %>">
+      <%= render :partial => "query_report/search", locals: {report: report} %>
+    </div>
+    <div class="query_report_links">
+      <%= render :partial => "query_report/links", locals: {report: report} %>
+    </div>
+  </div>
+  <div class="query_report_content">
+    <%= render :partial => "query_report/content", locals: {report: report} %>
+  </div>
+</div>

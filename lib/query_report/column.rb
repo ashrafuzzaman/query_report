@@ -13,6 +13,7 @@ module QueryReport
     # +options+:: Options can have the following,
     #             options[:type] => date | text | whatever
     #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
+    #             options[:show_total] => set true to calculate total for that column
     #             options[:only_on_web] => the column will appear on the web and not appear in PDF or csv if set to true
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
@@ -54,6 +55,10 @@ module QueryReport
         @options[:only_on_web] == true
       end
 
+      def sortable?
+        @options[:sortable] == true
+      end
+
       def humanize
         @humanize ||= options[:as] || @report.model_class.human_attribute_name(name)
       end
@@ -67,7 +72,7 @@ module QueryReport
       end
 
       def total
-        @total ||= has_total? ? report.filtered_query.sum(name) : nil
+        @total ||= has_total? ? report.records.inject(0) {|sum, r| sum + r[humanize] } : nil
       end
     end
   end

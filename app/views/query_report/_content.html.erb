@@ -1,0 +1,9 @@
+<div class="query_report_charts">
+  <%= render :partial => "query_report/charts", locals: {report: report} %>
+</div>
+<div class="query_report_records">
+  <%= render :partial => "query_report/records", locals: {report: report} %>
+</div>
+<div class="query_report_pagination">
+  <%= paginate report.paginated_query, remote: @remote if report.paginate? %>
+</div>

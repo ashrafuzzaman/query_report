@@ -22,7 +22,9 @@ module QueryReport
         },
         chart: { height: 160, width: 200 }
     }
-    config.date_format = :default
+    config.date_format     = :default
     config.datetime_format = :default
+    config.email_from      = "from@example.com"
+    config.allow_email_report = true
   end
 end

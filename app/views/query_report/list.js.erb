@@ -1,0 +1,9 @@
+<%if params['target_dom_id'].present?%>
+if ($('#<%=params['target_dom_id']%> .query_report_content').length == 0) {
+    $('#<%=params['target_dom_id']%>').html('<%= escape_javascript(render :partial => 'query_report/list', locals: {report: @report})%>');
+} else {
+    $('#<%=params['target_dom_id']%> .query_report_content').html('<%= escape_javascript(render :partial => 'query_report/content', locals: {report: @report})%>');
+}
+<% else %>
+console.log("target_dom_id was not defined");
+<% end %>

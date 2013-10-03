@@ -1,14 +1,1 @@
-<%= render :partial => "query_report/search", locals: {report: @report} %>
-<br/>
-<%= render :partial => "query_report/links", locals: {report: @report} %>
-<%= render :partial => "query_report/charts", locals: {report: @report} %>
-<br/>
-<%# if @report.scopes.size > 0 %>
-<%#= link_to_with_scope('all', @report.current_scope) %>
-<%# @report.scopes.each do |scope| %>
-<%#= link_to_with_scope(scope, @report.current_scope) %>
-<%# end %>
-<%# end %>
-
-<%= render :partial => "query_report/records", locals: {report: @report} %>
-<%= paginate @report.paginated_query if @report.paginate? %>
+<%= render :partial => "query_report/_list", locals: {report: @report} %>

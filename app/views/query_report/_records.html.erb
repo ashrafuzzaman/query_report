@@ -2,7 +2,7 @@
     <table class="table table-bordered table-striped">
       <thead>
       <% report.columns.each do |column| %>
-          <th><%= sort_link(report.search, column.name) %></th>
+          <th><%= column.sortable? ? sort_link(report.search, column.name, {}, remote: @remote) : column.name %></th>
       <% end %>
       </thead>
 
