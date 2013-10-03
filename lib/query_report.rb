@@ -25,6 +25,8 @@ module QueryReport
     config.date_format     = :default
     config.datetime_format = :default
     config.email_from      = "from@example.com"
-    config.allow_email_report = true
+    config.allow_email_report  = true
+    config.record_table_class  = 'table table-bordered table-striped'
+    config.search_button_class = 'btn btn-blue'
   end
 end

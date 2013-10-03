@@ -9,5 +9,5 @@
     <%= hidden_field_tag :subject %>
     <%= hidden_field_tag :message %>
     <%= hidden_field_tag :target_dom_id, @target_dom_id %>
-    <%= f.submit 'Search', :class => 'btn btn-blue', :onclick => "$('#{@target_dom_id} #send_as_email').val(0);" %>
+    <%= f.submit 'Search', :class => QueryReport.config.search_button_class, :onclick => "$('#{@target_dom_id} #send_as_email').val(0);" %>
 <% end %>

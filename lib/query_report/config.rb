@@ -6,5 +6,7 @@ module QueryReport
     config_accessor :datetime_format
     config_accessor :email_from
     config_accessor :allow_email_report
+    config_accessor :record_table_class
+    config_accessor :search_button_class
   end
 end
