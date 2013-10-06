@@ -50,7 +50,7 @@ module QueryReport
     end
 
     def humanized_table_header
-      report_columns.collect(&:humanize)
+      report_columns.collect { |h| fix_content h.humanize }
     end
 
     def table_content_for(report)
@@ -59,7 +59,7 @@ module QueryReport
         item_values = []
 
         report_columns.collect(&:humanize).each do |column|
-          item_values << item[column].to_s
+          item_values << fix_content(item[column].to_s)
         end
         item_values
       end
@@ -87,6 +87,10 @@ module QueryReport
       pdf.table(items, :row_colors => alternate_row_bg_color, :header => true, :cell_style => {:inline_format => true, :size => font_size}) do
         row(0).style(:font_style => :bold, :background_color => header_bg_color, :size => header_font_size)
       end
+    end
+
+    def fix_content(content)
+      content
     end
 
     private

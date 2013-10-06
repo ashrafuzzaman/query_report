@@ -5,6 +5,10 @@ require 'query_report/paginate'
 describe QueryReport::PaginateModule do
   class DummyClass
     include QueryReport::PaginateModule
+
+    def paginate?
+      true
+    end
   end
 
   let(:object) { DummyClass.new }
