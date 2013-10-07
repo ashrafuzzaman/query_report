@@ -16,6 +16,8 @@ module QueryReport
     # +options+:: Options can have the following,
     #             options[:type] => date | text | whatever
     #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
+    #             options[:manual] => if set to true then that filter will not be applied, only will appear and can be used for custom application
+    #             options[:default] => support default filter value, can be one value or for range filter can be array
     def filter(column, options={}, &block)
       @filters ||= []
       @filters << Filter.new(@params, column, options, &block)
@@ -35,7 +37,7 @@ module QueryReport
       @filters.select(&:custom?).each do |filter|
         ordered_custom_param_values = ordered_param_value_objects(filter)
         has_no_user_input = ordered_custom_param_values.all? { |p| p.nil? or p == '' }
-        query = filter.block.call(query, *ordered_custom_param_values) unless has_no_user_input
+        query = filter.block.call(query, *ordered_custom_param_values) if filter.block and !has_no_user_input
       end
       query
     end
@@ -81,7 +83,7 @@ module QueryReport
       end
 
       def custom?
-        @block ? true : false
+        @block || @options[:manual] == true ? true : false
       end
 
       def search_keys
