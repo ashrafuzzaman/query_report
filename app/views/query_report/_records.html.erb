@@ -7,10 +7,14 @@
       </thead>
 
       <tbody>
-      <% report.records.each do |record| %>
+      <% report.records.each_with_index do |record, index| %>
           <tr>
             <% report.columns.each do |column| %>
-                <td><%= record[column.humanize] %></td>
+                <% if column.rowspan? and report.new_row_for_rowspan?(column, index) %>
+                    <td rowspan="<%= report.rowspan_for(column, index) %>"><%= record[column.humanize] %></td>
+                <% elsif !column.rowspan? %>
+                    <td><%= record[column.humanize] %></td>
+                <% end %>
             <% end %>
           </tr>
       <% end %>

@@ -47,7 +47,7 @@ module QueryReport
 
       def initialize(report, column_name, options={}, block = nil)
         @report, @name, @options = report, column_name, options
-        @type = @report.model_class.columns_hash[column_name.to_s].try(:type) || options[:type] || :string
+        @type = @report.model_class.columns_hash[column_name.to_s].try(:type) || options[:type] || :string rescue :string
         @data = block || column_name.to_sym
       end
 
@@ -57,6 +57,10 @@ module QueryReport
 
       def sortable?
         @options[:sortable] == true
+      end
+
+      def rowspan?
+        @options[:rowspan] == true
       end
 
       def humanize
