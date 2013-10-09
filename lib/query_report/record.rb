@@ -48,23 +48,32 @@ module QueryReport
       @has_any_rowspan
     end
 
-    def rowspan_for(column, index)
-      length = records.length
-      val = records[index][column.humanize]
-      rowspan = 0
-      index.upto(length-1) do |i|
-        if records[i][column.humanize] == val
-          rowspan += 1
-        else
-          break
-        end
-      end
-      rowspan
+    def records_with_rowspan
+      @records_with_rowspan ||= map_rowspan(records)
     end
 
-    def new_row_for_rowspan?(column, index)
-      return true if index == 0
-      return records[index][column.humanize] != records[index-1][column.humanize]
+    def all_records_with_rowspan
+      @all_records_with_rowspan ||= map_rowspan(all_records)
+    end
+
+    def map_rowspan(rec)
+      last_reset_index = @columns.select(&:rowspan?).inject({}) { |hash, column| hash[column.humanize] = 0; hash }
+      last_column_content = {}
+      rec.each_with_index do |row, index|
+        last_reset_index.each do |col, last_index|
+          content = row[col]
+          last_content = last_column_content[col]
+          if index == 0 || content != last_content
+            last_column_content[col] = content
+            last_reset_index[col]    = index
+            #initialize
+            row[col] = {content: content, rowspan: 1}
+          elsif content == last_content
+            rec[last_index][col][:rowspan] += 1
+            row.delete col
+          end
+        end
+      end
     end
   end
 end

@@ -54,12 +54,12 @@ module QueryReport
     end
 
     def table_content_for(report)
-      table_items = report.all_records
+      table_items = report.all_records_with_rowspan
       items = table_items.map do |item|
         item_values = []
 
         report_columns.collect(&:humanize).each do |column|
-          item_values << fix_content(item[column].to_s)
+          item_values << fix_content(item[column]) if item.has_key? column
         end
         item_values
       end
@@ -90,7 +90,7 @@ module QueryReport
     end
 
     def fix_content(content)
-      content
+      content.kind_of?(Hash) ? content : content.to_s
     end
 
     private

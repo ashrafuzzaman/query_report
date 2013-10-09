@@ -7,13 +7,15 @@
       </thead>
 
       <tbody>
-      <% report.records.each_with_index do |record, index| %>
+      <% records = report.has_any_rowspan? ? report.records_with_rowspan : report.records %>
+      <% records.each do |record| %>
           <tr>
             <% report.columns.each do |column| %>
-                <% if column.rowspan? and report.new_row_for_rowspan?(column, index) %>
-                    <td rowspan="<%= report.rowspan_for(column, index) %>"><%= record[column.humanize] %></td>
-                <% elsif !column.rowspan? %>
-                    <td><%= record[column.humanize] %></td>
+                <% value = record[column.humanize] %>
+                <% if value.kind_of?(Hash) %>
+                    <td rowspan="<%= value[:rowspan] %>"><%= value[:content] %></td>
+                <% elsif record.has_key?(column.humanize) %>
+                    <td><%= value %></td>
                 <% end %>
             <% end %>
           </tr>
