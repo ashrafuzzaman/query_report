@@ -83,7 +83,7 @@ module QueryReport
       end
 
       def custom?
-        @block || @options[:manual] == true ? true : false
+        (@block || @options[:manual]) ? true : false
       end
 
       def search_keys

@@ -66,14 +66,14 @@ describe QueryReport::FilterModule::Comparator do
 
     context 'with datetime type' do
       let(:filter) { QueryReport::FilterModule::Filter.new({}, :created_at, {type: :date}) }
-      let(:default_value) { Time.zone.now }
+      let(:default_value) { Date.current }
       let(:default_value_str) { I18n.l(default_value, format: QueryReport.config.datetime_format) }
       subject { QueryReport::FilterModule::Comparator.new(filter, :gteq, 'From date', default_value) }
 
       its(:param_value) { should == default_value_str }
       its(:has_default?) { should be true }
       its(:stringified_default) { should == default_value_str }
-      its(:objectified_param_value) { should == default_value }
+      its(:objectified_param_value) { should == Date.current }
     end
 
     context 'with datetime type' do

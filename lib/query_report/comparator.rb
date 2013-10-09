@@ -39,16 +39,17 @@ module QueryReport
 
       #convert param value which is a string to object like date and boolean
       def objectified_param_value
-        @stringified_default ||= case @filter.type
-                                   when :date
-                                     @default.kind_of?(String) ? Date.current.parse(@default) : @default
-                                   when :datetime
-                                     @default.kind_of?(String) ? Time.zone.parse(@default) : @default
-                                   when :boolean
-                                     @default.to_boolean
-                                   else
-                                     @default
-                                 end
+        @objectified_param_value ||= case @filter.type
+                                       when :date
+                                         format = I18n.t("date.formats.#{QueryReport.config.date_format}")
+                                         param_value.kind_of?(String) ? (Date.strptime(param_value, format) rescue param_value) : param_value
+                                       when :datetime
+                                         param_value.kind_of?(String) ? Time.zone.parse(param_value) : param_value
+                                       when :boolean
+                                         param_value.to_boolean
+                                       else
+                                         param_value
+                                     end
       end
     end
   end
