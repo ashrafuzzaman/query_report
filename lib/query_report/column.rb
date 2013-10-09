@@ -15,6 +15,7 @@ module QueryReport
     #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
     #             options[:show_total] => set true to calculate total for that column
     #             options[:only_on_web] => the column will appear on the web and not appear in PDF or csv if set to true
+    #             options[:rowspan] => the rows with same values in the same column will span if set to true
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
