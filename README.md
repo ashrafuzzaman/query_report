@@ -1,6 +1,7 @@
 [Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://ashrafuzzaman.github.io).
 
 [![Build Status](https://api.travis-ci.org/ashrafuzzaman/query_report.png?branch=master)](http://travis-ci.org/ashrafuzzaman/query_report)
+[![Gem Version](https://badge.fury.io/rb/query_report.png)](http://badge.fury.io/rb/query_report)
 
 Query report is a reporting tool, which does the following:
 
@@ -20,7 +21,7 @@ concentrate in a report is the query and filter.
 Query report is tested with Rails 3. You can add it to your Gemfile with:
 
 ```ruby
-gem "query_report", "~> 1.0.4"
+gem "query_report"
 ```
 
 Run the bundle command to install it.
