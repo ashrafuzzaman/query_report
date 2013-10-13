@@ -1,4 +1,4 @@
-[Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://ashrafuzzaman.github.io/site).
+[Query report](http://ashrafuzzaman.github.io/query_report/) By [Ashrafuzzaman](http://ashrafuzzaman.github.io).
 
 [![Build Status](https://api.travis-ci.org/ashrafuzzaman/query_report.png?branch=master)](http://travis-ci.org/ashrafuzzaman/query_report)
 
@@ -54,4 +54,4 @@ end
 ```
 
 ## License
-MIT License. Copyright © 2013 [Ashrafuzzaman](http://ashrafuzzaman.github.io/site). See MIT-LICENSE for further details.
+MIT License. Copyright © 2013 [Ashrafuzzaman](http://ashrafuzzaman.github.io). See MIT-LICENSE for further details.
