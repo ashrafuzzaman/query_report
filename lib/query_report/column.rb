@@ -69,7 +69,7 @@ module QueryReport
       end
 
       def value(record)
-        self.data.kind_of?(Symbol) ? record.send(self.name) : self.data.call(record)
+        self.data.kind_of?(Symbol) ? (record.respond_to?(self.name) ? record.send(self.name) : record[self.name]) : self.data.call(record)
       end
 
       def has_total?
@@ -77,7 +77,7 @@ module QueryReport
       end
 
       def total
-        @total ||= has_total? ? report.records.inject(0) {|sum, r| sum + r[humanize] } : nil
+        @total ||= has_total? ? report.records.inject(0) {|sum, r| sum + (r[humanize].nil? ? 0 : r[humanize]) } : nil
       end
     end
   end

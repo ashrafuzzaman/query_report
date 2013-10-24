@@ -7,7 +7,7 @@ require "query_report/version"
 Gem::Specification.new do |s|
   s.name          = "query_report"
   s.version       = QueryReport::VERSION
-  s.authors       = ["A.K.M. Ashrafuzzaman"]
+  s.author        = "A.K.M. Ashrafuzzaman"
   s.email         = ["ashrafuzzaman.g2@gmail.com"]
   s.description   = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
   s.summary       = %q{Structure you reports}
