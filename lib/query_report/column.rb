@@ -77,7 +77,7 @@ module QueryReport
       end
 
       def total
-        @total ||= has_total? ? report.records.inject(0) {|sum, r| sum + (r[humanize].nil? ? 0 : r[humanize]) } : nil
+        @total ||= has_total? ? report.records.inject(0) {|sum, r| sum + r[humanize].to_f } : nil
       end
     end
   end
