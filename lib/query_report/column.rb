@@ -61,7 +61,16 @@ module QueryReport
       end
 
       def rowspan?
-        @options[:rowspan] == true
+        @options[:rowspan] == true || @options[:rowspan].kind_of?(Symbol)
+      end
+
+      def rowspan_column_humanized
+        rowspan_column_name = @options[:rowspan].kind_of?(Symbol) ? @options[:rowspan] : self.name
+
+        report.columns.each do |column|
+          return column.humanize if column.name == rowspan_column_name
+        end
+        return self.humanize
       end
 
       def humanize
@@ -77,7 +86,7 @@ module QueryReport
       end
 
       def total
-        @total ||= has_total? ? report.records.inject(0) {|sum, r| sum + r[humanize].to_f } : nil
+        @total ||= has_total? ? report.records.inject(0) { |sum, r| sum + r[humanize].to_f } : nil
       end
     end
   end

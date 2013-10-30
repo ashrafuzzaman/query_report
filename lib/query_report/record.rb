@@ -56,24 +56,43 @@ module QueryReport
       @all_records_with_rowspan ||= map_rowspan(all_records)
     end
 
-    def map_rowspan(rec)
+    def map_rowspan(recs)
       last_reset_index = @columns.select(&:rowspan?).inject({}) { |hash, column| hash[column.humanize] = 0; hash }
-      last_column_content = {}
-      rec.each_with_index do |row, index|
+      rowspan_column_hash = @columns.select(&:rowspan?).inject({}) { |hash, column| hash[column.humanize] = column.rowspan_column_humanized; hash }
+
+      prev_row = {}
+      recs.each_with_index do |row, index|
         last_reset_index.each do |col, last_index|
+          rowspan_col = rowspan_column_hash[col]
+
+          rowspan_content = get_content_from_element(row[rowspan_col]) #picking the current content of the rowspan column
+          prev_rowspan_content = get_content_from_element(prev_row[rowspan_col]) #picking the last rowspan content stored
+
           content = row[col]
-          last_content = last_column_content[col]
-          if index == 0 || content != last_content
-            last_column_content[col] = content
-            last_reset_index[col]    = index
+          prev_content = get_content_from_element(prev_row[col])
+
+          if index == 0 || rowspan_content != prev_rowspan_content || content != prev_content
+            last_reset_index[col] = index
             #initialize
             row[col] = {content: content, rowspan: 1}
-          elsif content == last_content
-            rec[last_index][col][:rowspan] += 1
-            row.delete col
+          elsif rowspan_content == prev_rowspan_content
+            recs[last_index][col][:rowspan] += 1
           end
         end
+
+        prev_row = row
       end
+
+      #cleaning up the un needed row values
+      recs.each do |row|
+        last_reset_index.each do |col, last_index|
+          row.delete col unless row[col].kind_of?(Hash)
+        end
+      end
+    end
+
+    def get_content_from_element(content)
+      content.kind_of?(Hash) ? content[:content] : content
     end
   end
 end
