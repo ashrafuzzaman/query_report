@@ -65,11 +65,11 @@ module QueryReport
         last_reset_index.each do |col, last_index|
           rowspan_col = rowspan_column_hash[col]
 
-          rowspan_content = get_content_from_element(row[rowspan_col]) #picking the current content of the rowspan column
-          prev_rowspan_content = get_content_from_element(prev_row[rowspan_col]) #picking the last rowspan content stored
+          rowspan_content = content_from_element(row[rowspan_col]) #picking the current content of the rowspan column
+          prev_rowspan_content = content_from_element(prev_row[rowspan_col]) #picking the last rowspan content stored
 
           content = row[col]
-          prev_content = get_content_from_element(prev_row[col])
+          prev_content = content_from_element(prev_row[col])
 
           if index == 0 || rowspan_content != prev_rowspan_content || content != prev_content
             last_reset_index[col] = index
@@ -91,7 +91,7 @@ module QueryReport
       end
     end
 
-    def get_content_from_element(content)
+    def content_from_element(content)
       content.kind_of?(Hash) ? content[:content] : content
     end
   end
