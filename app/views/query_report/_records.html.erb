@@ -11,11 +11,14 @@
       <% records.each do |record| %>
           <tr>
             <% report.columns.each do |column| %>
-                <% value = record[column.humanize] %>
+                <% value = record[column.humanize]
+                   align = column.align
+                   align_attr = align ? "align=#{align.to_s}" : ''
+                %>
                 <% if value.kind_of?(Hash) %>
-                    <td rowspan="<%= value[:rowspan] %>"><%= value[:content] %></td>
+                    <td rowspan="<%= value[:rowspan] %>" <%= align_attr %> ><%= value[:content] %></td>
                 <% elsif record.has_key?(column.humanize) %>
-                    <td><%= value %></td>
+                    <td <%= align_attr %>><%= value %></td>
                 <% end %>
             <% end %>
           </tr>

@@ -2,7 +2,7 @@
     <tfoot>
     <tr>
       <% report.column_total_with_colspan.each do |total_with_colspan| %>
-          <td colspan="<%= total_with_colspan[:colspan] %>"><%= total_with_colspan[:content] %></td>
+          <td colspan="<%= total_with_colspan[:colspan] %>" align="right"><%= total_with_colspan[:content] %></td>
       <% end %>
     </tr>
     </tfoot>

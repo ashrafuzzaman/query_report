@@ -85,6 +85,10 @@ module QueryReport
         @options[:show_total] == true
       end
 
+      def align
+        @options[:align] || (has_total? ? :right : :left)
+      end
+
       def total
         @total ||= has_total? ? report.records.inject(0) { |sum, r| sum + report.content_from_element(r[humanize]).to_f } : nil
       end

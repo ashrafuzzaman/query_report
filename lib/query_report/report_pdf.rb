@@ -53,6 +53,12 @@ module QueryReport
       report_columns.collect { |h| fix_content h.humanize }
     end
 
+    def alignment_hash
+      #@alignment_hash ||= report.columns.inject({}, ) do |col|
+      #  column(index).style :align => col.align if col.align
+      #end
+    end
+
     def table_content_for(report)
       table_items = report.all_records_with_rowspan
       items = table_items.map do |item|
