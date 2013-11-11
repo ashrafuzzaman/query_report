@@ -71,12 +71,14 @@ module QueryReport
         item_values
       end
 
+      ap report.column_total_with_colspan
       if report.has_total?
         items = items << report.column_total_with_colspan.collect do |total|
-          total[:content] = fix_content(total[:content]) if total.kind_of?(Hash)
+          total[:content] = fix_content(total[:content])
           total
         end
       end
+      ap items
       items
     end
 

@@ -90,7 +90,7 @@ module QueryReport
       end
 
       def total
-        @total ||= has_total? ? report.records.inject(0) { |sum, r| sum + report.content_from_element(r[humanize]).to_f } : nil
+        @total ||= has_total? ? report.records_with_rowspan.inject(0) { |sum, r| sum + report.content_from_element(r[humanize]).to_f } : nil
       end
     end
   end
