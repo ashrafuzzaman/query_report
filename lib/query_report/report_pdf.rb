@@ -54,28 +54,42 @@ module QueryReport
     end
 
     def alignment_hash
-      #@alignment_hash ||= report.columns.inject({}, ) do |col|
-      #  column(index).style :align => col.align if col.align
-      #end
+      @alignment_hash ||= report.columns.inject({}) do |col_hash, col|
+        col_hash[col.humanize] = col.align if col.align; col_hash
+      end
     end
 
     def table_content_for(report)
       table_items = report.all_records_with_rowspan
+
       items = table_items.map do |item|
         item_values = []
 
         report_columns.collect(&:humanize).each do |column|
-          item_values << fix_content(item[column]) if item.has_key? column
+          item_values << prepare_content(column, item) if item.has_key? column
         end
         item_values
       end
 
       if report.has_total?
         items = items << report.column_total_with_colspan.collect do |total|
-          total[:colspan] ? total : total[:content]
+          total[:content] = fix_content(total[:content]) if total.kind_of?(Hash)
+          total
         end
       end
       items
+    end
+
+    def prepare_content(column, item)
+      content = fix_content(item[column])
+      if alignment_hash[column]
+        if content.kind_of? Hash
+          content[:align] = alignment_hash[column]
+        else
+          content = {content: fix_content(content), align: alignment_hash[column]}
+        end
+      end
+      content
     end
 
     def render_table_with(report)
@@ -96,7 +110,12 @@ module QueryReport
     end
 
     def fix_content(content)
-      content.kind_of?(Hash) ? content : content.to_s
+      if content.kind_of?(Hash)
+        content[:content] = content[:content].to_s
+        content
+      else
+        content.to_s
+      end
     end
 
     private

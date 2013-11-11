@@ -30,7 +30,7 @@ module QueryReport
             title = total_text_printed ? '' : I18n.t('query_report.total')
             total_with_colspan << (colspan == 1 ? {content: title} : {content: title, colspan: colspan})
           end
-          total_with_colspan << {content: column.total}
+          total_with_colspan << {content: column.total, align: column.align}
           total_text_printed = true
           colspan = 0
         else

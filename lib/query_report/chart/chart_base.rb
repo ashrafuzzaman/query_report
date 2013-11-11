@@ -38,7 +38,6 @@ module QueryReport
         options = {:title => title, backgroundColor: 'transparent'}.merge(@options)
         chart_type = "#{type}_chart".classify
         chart_type = "GoogleVisualr::Interactive::#{chart_type}".constantize
-        ap @data_table.as_json
         chart_type.new(@data_table, options)
       end
 

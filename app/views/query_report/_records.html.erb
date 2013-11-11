@@ -13,7 +13,7 @@
             <% report.columns.each do |column| %>
                 <% value = record[column.humanize]
                    align = column.align
-                   align_attr = align ? "align=#{align.to_s}" : ''
+                   align_attr = align ? "class=queryreport-td-align-#{align.to_s}" : ''
                 %>
                 <% if value.kind_of?(Hash) %>
                     <td rowspan="<%= value[:rowspan] %>" <%= align_attr %> ><%= value[:content] %></td>
