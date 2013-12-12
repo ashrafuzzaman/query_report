@@ -17,7 +17,7 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency 'rails', ['>= 3.0.0', '< 4.0.0']
+  s.add_dependency 'rails', '>= 3.0.0'
   s.add_dependency 'ransack'
   s.add_dependency 'google_visualr', '>= 2.1'
   s.add_dependency 'rmagick'
