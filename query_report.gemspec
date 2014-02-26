@@ -23,19 +23,14 @@ Gem::Specification.new do |s|
   s.add_dependency 'rmagick'
   s.add_dependency 'gruff'
   s.add_dependency 'kaminari'
-  s.add_dependency 'prawn', '~>1.0.0.rc2'
+  s.add_dependency 'prawn', '>= 0.15.0'
 
-
-  s.add_development_dependency 'bundler', ['>= 1.0.0']
   s.add_development_dependency 'rake', ['>= 0']
-  s.add_development_dependency 'awesome_print'
-  s.add_development_dependency 'sqlite3'
   s.add_development_dependency 'jquery-rails'
   s.add_development_dependency 'bullet'
   s.add_development_dependency 'rspec', ['>= 0']
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
-  s.add_development_dependency 'database_cleaner', ['~> 1.2.0']
+  s.add_development_dependency 'database_cleaner', ['>= 1.2.0']
   s.add_development_dependency 'capybara', ['>= 1.0']
-  s.add_development_dependency 'rdoc', ['>= 0']
 end
