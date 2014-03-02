@@ -38,7 +38,7 @@ module QueryReport
       @columns = @columns.delete_if { |col| col.only_on_web? } unless render_from_view
 
       query.map do |record|
-        array = @columns.collect { |column| [column.humanize, render_from_view ? column.value(record) : strip_tags(column.value(record))] }
+        array = @columns.collect { |column| [column.humanize, render_from_view ? column.value(record) : strip_tags(column.value(record).to_s)] }
         Hash[*array.flatten]
       end
     end
