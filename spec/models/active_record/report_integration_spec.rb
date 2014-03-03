@@ -8,7 +8,7 @@ require 'fake_app/active_record/models'
 describe 'Integration' do
   before(:each) do
     params = {}
-    view_context = Object.new
+    view_context = ApplicationController.helpers
     options = {}
     @report = QueryReport::Report.new(params, view_context, options)
 

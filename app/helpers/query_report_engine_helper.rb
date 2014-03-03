@@ -1,6 +1,6 @@
 require 'query_report/errors'
 
-module QueryReportHelper
+module QueryReportEngineHelper
   def query_report_render_filter(filter, comparator)
     hint = comparator.name
     search_tag_name = comparator.search_tag_name

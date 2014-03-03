@@ -1,4 +1,4 @@
-module QueryReportFilterHelper
+module QueryReportEngineFilterHelper
   def query_report_text_filter(name, value, options={})
     text_field_tag name, value, options
   end
