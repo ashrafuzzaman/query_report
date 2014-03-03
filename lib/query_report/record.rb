@@ -38,9 +38,14 @@ module QueryReport
       @columns = @columns.delete_if { |col| col.only_on_web? } unless render_from_view
 
       query.map do |record|
-        array = @columns.collect { |column| [column.humanize, render_from_view ? column.value(record) : strip_tags(column.value(record).to_s)] }
+        array = @columns.collect { |column| [column.humanize, sanitize!(column.value(record), render_from_view)] }
         Hash[*array.flatten]
       end
+    end
+
+    def sanitize!(data, render_from_view)
+      data = strip_tags(data) if !render_from_view && data.present? && data.is_a?(String)
+      data
     end
 
     def has_any_rowspan?
