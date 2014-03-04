@@ -25,7 +25,7 @@ begin
   require 'rdoc/task'
 
   Rake::RDocTask.new do |rdoc|
-    require 'kaminari/version'
+    require 'query_report/version'
 
     rdoc.rdoc_dir = 'rdoc'
     rdoc.title = "query report #{QueryReport::VERSION}"

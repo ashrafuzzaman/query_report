@@ -43,11 +43,6 @@ module QueryReport
       end
     end
 
-    def sanitize_value(data, render_from_view)
-      data = strip_tags(data) if !render_from_view && data.present? && data.is_a?(String)
-      data
-    end
-
     def has_any_rowspan?
       @has_any_rowspan = @columns.any?(&:rowspan?) if @has_any_rowspan.nil?
       @has_any_rowspan
@@ -98,6 +93,12 @@ module QueryReport
 
     def content_from_element(content)
       content.kind_of?(Hash) ? content[:content] : content
+    end
+
+    private
+    def sanitize_value(data, render_from_view)
+      data = strip_tags(data) if !render_from_view && data.present? && data.is_a?(String)
+      data
     end
   end
 end
