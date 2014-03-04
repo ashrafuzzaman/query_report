@@ -2,7 +2,7 @@ require 'kaminari/sinatra'
 require 'kaminari/helpers/action_view_extension'
 require 'rack/test'
 require 'sinatra/test_helpers'
-require 'capybara/rspec'
+#require 'capybara/rspec'
 
 require 'fake_app/sinatra_app'
 
