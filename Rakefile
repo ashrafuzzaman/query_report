@@ -1,51 +1,37 @@
 #!/usr/bin/env rake
-begin
-  require 'bundler/setup'
-rescue LoadError
-  puts 'You must `gem install bundler` and `bundle install` to run rake tasks'
-end
-begin
-  require 'rdoc/task'
-rescue LoadError
-  require 'rdoc/rdoc'
-  require 'rake/rdoctask'
-  RDoc::Task = Rake::RDocTask
-end
+# encoding: utf-8
 
-RDoc::Task.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'QueryReport'
-  rdoc.options << '--line-numbers'
-  rdoc.rdoc_files.include('README.md')
-  rdoc.rdoc_files.include('lib/**/*.rb')
-end
-
-APP_RAKEFILE = File.expand_path("../test/dummy/Rakefile", __FILE__)
-load 'rails/tasks/engine.rake'
-
-
-
+require 'bundler'
 Bundler::GemHelper.install_tasks
 
-#require 'rake/testtask'
-#
-#Rake::TestTask.new(:test) do |t|
-#  t.libs << 'lib'
-#  t.libs << 'test'
-#  t.pattern = 'test/**/*_test.rb'
-#  t.verbose = false
-#end
-#
-#
-#task :default => :test
+require 'rspec/core'
+require 'rspec/core/rake_task'
 
+RSpec::Core::RakeTask.new(:spec) do |spec|
+  spec.pattern = FileList['spec/**/*_spec.rb']
+end
 
-require "bundler/gem_tasks"
-require "rspec/core/rake_task"
+task :default => "spec:all"
 
-RSpec::Core::RakeTask.new
+namespace :spec do
+  desc "Run Tests against all ORMs"
+  task :all do
+    sh "bundle --quiet"
+    sh "bundle exec rake spec"
+  end
+end
 
-task :default => :spec
-task :test => :spec
+begin
+  require 'rdoc/task'
 
-task :default => :test
+  Rake::RDocTask.new do |rdoc|
+    require 'kaminari/version'
+
+    rdoc.rdoc_dir = 'rdoc'
+    rdoc.title = "query report #{QueryReport::VERSION}"
+    rdoc.rdoc_files.include('README*')
+    rdoc.rdoc_files.include('lib/**/*.rb')
+  end
+rescue LoadError
+  puts 'RDocTask is not supported on this VM and platform combination.'
+end
