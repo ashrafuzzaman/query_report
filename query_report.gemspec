@@ -18,11 +18,11 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency 'rails', '>= 3.0.0'
-  s.add_dependency 'ransack', '~> 1.1.0'
+  s.add_dependency 'ransack', '>= 1.0.0'
   s.add_dependency 'google_visualr', '~> 2.1.0'
   s.add_dependency 'rmagick', '~> 2.13.2'
   s.add_dependency 'gruff', '~> 0.5.1'
-  s.add_dependency 'kaminari', '~> 0.15.1'
+  s.add_dependency 'kaminari', '>= 0.14.1'
   s.add_dependency 'prawn', '>= 0.15.0'
 
   s.add_development_dependency 'rake', ['>= 0']

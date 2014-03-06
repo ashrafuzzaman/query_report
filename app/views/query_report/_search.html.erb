@@ -1,4 +1,4 @@
-<%= search_form_for report.search, url: url_for, remote: @remote, html: {:method => :get, :class => 'form-inline'} do |f| %>
+<%= search_form_for report.search, url: url_for({}), remote: @remote, html: {:method => :get, :class => 'form-inline'} do |f| %>
     <% report.filters.each do |filter| %>
         <% filter.comparators.each do |comparator| %>
             <%= query_report_render_filter(filter, comparator) %>
