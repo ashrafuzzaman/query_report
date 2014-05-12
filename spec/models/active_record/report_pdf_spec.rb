@@ -20,7 +20,7 @@ if defined? ActiveRecord
 
     context 'with selected columns' do
       it "generates PDF report" do
-        report.query = User.scoped
+        report.query = User.all
         report.instance_eval do
           column :name
           column :age, only_on_web: true
@@ -38,7 +38,7 @@ if defined? ActiveRecord
 
     context 'with charts' do
       it "generates PDF report" do
-        report.query = User.scoped
+        report.query = User.all
         report.instance_eval do
           column :name
 
@@ -90,7 +90,7 @@ if defined? ActiveRecord
         end
       end
       it "generates PDF report" do
-        report.query = User.scoped
+        report.query = User.all
         report.instance_eval do
           column :name
           column :age, only_on_web: true
@@ -118,7 +118,7 @@ if defined? ActiveRecord
         options = {}
         @report = QueryReport::Report.new(params, view_context, options)
 
-        @report.query = User.scoped
+        @report.query = User.all
         @report.instance_eval do
           column :name
           column :age, align: :right, show_total: true
