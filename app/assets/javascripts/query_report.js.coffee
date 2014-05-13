@@ -6,3 +6,4 @@ class @QueryReport
     searchForm.find("#subject").val(subject)
     searchForm.find("#message").val(message)
     searchForm.submit()
+    searchForm.find("#send_as_email").val(0) #reseting the email back to false
