@@ -54,7 +54,7 @@ end
 ```
 
 ## License
-MIT License. Copyright © 2013 [Ashrafuzzaman](http://ashrafuzzaman.github.io). See MIT-LICENSE for further details.
+MIT License. Copyright © 2014 [Ashrafuzzaman](http://ashrafuzzaman.github.io). See MIT-LICENSE for further details.
 
 [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/ashrafuzzaman/query_report/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 
