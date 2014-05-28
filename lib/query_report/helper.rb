@@ -9,6 +9,12 @@ require 'query_report/report_pdf'
 
 module QueryReport
   module Helper
+
+    # Generates the reports
+    # Params:
+    # query - The base query that the reporter with start with [filters will be applied on it]
+    # options - Options for the reports
+    #           :custom_view - by default false, if set to true then the reporter will look for the file to render
     def reporter(query, options={}, &block)
       @report ||= QueryReport::Report.new(params, view_context, options)
       @report.query = query
@@ -25,9 +31,9 @@ module QueryReport
       respond_to do |format|
         format.js do
           @remote = true
-          render 'query_report/list'
+          render 'query_report/list' if options[:custom_view]
         end
-        format.html { render 'query_report/list' }
+        format.html { render('query_report/list') if options[:custom_view] }
         format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
         format.pdf { send_data pdf_for_report(options), :type => 'application/pdf', :disposition => 'inline' }
