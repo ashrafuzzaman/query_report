@@ -11,13 +11,48 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
   spec.pattern = FileList['spec/**/*_spec.rb']
 end
 
+# task :default => "spec:all"
+#
+# namespace :spec do
+#   desc "Run Tests against all ORMs"
+#   task :all do
+#     sh "bundle --quiet"
+#     sh "bundle exec rake spec"
+#   end
+# end
+#
+# begin
+#   require 'rdoc/task'
+#
+#   Rake::RDocTask.new do |rdoc|
+#     require 'query_report/version'
+#
+#     rdoc.rdoc_dir = 'rdoc'
+#     rdoc.title = "query report #{QueryReport::VERSION}"
+#     rdoc.rdoc_files.include('README*')
+#     rdoc.rdoc_files.include('lib/**/*.rb')
+#   end
+# rescue LoadError
+#   puts 'RDocTask is not supported on this VM and platform combination.'
+# end
+
 task :default => "spec:all"
 
 namespace :spec do
+  %w(active_record_32).each do |gemfile|
+    desc "Run Tests against #{gemfile}"
+    task gemfile do
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t spec"
+    end
+  end
+
   desc "Run Tests against all ORMs"
   task :all do
-    sh "bundle --quiet"
-    sh "bundle exec rake spec"
+    %w(active_record_32).each do |gemfile|
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
+      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake spec"
+    end
   end
 end
 
@@ -28,7 +63,7 @@ begin
     require 'query_report/version'
 
     rdoc.rdoc_dir = 'rdoc'
-    rdoc.title = "query report #{QueryReport::VERSION}"
+    rdoc.title = "Query report #{QueryReport::VERSION}"
     rdoc.rdoc_files.include('README*')
     rdoc.rdoc_files.include('lib/**/*.rb')
   end

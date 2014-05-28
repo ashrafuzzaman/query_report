@@ -19,7 +19,7 @@ describe 'Integration' do
 
   context 'with selected columns' do
     before do
-      @report.query = User.all
+      @report.query = User.scoped
       @report.instance_eval do
         column :name
         column :age, only_on_web: true
@@ -38,7 +38,7 @@ describe 'Integration' do
 
   describe 'filter' do
     before do
-      @report.query = User.all
+      @report.query = User.scoped
       @report.instance_eval do
         filter :age
         filter :dob, type: :datetime, default: [21.years.ago, 1.months.from_now]
