@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+gem 'railties', '~> 4.0.5'
+gem 'activerecord', '~> 4.0.5', :require => 'active_record'
+gem 'rspec', '>= 2.0'
+gem 'ransack', '~> 1.2.3'
+gem 'rmagick', '~> 2.13.2'
+gem 'gruff', '~> 0.5.1'
+gem 'kaminari', '~> 0.15.1'
+gem 'prawn', '~> 1.0.0'
+
+gemspec :path => '../'

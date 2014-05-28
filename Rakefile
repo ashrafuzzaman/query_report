@@ -37,9 +37,10 @@ end
 # end
 
 task :default => "spec:all"
+gemfiles = %w(active_record_32 active_record_4)
 
 namespace :spec do
-  %w(active_record_32).each do |gemfile|
+  gemfiles.each do |gemfile|
     desc "Run Tests against #{gemfile}"
     task gemfile do
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
@@ -49,7 +50,7 @@ namespace :spec do
 
   desc "Run Tests against all ORMs"
   task :all do
-    %w(active_record_32).each do |gemfile|
+    gemfiles.each do |gemfile|
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
       sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake spec"
     end
