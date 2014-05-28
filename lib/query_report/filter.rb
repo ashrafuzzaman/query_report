@@ -30,7 +30,7 @@ module QueryReport
     def apply_filters(query, http_params)
       # apply default filter
       params = load_default_values_in_param(http_params) #need for ransack filter
-      @search = query.search(params[:q])
+      @search = query.ransack(params[:q])
       query = @search.result
 
       #apply custom filter

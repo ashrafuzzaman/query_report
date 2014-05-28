@@ -29,11 +29,18 @@ module QueryReport
 
       @remote = false
       respond_to do |format|
-        format.js do
-          @remote = true
-          render 'query_report/list' if options[:custom_view]
+        if options[:custom_view]
+          format.js do
+            @remote = true
+          end
+          format.html
+        else
+          format.js do
+            @remote = true
+            render 'query_report/list'
+          end
+          format.html { render('query_report/list') }
         end
-        format.html { render('query_report/list') if options[:custom_view] }
         format.json { render json: @report.all_records }
         format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
         format.pdf { send_data pdf_for_report(options), :type => 'application/pdf', :disposition => 'inline' }
