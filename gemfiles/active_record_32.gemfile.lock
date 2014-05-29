@@ -1,13 +1,13 @@
 PATH
   remote: ../
   specs:
-    query_report (1.0.21)
+    query_report (1.0.22)
       google_visualr (~> 2.1.0)
       gruff (~> 0.5.1)
       kaminari (>= 0.14.1)
       prawn (>= 0.15.0)
       railties (>= 3)
-      ransack (~> 1.2.3)
+      ransack (>= 1.0.0)
       rmagick (~> 2.13.2)
 
 GEM

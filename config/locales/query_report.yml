@@ -1,5 +1,3 @@
-# Sample localization file for Kaminari. You can override these values in your app's locales file if you want.
-
 en:
   query_report:
     filters:
