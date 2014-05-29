@@ -16,6 +16,11 @@ module QueryReportEngineHelper
     end
   end
 
+  def render_query_report(report = nil)
+    report ||= @report
+    render :partial => "query_report/list", locals: {report: report}
+  end
+
   def export_report_url_with_format(format)
     url_for(params.merge(format: format))
   end

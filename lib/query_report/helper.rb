@@ -15,11 +15,13 @@ module QueryReport
     # query - The base query that the reporter with start with [filters will be applied on it]
     # options - Options for the reports
     #           :custom_view - by default false, if set to true then the reporter will look for the file to render
+    #           :skip_rendering - by default false, if set to true then the reporter will not render any thing, you will have to implement the rendering
     def reporter(query, options={}, &block)
       @report ||= QueryReport::Report.new(params, view_context, options)
       @report.query = query
       @report.instance_eval &block
-      render_report(options)
+      render_report(options) unless options[:skip_rendering]
+      @report
     end
 
     def render_report(options)
