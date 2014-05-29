@@ -14,9 +14,9 @@ module QueryReport
     # Params:
     # query - The base query that the reporter with start with [filters will be applied on it]
     # options - Options for the reports
+    #           :per_page - If given then overrides the default kaminari per page option
     #           :custom_view - by default false, if set to true then the reporter will look for the file to render
     #           :skip_rendering - by default false, if set to true then the reporter will not render any thing, you will have to implement the rendering
-    #           :per_page - If given then overrides the default kaminari per page option
     def reporter(query, options={}, &block)
       @report ||= QueryReport::Report.new(params, view_context, options)
       @report.query = query
