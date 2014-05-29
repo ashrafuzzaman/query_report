@@ -9,14 +9,14 @@ module QueryReport
   DEFAULT_OPTIONS = {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true}
 
   class Report
+    attr_reader :params, :template, :options, :charts
+
     include QueryReport::ColumnModule
     include QueryReport::FilterModule
     include QueryReport::PaginateModule
     include QueryReport::Record
     include QueryReport::ColumnChartModule
     include QueryReport::PieChartModule
-
-    attr_reader :params, :template, :options, :charts
 
     def initialize(params, template, options={}, &block)
       @params, @template = params, template

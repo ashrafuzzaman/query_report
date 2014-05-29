@@ -8,7 +8,7 @@ module QueryReport
     def apply_pagination(query, params)
       if paginate?
         page_method_name = Kaminari.config.page_method_name
-        query.send(page_method_name, params[:page])
+        query.send(page_method_name, params[:page]).per(options[:per_page] || Kaminari.config.default_per_page)
       else
         query
       end
