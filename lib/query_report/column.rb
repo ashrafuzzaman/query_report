@@ -8,9 +8,8 @@ module QueryReport
     attr_accessor :columns
 
     # Creates a filter and adds to the filters
-    # Params:
     # @param name the column on which the filter is done on
-    # @@param options Options can have the following,
+    # @param options [Hash] Options can have the following,
     #             options[:type] => date | text | whatever
     #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
     #             options[:show_total] => set true to calculate total for that column
