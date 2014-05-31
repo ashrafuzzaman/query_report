@@ -14,6 +14,20 @@ module QueryReport
     # @option options [Boolean] :show_total set true to calculate total for that column
     # @option options [Boolean] :only_on_web the column will appear on the web and not appear in PDF, CSV or JSON if set to true
     # @option options :rowspan the rows with same values in the same column will span if set to true
+    #
+    # @example Row span
+    #   column :invoiced_to_name, rowspan: true
+    #   column :invoice_title
+    #   column :invoice_date, rowspan: :invoiced_to_name
+    #   |==========================================|
+    #   | Name      |  Invoice   |   Invoiced on   |
+    #   |==========================================|
+    #   |           |  Invoice1  |                 |
+    #   | Jitu      |------------|    2-2-2014     |
+    #   |           |  Invoice2  |                 |
+    #   |------------------------------------------|
+    #   | Setu      |  Invoice3  |    2-2-2014     |
+    #   |==========================================|
 
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
