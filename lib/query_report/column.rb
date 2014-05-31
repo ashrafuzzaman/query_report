@@ -9,12 +9,12 @@ module QueryReport
 
     # Creates a filter and adds to the filters
     # @param name the column on which the filter is done on
-    # @param options [Hash] Options can have the following,
-    #             options[:type] => date | text | whatever
-    #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
-    #             options[:show_total] => set true to calculate total for that column
-    #             options[:only_on_web] => the column will appear on the web and not appear in PDF or csv if set to true
-    #             options[:rowspan] => the rows with same values in the same column will span if set to true
+    # @option options [Symbol] :type date | text | whatever
+    # @option options [Array] :comp the comparators used for ransack search, [:gteq, :lteq]
+    # @option options [Boolean] :show_total set true to calculate total for that column
+    # @option options [Boolean] :only_on_web the column will appear on the web and not appear in PDF, CSV or JSON if set to true
+    # @option options :rowspan the rows with same values in the same column will span if set to true
+
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
@@ -66,12 +66,16 @@ module QueryReport
       end
 
       def rowspan_column_humanized
+        return @rowspan_column_humanized if @rowspan_column_humanized
         rowspan_column_name = @options[:rowspan].kind_of?(Symbol) ? @options[:rowspan] : self.name
 
         report.columns.each do |column|
-          return column.humanize if column.name == rowspan_column_name
+          if column.name == rowspan_column_name
+            @rowspan_column_humanized = column.humanize
+            return @rowspan_column_humanized
+          end
         end
-        return self.humanize
+        @rowspan_column_humanized = self.humanize
       end
 
       def humanize
