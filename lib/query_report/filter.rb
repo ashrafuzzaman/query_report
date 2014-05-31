@@ -10,21 +10,15 @@ module QueryReport
   module FilterModule
     attr_accessor :filters, :search
 
-    # Creates a filter and adds to the filters
-    # Params:
-    # +column+:: the column on which the filter is done on
-    # +options+:: Options can have the following,
-    #             options[:type] => date | text | whatever
-    #             options[:comp] => the comparators used for ransack search, [:gteq, :lteq]
-    #             options[:manual] => if set to true then that filter will not be applied, only will appear and can be used for custom application
-    #             options[:default] => support default filter value, can be one value or for range filter can be array
+    # Creates a filter
+    # @param column the column on which the filter is done on, for manual filter the column name can be anything
+    # @option options [Symbol] :type date | text | whatever
+    # @option options [Array] :comp the comparators used for ransack search, [:gteq, :lteq]
+    # @option options [Boolean] :manual if set to true then that filter will not be applied, only will appear and can be used for custom application
+    # @option options :default support default filter value, can be one value or for range filter can be array
     def filter(column, options={}, &block)
       @filters ||= []
       @filters << Filter.new(@params, column, options, &block)
-    end
-
-    def has_filter?
-      filters.present?
     end
 
     def apply_filters(query, http_params)
@@ -40,24 +34,6 @@ module QueryReport
         query = filter.block.call(query, *ordered_custom_param_values) if filter.block and !has_no_user_input
       end
       query
-    end
-
-    def ordered_param_value_objects(filter)
-      filter.comparators.collect do |comp|
-        comp.objectified_param_value
-      end
-    end
-
-    def load_default_values_in_param(http_params)
-      params = http_params.clone
-      params = params.merge(q: {}) unless params[:q]
-      params = params.merge(custom_search: {}) unless params[:custom_search]
-      @filters.each do |filter|
-        filter.comparators.each do |comparator|
-          params[filter.params_key][comparator.search_key] ||= comparator.param_value
-        end
-      end
-      params
     end
 
     class Filter
@@ -119,6 +95,29 @@ module QueryReport
           end
         end
       end
+    end
+
+    protected
+    def has_filter?
+      filters.present?
+    end
+
+    def ordered_param_value_objects(filter)
+      filter.comparators.collect do |comp|
+        comp.objectified_param_value
+      end
+    end
+
+    def load_default_values_in_param(http_params)
+      params = http_params.clone
+      params = params.merge(q: {}) unless params[:q]
+      params = params.merge(custom_search: {}) unless params[:custom_search]
+      @filters.each do |filter|
+        filter.comparators.each do |comparator|
+          params[filter.params_key][comparator.search_key] ||= comparator.param_value
+        end
+      end
+      params
     end
   end
 end

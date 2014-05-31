@@ -10,7 +10,6 @@ module QueryReport
     # Creates a filter and adds to the filters
     # @param name the column on which the filter is done on
     # @option options [Symbol] :type date | text | whatever
-    # @option options [Array] :comp the comparators used for ransack search, [:gteq, :lteq]
     # @option options [Boolean] :show_total set true to calculate total for that column
     # @option options [Boolean] :only_on_web the column will appear on the web and not appear in PDF, CSV or JSON if set to true
     # @option options :rowspan the rows with same values in the same column will span if set to true
@@ -28,7 +27,6 @@ module QueryReport
     #   |------------------------------------------|
     #   | Setu      |  Invoice3  |    2-2-2014     |
     #   |==========================================|
-
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
@@ -121,7 +119,6 @@ module QueryReport
           end
         end
       end
-
     end
   end
 end
