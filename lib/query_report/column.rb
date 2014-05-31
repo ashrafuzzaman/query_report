@@ -11,7 +11,7 @@ module QueryReport
     # @param name the column on which the filter is done on
     # @option options [Symbol] :type date | text | whatever
     # @option options [String] :as The title of the column, by default it fetches from the I18n column translation, Model.human_attribute_name(column_name)
-    # @option options [Boolean] :show_total set true to calculate total for that column
+    # @option options [Boolean] :show_total set true to calculate total for that column. It will render the total in the footer.
     # @option options [Boolean] :only_on_web the column will appear on the web and not appear in PDF, CSV or JSON if set to true
     # @option options :rowspan the rows with same values in the same column will span if set to true
     #
