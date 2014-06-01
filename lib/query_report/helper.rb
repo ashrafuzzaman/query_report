@@ -76,7 +76,7 @@ module QueryReport
     end
 
     def send_pdf_email(email, subject, message, file_name, attachment)
-      @user = current_user
+      @user = current_user if defined? current_user
       to = email.split(',')
       ReportMailer.send_report(@user, to, subject, message, file_name, attachment).deliver
     end

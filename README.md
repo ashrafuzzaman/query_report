@@ -2,6 +2,7 @@
 
 [![Build Status](https://api.travis-ci.org/ashrafuzzaman/query_report.png?branch=master)](http://travis-ci.org/ashrafuzzaman/query_report)
 [![Gem Version](https://badge.fury.io/rb/query_report.png)](http://badge.fury.io/rb/query_report)
+[![Code Climate](https://codeclimate.com/github/ashrafuzzaman/query_report.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
 
 Query report is a reporting tool, which does the following:
 
@@ -45,8 +46,8 @@ class InvoicesController < ApplicationController
       column :title do |invoice|
         link_to invoice.title, invoice
       end
-      column :total_paid
-      column :total_charged
+      column :total_paid, show_total: true
+      column :total_charged, show_total: true
       column :paid
     end
   end

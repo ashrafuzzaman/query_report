@@ -16,6 +16,18 @@ module QueryReport
     # @option options [Array] :comp the comparators used for ransack search, [:gteq, :lteq]
     # @option options [Boolean] :manual if set to true then that filter will not be applied, only will appear and can be used for custom application
     # @option options :default support default filter value, can be one value or for range filter can be array
+    #
+    # @example Custom type
+    #  filter :invoiced_to_id, type: :user
+    #
+    #  # In a helper file define method
+    #  def query_report_user_filter(name, user_id, options={})
+    #    user = User.find(user_id)
+    #    concat hidden_field_tag name, user_id, options
+    #    text_field_tag "#{name}", user.name, class: 'user_search' #implement the filter, it can be autocomplete
+    #  end
+    #
+
     def filter(column, options={}, &block)
       @filters ||= []
       @filters << Filter.new(@params, column, options, &block)
@@ -97,7 +109,6 @@ module QueryReport
       end
     end
 
-    protected
     def has_filter?
       filters.present?
     end
