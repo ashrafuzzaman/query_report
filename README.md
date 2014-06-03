@@ -5,6 +5,8 @@
 [![Code Climate](https://codeclimate.com/github/ashrafuzzaman/query_report.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
 [![Code coverage](https://codeclimate.com/github/ashrafuzzaman/query_report/coverage.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
 
+###Write the action with a simple DSL and get a report with PDF and CSV export, gorgeous charts, out of box filters, with I18n support, etc...  
+
 Create a report in Rails
 ------------------------
 
