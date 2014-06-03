@@ -4,13 +4,45 @@
 [![Gem Version](https://badge.fury.io/rb/query_report.png)](http://badge.fury.io/rb/query_report)
 [![Code Climate](https://codeclimate.com/github/ashrafuzzaman/query_report.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
 
-Query report is a reporting tool, which does the following:
+Create a report in Rails
+------------------------
 
-* Generate paginated HTML view with filters, defined columns with sorting
-* Generate PDF, CSV, JSON
-* Provide feature to define re usable custom filter
+You would have to do the following tasks to create a report in rails,
 
-As built in filter I have used [ransack](https://github.com/ernie/ransack) and pagination with [kaminari](https://github.com/amatsuda/kaminari)
+- Create a route
+- Create an action with following logic
+    - Logic for filters
+    - Logic for pagination
+- Create a view
+    - Write code to show HTML
+    - Write code to generate Graph
+- Generate PDF with prawn pdf and graph
+- Logic to send that PDF file as email
+
+Create a report with query report
+---------------------------------
+
+- Create a route
+- Create an action with following logic
+    - ~~Logic for filters~~
+    - ~~Logic for pagination~~
+- ~~Create a view~~
+    - ~~Write code to show HTML~~
+    - ~~Write code to generate Graph~~
+- ~~Generate PDF with prawn pdf and graph~~
+- ~~Logic to send that PDF file as email~~
+
+For email, you have to implement the popup once.
+
+Features
+--------
+
+- Allow to use and reuse filters using [ransack](https://github.com/activerecord-hackery/ransack), and also with custom query
+- Paginates [kaminari](https://github.com/amatsuda/kaminari)
+- Supports ajax out of box 
+- Exports to PDF [prawn](https://github.com/prawnpdf/prawn), csv, json
+- Supports to send report pdf as email
+- Supports I18N
 
 For a demo see [here](http://query-report-demo.herokuapp.com)
 
