@@ -3,6 +3,7 @@
 [![Build Status](https://api.travis-ci.org/ashrafuzzaman/query_report.png?branch=master)](http://travis-ci.org/ashrafuzzaman/query_report)
 [![Gem Version](https://badge.fury.io/rb/query_report.png)](http://badge.fury.io/rb/query_report)
 [![Code Climate](https://codeclimate.com/github/ashrafuzzaman/query_report.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
+[![Code coverage](https://codeclimate.com/github/ashrafuzzaman/query_report/coverage.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
 
 Create a report in Rails
 ------------------------
