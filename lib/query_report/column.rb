@@ -45,6 +45,7 @@ module QueryReport
     #   ├───────────┴────────────┼─────────────────┤
     #   │                  Total │      300        │
     #   └────────────────────────┴─────────────────┘
+    # The translation key used for total is 'query_report.total'
     #
     # @example Sorting
     #  column :invoice_date, sortable: true
@@ -57,6 +58,9 @@ module QueryReport
       @columns << Column.new(self, name, options, block)
     end
 
+    # @return [Array<Hash>] the footer for the table with total with appropriate colspan and content
+    # Sample output
+    # [{content: "Total", colspan: '2'}, 200, 300]
     def column_total_with_colspan
       total_with_colspan = []
       colspan = 0

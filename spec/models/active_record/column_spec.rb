@@ -115,5 +115,23 @@ if defined? ActiveRecord
         its(:sort_link_attribute) { should == 'users.id' }
       end
     end
+
+    describe '#column_total_with_colspan' do
+      context 'with set to true' do
+        before do
+          User.create(name: 'User#1', age: 10)
+          User.create(name: 'User#2', age: 20)
+
+          object.column :user_id
+          object.column :age, show_total: true
+
+          object.stub(:query) { User.scoped }
+          object.stub(:apply_filters) { object.query }
+          object.stub(:apply_pagination) { object.query }
+        end
+        subject { object }
+        its(:column_total_with_colspan) { should == [{:content => "Total"}, {:content => 30, :align => :right}] }
+      end
+    end
   end
 end
