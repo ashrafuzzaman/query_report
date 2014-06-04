@@ -53,7 +53,6 @@ module QueryReport
     # If you want to sort a column which is a column of the active record model that the query returns,
     # then just set true to make the column sortable.
     # If the column is from another table then you have to specify the column name.
-    #
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
