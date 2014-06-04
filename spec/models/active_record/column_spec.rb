@@ -87,5 +87,33 @@ if defined? ActiveRecord
         its(:only_on_web?) { should == false }
       end
     end
+
+    describe '#sortable?' do
+      context 'with set to true' do
+        before { object.column :user_id, sortable: true }
+        subject { object.columns.first }
+        its(:sortable?) { should == true }
+      end
+
+      context 'with not set' do
+        before { object.column :user_id, sortable: 'users.id' }
+        subject { object.columns.first }
+        its(:sortable?) { should == true }
+      end
+    end
+
+    describe '#sort_link_attribute' do
+      context 'with set to true' do
+        before { object.column :user_id, sortable: true }
+        subject { object.columns.first }
+        its(:sort_link_attribute) { should == :user_id }
+      end
+
+      context 'with not set' do
+        before { object.column :user_id, sortable: 'users.id' }
+        subject { object.columns.first }
+        its(:sort_link_attribute) { should == 'users.id' }
+      end
+    end
   end
 end

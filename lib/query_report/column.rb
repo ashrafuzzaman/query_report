@@ -13,21 +13,47 @@ module QueryReport
     # @option options [String] :as The title of the column, by default it fetches from the I18n column translation, Model.human_attribute_name(column_name)
     # @option options [Boolean] :show_total set true to calculate total for that column. It will render the total in the footer.
     # @option options [Boolean] :only_on_web the column will appear on the web and not appear in PDF, CSV or JSON if set to true
+    # @option options [Boolean] :sortable if set to true then sorts on that column, but if the sorting has to be on a joint table then you have to specify the column on which the sorting will happen
     # @option options :rowspan the rows with same values in the same column will span if set to true
     #
     # @example Row span
     #   column :invoiced_to_name, rowspan: true
     #   column :invoice_title
     #   column :invoice_date, rowspan: :invoiced_to_name
-    #   |==========================================|
-    #   | Name      |  Invoice   |   Invoiced on   |
-    #   |==========================================|
-    #   |           |  Invoice1  |                 |
-    #   | Jitu      |------------|    2-2-2014     |
-    #   |           |  Invoice2  |                 |
-    #   |------------------------------------------|
-    #   | Setu      |  Invoice3  |    2-2-2014     |
-    #   |==========================================|
+    #   ┌───────────┬────────────┬─────────────────┐
+    #   │ Name      │  Invoice   │   Invoiced on   │
+    #   ├───────────┼────────────┼─────────────────┤
+    #   │           │  Invoice1  │                 │
+    #   │ Jitu      ├────────────┤    2-2-2014     │
+    #   │           │  Invoice2  │                 │
+    #   ├───────────┼────────────┼─────────────────┤
+    #   │ Setu      │  Invoice3  │    2-2-2014     │
+    #   └───────────┴────────────┴─────────────────┘
+    #
+    # @example Show total
+    #   column :invoiced_to_name, rowspan: true
+    #   column :invoice_title
+    #   column :total_charged, show_total: true
+    #   ┌───────────┬────────────┬─────────────────┐
+    #   │ Name      │  Invoice   │   Total charge  │
+    #   ├───────────┼────────────┼─────────────────┤
+    #   │           │  Invoice1  │      100        │
+    #   │ Jitu      ├────────────┼─────────────────┤
+    #   │           │  Invoice2  │      120        │
+    #   ├───────────┼────────────┼─────────────────┤
+    #   │ Setu      │  Invoice3  │       80        │
+    #   ├───────────┴────────────┼─────────────────┤
+    #   │                  Total │      300        │
+    #   └────────────────────────┴─────────────────┘
+    #
+    # @example Sorting
+    #  column :invoice_date, sortable: true
+    #  column :invoice_to, sortable: 'users.name'
+    #
+    # If you want to sort a column which is a column of the active record model that the query returns,
+    # then just set true to make the column sortable.
+    # If the column is from another table then you have to specify the column name.
+    #
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
@@ -71,7 +97,11 @@ module QueryReport
       end
 
       def sortable?
-        @options[:sortable] == true
+        @options[:sortable].present? && @options[:sortable] != false
+      end
+
+      def sort_link_attribute
+        @options[:sortable] == true ? name : @options[:sortable]
       end
 
       def rowspan?
