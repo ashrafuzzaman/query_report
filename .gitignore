@@ -20,3 +20,4 @@ tmp
 *.sqlite3
 _site
 .ruby-version
+vendor/bundle

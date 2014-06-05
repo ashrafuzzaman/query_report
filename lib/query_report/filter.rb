@@ -39,6 +39,9 @@ module QueryReport
       @search = query.ransack(params[:q])
       query = @search.result
 
+      #this is to fix a bug from ransack, as for ransack when the sorting is done from a joined table it does not sort by default
+      query = query.order(params[:q][:s]) if params[:q][:s]
+
       #apply custom filter
       @filters.select(&:custom?).each do |filter|
         ordered_custom_param_values = ordered_param_value_objects(filter)

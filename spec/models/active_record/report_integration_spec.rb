@@ -54,6 +54,19 @@ describe 'Integration' do
                                  {'Name' => @user2.name, 'Age' => @user2.age}] }
     end
 
+    context 'with sorting applied' do
+      context 'with ASC sorting' do
+        before { @report.instance_variable_set :@params, {q: {s: 'age ASC'}} }
+        its(:records) { should == [{'Name' => @user1.name, 'Age' => @user1.age},
+                                   {'Name' => @user2.name, 'Age' => @user2.age}] }
+      end
+      context 'with DESC sorting' do
+        before { @report.instance_variable_set :@params, {q: {s: 'age DESC'}} }
+        its(:records) { should == [{'Name' => @user2.name, 'Age' => @user2.age},
+                                   {'Name' => @user1.name, 'Age' => @user1.age}] }
+      end
+    end
+
     context 'with filter applied' do
       before { subject.params[:q] = {age_eq: '34'} }
       its(:records) { should == [{'Name' => @user3.name, 'Age' => @user3.age}] }
