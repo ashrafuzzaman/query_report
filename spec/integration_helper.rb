@@ -6,7 +6,7 @@ require 'fake_app/active_record/models'
 
 def reporter(query, params = {}, options = {}, &block)
   view_context = ApplicationController.helpers
-  report = QueryReport::Report.new({}, view_context, options)
+  report = QueryReport::Report.new(params, view_context, options)
   report.query = query
   report.instance_eval &block
   report

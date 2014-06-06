@@ -28,24 +28,23 @@ describe 'filter' do
       end
       its(:records) { should == [{'Name' => @user1.name}, {'Name' => @user2.name}, {'Name' => @user3.name}] }
     end
+
     context 'with DESC sorting' do
       subject do
         reporter(User.scoped, {q: {s: 'age DESC'}}) do
-          filter :age
-          column :name
+          column :age
         end
       end
-      #its(:records) { should == [{'Name' => @user3.name}, {'Name' => @user2.name}, {'Name' => @user1.name}] }
+      its(:records) { should == [{'Age' => 34}, {'Age' => 20}, {'Age' => 10}] }
     end
   end
 
   context 'with filter applied' do
     subject do
       reporter(User.scoped, {q: {age_eq: '34'}}) do
-        filter :age
-        column :name
+        column :age
       end
     end
-    #its(:records) { should == [{'Name' => @user3.name}] }
+    its(:records) { should == [{'Age' => 34}] }
   end
 end
