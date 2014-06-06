@@ -9,6 +9,7 @@ rvm:
 gemfile:
   - gemfiles/active_record_32.gemfile
   - gemfiles/active_record_4.gemfile
+  - gemfiles/active_record_4_1_1.gemfile
 
 matrix:
   allow_failures:

@@ -6,7 +6,11 @@ class User < ActiveRecord::Base
   has_many :books_read, :through => :readerships, :source => :book
   has_many :addresses, :class_name => 'User::Address'
 
-  #attr_accessible :name, :age, :dob
+  if ::ActiveRecord::VERSION::MAJOR >= 4 && ::ActiveRecord::VERSION::MINOR >= 1
+    def self.scoped
+      self.all
+    end
+  end
 
   def readers
     User.joins(:books_read => :authors).where(:authors_books => {:id => self})
