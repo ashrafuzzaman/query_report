@@ -15,14 +15,6 @@ task :default => "spec:all"
 gemfiles = %w(active_record_32 active_record_4 active_record_4_1_1)
 
 namespace :spec do
-  gemfiles.each do |gemfile|
-    desc "Run Tests against #{gemfile}"
-    task gemfile do
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle --quiet"
-      sh "BUNDLE_GEMFILE='gemfiles/#{gemfile}.gemfile' bundle exec rake -t spec"
-    end
-  end
-
   desc "Run Tests against all ORMs"
   task :all do
     gemfiles.each do |gemfile|
