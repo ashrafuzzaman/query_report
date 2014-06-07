@@ -17,11 +17,24 @@ describe 'column' do
   end
 
   context 'with option :show_total' do
-    subject do
-      reporter(User.scoped) do
-        column :age, show_total: true
+    context 'with the first row as total' do
+      subject do
+        reporter(User.scoped) do
+          column :age, show_total: true
+          column :name
+        end
       end
+      its(:column_total_with_colspan) { should == [{:content => 30.0, :align => :right}, {:content => "", :colspan => 1}] }
     end
-    its(:column_total_with_colspan) { should == [{:content => 30.0, :align => :right}] }
+
+    context 'with the first row as total' do
+      subject do
+        reporter(User.scoped) do
+          column :name
+          column :age, show_total: true
+        end
+      end
+      its(:column_total_with_colspan) { should == [{:content => "Total"}, {:content => 30.0, :align => :right}] }
+    end
   end
 end
