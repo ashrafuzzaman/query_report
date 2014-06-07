@@ -57,8 +57,8 @@ module QueryReport
       # Initializes filter with the proper parameters
       # @param params [Hash] The params from the http request
       # @param column [Symbol] the name of the filter or the column name for the filter to be applied on
-      # @param &block The block is passed for a manual query, The first param the block will receive is the query chain, and the rest is the values for that particular filter.
-      # @see QueryReport::FilterModule#filter options
+      # @param block The block is passed for a manual query, The first param the block will receive is the query chain, and the rest is the values for that particular filter.
+      # @see FilterModule#filter options
       def initialize(params, column, options, &block)
         @params, @column, @options, @comparators, @block = params, column, options, [], block
         @type = options.kind_of?(String) ? options : options[:type]

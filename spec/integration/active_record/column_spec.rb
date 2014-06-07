@@ -3,8 +3,17 @@ require 'integration_helper'
 
 describe 'column' do
   before do
-    @user1 = User.create(name: 'User#1', age: 10, dob: 10.years.ago)
-    @user2 = User.create(name: 'User#2', age: 20, dob: 20.years.ago)
+    @user1 = User.create(name: 'User#1', age: 10, dob: 10.years.ago, email: 'user1@gmail.com')
+    @user2 = User.create(name: 'User#2', age: 20, dob: 20.years.ago, email: 'user2@gmail.com')
+  end
+
+  context 'with block' do
+    subject do
+      reporter(User.scoped) do
+        column(:name) { |user| "Hi, #{user.name}" }
+      end
+    end
+    its(:records) { should == [{"Name" => "Hi, User#1"}, {"Name" => "Hi, User#2"}] }
   end
 
   context 'with option :as' do
@@ -35,6 +44,41 @@ describe 'column' do
         end
       end
       its(:column_total_with_colspan) { should == [{:content => "Total"}, {:content => 30.0, :align => :right}] }
+    end
+  end
+
+  context 'with option :rowspan' do
+    before do
+      User.scoped.destroy_all
+      User.create(name: 'User#1', email: 'user1@gmail.com')
+      User.create(name: 'User#1', email: 'user11@gmail.com')
+      User.create(name: 'User#2', email: 'user11@gmail.com')
+      User.create(name: 'User#2', email: 'user2@gmail.com')
+    end
+
+    context 'with rowspan set to true for both column' do
+      subject do
+        reporter(User.scoped) do
+          column :name, rowspan: true
+          column :email, rowspan: true
+        end
+      end
+      its(:records_with_rowspan) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
+                                              {"Email" => {:content => "user11@gmail.com", :rowspan => 2}},
+                                              {"Name" => {:content => "User#2", :rowspan => 2}}, {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
+    end
+
+    context 'with rowspan with relative column' do
+      subject do
+        reporter(User.scoped) do
+          column :name, rowspan: true
+          column :email, rowspan: :name
+        end
+      end
+      its(:records_with_rowspan) { should == [{"Name"=>{:content=>"User#1", :rowspan=>2}, "Email"=>{:content=>"user1@gmail.com", :rowspan=>1}},
+                                              {"Email"=>{:content=>"user11@gmail.com", :rowspan=>1}},
+                                              {"Name"=>{:content=>"User#2", :rowspan=>2}, "Email"=>{:content=>"user11@gmail.com", :rowspan=>1}},
+                                              {"Email"=>{:content=>"user2@gmail.com", :rowspan=>1}}] }
     end
   end
 end

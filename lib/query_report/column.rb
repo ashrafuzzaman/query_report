@@ -60,7 +60,7 @@ module QueryReport
 
     # @return [Array<Hash>] the footer for the table with total with appropriate colspan and content
     # Sample output
-    # [{content: "Total", colspan: '2'}, 200, 300]
+    #  [{content: "Total", colspan: '2'}, 200, 300]
     def column_total_with_colspan
       total_with_colspan = []
       colspan = 0
