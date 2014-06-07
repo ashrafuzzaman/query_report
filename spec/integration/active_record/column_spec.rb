@@ -75,10 +75,21 @@ describe 'column' do
           column :email, rowspan: :name
         end
       end
-      its(:records_with_rowspan) { should == [{"Name"=>{:content=>"User#1", :rowspan=>2}, "Email"=>{:content=>"user1@gmail.com", :rowspan=>1}},
-                                              {"Email"=>{:content=>"user11@gmail.com", :rowspan=>1}},
-                                              {"Name"=>{:content=>"User#2", :rowspan=>2}, "Email"=>{:content=>"user11@gmail.com", :rowspan=>1}},
-                                              {"Email"=>{:content=>"user2@gmail.com", :rowspan=>1}}] }
+      its(:records_with_rowspan) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
+                                              {"Email" => {:content => "user11@gmail.com", :rowspan => 1}},
+                                              {"Name" => {:content => "User#2", :rowspan => 2}, "Email" => {:content => "user11@gmail.com", :rowspan => 1}},
+                                              {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
     end
+  end
+
+  context 'with option :only_on_web' do
+    subject do
+      reporter(User.scoped) do
+        column :name, only_on_web: true
+        column :age
+      end
+    end
+    its(:records) { should == [{"Age" => 10, "Name" => "User#1"}, {"Age" => 20, "Name" => "User#2"}] }
+    its(:all_records) { should == [{"Age" => 10}, {"Age" => 20}] } #should not render the name column
   end
 end
