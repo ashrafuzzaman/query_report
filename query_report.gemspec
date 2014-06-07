@@ -5,13 +5,13 @@ require "query_report/version"
 
 # Describe your gem and declare its dependencies:
 Gem::Specification.new do |s|
-  s.name          = "query_report"
-  s.version       = QueryReport::VERSION
-  s.author        = "A.K.M. Ashrafuzzaman"
-  s.email         = ["ashrafuzzaman.g2@gmail.com"]
-  s.description   = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
-  s.summary       = %q{Structure you reports}
-  s.homepage      = "http://ashrafuzzaman.github.io/query_report"
+  s.name = "query_report"
+  s.version = QueryReport::VERSION
+  s.author = "A.K.M. Ashrafuzzaman"
+  s.email = ["ashrafuzzaman.g2@gmail.com"]
+  s.description = %q{This is a gem to help you to structure common reports of you application just by writing in the controller}
+  s.summary = %q{Structure you reports}
+  s.homepage = "http://ashrafuzzaman.github.io/query_report"
 
   s.files = Dir["{app,config,db,lib}/**/*"] + ["MIT-LICENSE", "Rakefile", "README.md"]
   s.license = 'MIT'
@@ -26,8 +26,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'prawn', '>= 0.15.0'
 
   s.add_development_dependency 'rake', ['>= 0']
-  s.add_development_dependency 'rspec', ['>= 0']
-  #s.add_development_dependency 'guard-rspec'
+  s.add_development_dependency 'rspec', ['~> 2.14.1']
+  s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
   s.add_development_dependency 'database_cleaner', ['>= 1.2.0']

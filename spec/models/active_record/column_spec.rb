@@ -57,21 +57,6 @@ if defined? ActiveRecord
           subject.value(record).should == 1
         end
       end
-
-      context 'with value from given block' do
-        let(:user) { User.create(name: 'Jitu', age: 30) }
-        let(:record) { Readership.create!(user_id: user.id) }
-        before do
-          object.column :user, type: :string do |obj|
-            "#{obj.user.name} is @#{obj.user.age}"
-          end
-        end
-        subject { object.columns.first }
-
-        it 'evaluates block value' do
-          subject.value(record).should == 'Jitu is @30'
-        end
-      end
     end
 
     describe '#only_on_web?' do
