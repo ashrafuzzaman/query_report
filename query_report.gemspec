@@ -27,7 +27,6 @@ Gem::Specification.new do |s|
 
   s.add_development_dependency 'rake', ['>= 0']
   s.add_development_dependency 'rspec', ['~> 2.14.1']
-  s.add_development_dependency 'guard-rspec'
   s.add_development_dependency 'rspec-mocks'
   s.add_development_dependency 'temping'
   s.add_development_dependency 'database_cleaner', ['>= 1.2.0']
