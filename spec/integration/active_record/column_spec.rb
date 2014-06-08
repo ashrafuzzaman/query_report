@@ -63,7 +63,7 @@ describe 'column' do
           column :email, rowspan: true
         end
       end
-      its(:records_with_rowspan) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
+      its(:records_to_render) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
                                               {"Email" => {:content => "user11@gmail.com", :rowspan => 2}},
                                               {"Name" => {:content => "User#2", :rowspan => 2}}, {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
     end
@@ -75,7 +75,7 @@ describe 'column' do
           column :email, rowspan: :name
         end
       end
-      its(:records_with_rowspan) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
+      its(:records_to_render) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
                                               {"Email" => {:content => "user11@gmail.com", :rowspan => 1}},
                                               {"Name" => {:content => "User#2", :rowspan => 2}, "Email" => {:content => "user11@gmail.com", :rowspan => 1}},
                                               {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }

@@ -48,15 +48,17 @@ module QueryReport
       @has_any_rowspan
     end
 
-    def records_with_rowspan
-      @records_with_rowspan ||= map_rowspan(records)
+    def records_to_render
+      @records_to_render ||= map_rowspan(records)
     end
 
-    def all_records_with_rowspan
-      @all_records_with_rowspan ||= map_rowspan(all_records)
+    def all_records_to_render
+      @all_records_to_render ||= map_rowspan(all_records)
     end
 
     def map_rowspan(recs)
+      return recs unless has_any_rowspan?
+
       last_reset_index = @columns.select(&:rowspan?).inject({}) { |hash, column| hash[column.humanize] = 0; hash }
       rowspan_column_hash = @columns.select(&:rowspan?).inject({}) { |hash, column| hash[column.humanize] = column.rowspan_column_humanized; hash }
 

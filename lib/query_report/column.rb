@@ -143,7 +143,7 @@ module QueryReport
       def total
         @total ||= begin
           if has_total?
-            report.records_with_rowspan.inject(0) do |sum, r|
+            report.records_to_render.inject(0) do |sum, r|
               r = report.content_from_element(r[humanize])
               r = strip_tags(r) if r.kind_of? String
               sum + r.to_f

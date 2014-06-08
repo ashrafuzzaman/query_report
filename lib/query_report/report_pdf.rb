@@ -60,7 +60,7 @@ module QueryReport
     end
 
     def table_content_for(report)
-      table_items = report.all_records_with_rowspan
+      table_items = report.all_records_to_render
 
       items = table_items.map do |item|
         item_values = []

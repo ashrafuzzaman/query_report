@@ -7,8 +7,7 @@
       </thead>
 
       <tbody>
-      <% records = report.has_any_rowspan? ? report.records_with_rowspan : report.records %>
-      <% records.each do |record| %>
+      <% report.records_to_render.each do |record| %>
           <tr>
             <% report.columns.each do |column| %>
                 <% value = record[column.humanize]
@@ -27,5 +26,5 @@
       </tbody>
     </table>
 <% else %>
-    <p>No record found</p>
+    <p><%= t('query_report.no_record_found') %></p>
 <% end %>
