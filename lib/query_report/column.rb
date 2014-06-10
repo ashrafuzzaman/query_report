@@ -15,6 +15,7 @@ module QueryReport
     # @option options [Boolean] :only_on_web the column will appear on the web and not appear in PDF, CSV or JSON if set to true
     # @option options [Boolean] :sortable if set to true then sorts on that column, but if the sorting has to be on a joint table then you have to specify the column on which the sorting will happen
     # @option options :rowspan the rows with same values in the same column will span if set to true
+    # @option options :pdf[:width] pass width of the column in the pdf
     #
     # @example Row span
     #   column :invoiced_to_name, rowspan: true
@@ -54,6 +55,10 @@ module QueryReport
     # If you want to sort a column which is a column of the active record model that the query returns,
     # then just set true to make the column sortable.
     # If the column is from another table then you have to specify the column name.
+    #
+    # @example Pdf options
+    #  column :invoice_date, pdf: {width: 20}
+    # This is how you can control the width of the column in the pdf
     def column(name, options={}, &block)
       @columns << Column.new(self, name, options, block)
     end
@@ -109,6 +114,10 @@ module QueryReport
 
       def rowspan?
         @options[:rowspan] == true || @options[:rowspan].kind_of?(Symbol)
+      end
+
+      def pdf_options
+        @options[:pdf] || {}
       end
 
       def rowspan_column_humanized

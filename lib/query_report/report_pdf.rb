@@ -104,7 +104,18 @@ module QueryReport
       font_size = options[:font_size]
       header_font_size = options[:table][:header][:font_size]
       pdf.move_down 10
-      pdf.table(items, :row_colors => alternate_row_bg_color, :header => true, :cell_style => {:inline_format => true, :size => font_size}) do
+
+      table_options = {:row_colors => alternate_row_bg_color, :header => true, :cell_style => {:inline_format => true, :size => font_size}}
+
+      report.columns.each_with_index do |report_column, index|
+        width = report_column.pdf_options[:width]
+        if width
+          table_options[:column_widths] ||= {}
+          table_options[:column_widths].merge! index => width
+        end
+      end
+
+      pdf.table(items, table_options) do
         row(0).style(:font_style => :bold, :background_color => header_bg_color, :size => header_font_size)
       end
     end
