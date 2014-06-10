@@ -64,8 +64,8 @@ describe 'column' do
         end
       end
       its(:records_to_render) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
-                                              {"Email" => {:content => "user11@gmail.com", :rowspan => 2}},
-                                              {"Name" => {:content => "User#2", :rowspan => 2}}, {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
+                                           {"Email" => {:content => "user11@gmail.com", :rowspan => 2}},
+                                           {"Name" => {:content => "User#2", :rowspan => 2}}, {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
     end
 
     context 'with rowspan with relative column' do
@@ -76,9 +76,9 @@ describe 'column' do
         end
       end
       its(:records_to_render) { should == [{"Name" => {:content => "User#1", :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
-                                              {"Email" => {:content => "user11@gmail.com", :rowspan => 1}},
-                                              {"Name" => {:content => "User#2", :rowspan => 2}, "Email" => {:content => "user11@gmail.com", :rowspan => 1}},
-                                              {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
+                                           {"Email" => {:content => "user11@gmail.com", :rowspan => 1}},
+                                           {"Name" => {:content => "User#2", :rowspan => 2}, "Email" => {:content => "user11@gmail.com", :rowspan => 1}},
+                                           {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}] }
     end
   end
 
@@ -91,5 +91,18 @@ describe 'column' do
     end
     its(:records) { should == [{"Age" => 10, "Name" => "User#1"}, {"Age" => 20, "Name" => "User#2"}] }
     its(:all_records) { should == [{"Age" => 10}, {"Age" => 20}] } #should not render the name column
+  end
+
+  context 'with pdf options' do
+    context 'with width' do
+      subject(:report) do
+        reporter(User.scoped) do
+          column :name, pdf: {width: 100}
+          column :age
+        end
+      end
+
+      it { expect(report.columns.first.pdf_options[:width]).to be 100 }
+    end
   end
 end
