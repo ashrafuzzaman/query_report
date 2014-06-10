@@ -17,17 +17,17 @@ Gem::Specification.new do |s|
   s.license = 'MIT'
   s.test_files = Dir["test/**/*"]
 
-  s.add_dependency 'railties', '>= 3'
-  s.add_dependency 'ransack', '>= 1.0.0'
-  s.add_dependency 'google_visualr', '~> 2.1.0'
-  s.add_dependency 'rmagick', '~> 2.13.2'
-  s.add_dependency 'gruff', '~> 0.5.1'
-  s.add_dependency 'kaminari', '>= 0.14.1'
-  s.add_dependency 'prawn', '>= 0.15.0'
+  s.add_dependency 'railties', ['>= 3', '< 5']
+  s.add_dependency 'ransack', '~> 1.0'
+  s.add_dependency 'google_visualr', '~> 2.0'
+  s.add_dependency 'rmagick', '~> 2.13'
+  s.add_dependency 'gruff', '~> 0.5'
+  s.add_dependency 'kaminari', '~> 0.14'
+  s.add_dependency 'prawn', '~> 1.0'
 
-  s.add_development_dependency 'rake', ['>= 0']
-  s.add_development_dependency 'rspec', ['~> 2.14.1']
-  s.add_development_dependency 'rspec-mocks'
-  s.add_development_dependency 'temping'
-  s.add_development_dependency 'database_cleaner', ['>= 1.2.0']
+  s.add_development_dependency 'rake', ['~> 10.3']
+  s.add_development_dependency 'rspec', ['~> 2.14']
+  s.add_development_dependency 'rspec-mocks', '~> 2.14'
+  s.add_development_dependency 'sqlite3', '~> 1.3'
+  s.add_development_dependency 'database_cleaner', ['~> 1.2']
 end
