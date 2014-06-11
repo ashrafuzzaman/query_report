@@ -16,9 +16,9 @@ if defined? ActiveRecord
 
     context 'defined columns' do
       before { object.column :user_id }
-      subject { object.columns.first }
-      its(:name) { should be :user_id }
-      its(:type) { should be :integer }
+      subject(:column) { object.columns.first }
+      it("returns") { expect(column.name).to be :user_id }
+      it("returns") { expect(column.type).to be :integer }
     end
 
     context 'custom columns' do
@@ -27,23 +27,23 @@ if defined? ActiveRecord
           link_to obj.user.name, obj.user
         end
       end
-      subject { object.columns.first }
-      its(:name) { should be :user }
-      its(:type) { should be :integer }
+      subject(:column) { object.columns.first }
+      it("returns") { expect(column.name).to be :user }
+      it("returns") { expect(column.type).to be :integer }
       its(:data) { should_not be nil }
     end
 
     describe '#humanize' do
       context 'with built in readable column name' do
         before { object.column :user_id }
-        subject { object.columns.first }
-        its(:humanize) { should == 'User' }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.humanize).to eq 'User' }
       end
 
       context 'with custom column name' do
         before { object.column :user_id, as: 'Admin' }
-        subject { object.columns.first }
-        its(:humanize) { should == 'Admin' }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.humanize).to eq 'Admin' }
       end
     end
 
@@ -51,7 +51,7 @@ if defined? ActiveRecord
       context 'with value from db property' do
         let(:record) { Readership.new(user_id: 1) }
         before { object.column :user_id }
-        subject { object.columns.first }
+        subject(:column) { object.columns.first }
 
         it 'fetches property value' do
           subject.value(record).should == 1
@@ -62,42 +62,42 @@ if defined? ActiveRecord
     describe '#only_on_web?' do
       context 'with set to true' do
         before { object.column :user_id, only_on_web: true }
-        subject { object.columns.first }
-        its(:only_on_web?) { should == true }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.only_on_web?).to eq true }
       end
 
       context 'with not set' do
         before { object.column :user_id }
-        subject { object.columns.first }
-        its(:only_on_web?) { should == false }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.only_on_web?).to eq false }
       end
     end
 
     describe '#sortable?' do
       context 'with set to true' do
         before { object.column :user_id, sortable: true }
-        subject { object.columns.first }
-        its(:sortable?) { should == true }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.sortable?).to eq true }
       end
 
       context 'with not set' do
         before { object.column :user_id, sortable: 'users.id' }
-        subject { object.columns.first }
-        its(:sortable?) { should == true }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.sortable?).to eq true }
       end
     end
 
     describe '#sort_link_attribute' do
       context 'with set to true' do
         before { object.column :user_id, sortable: true }
-        subject { object.columns.first }
-        its(:sort_link_attribute) { should == :user_id }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.sort_link_attribute).to eq :user_id }
       end
 
       context 'with not set' do
         before { object.column :user_id, sortable: 'users.id' }
-        subject { object.columns.first }
-        its(:sort_link_attribute) { should == 'users.id' }
+        subject(:column) { object.columns.first }
+        it("returns") { expect(column.sort_link_attribute).to eq 'users.id' }
       end
     end
   end
