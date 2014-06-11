@@ -2,8 +2,8 @@ require 'spec_helper'
 require 'integration_helper'
 
 describe 'column' do
-  let(:user_aged_10) { User.create(name: '#{user_aged_10.name}', age: 10, dob: 10.years.ago, email: 'user1@gmail.com') }
-  let(:user_aged_20) { User.create(name: '#{user_aged_20.name}', age: 20, dob: 20.years.ago, email: 'user2@gmail.com') }
+  let(:user_aged_10) { User.create(name: 'User#1', age: 10, dob: 10.years.ago, email: 'user1@gmail.com') }
+  let(:user_aged_20) { User.create(name: 'User#2', age: 20, dob: 20.years.ago, email: 'user2@gmail.com') }
 
   before do
     user_aged_10 && user_aged_20
@@ -56,10 +56,10 @@ describe 'column' do
   context 'with option :rowspan' do
     before do
       User.scoped.destroy_all
-      User.create(name: '#{user_aged_10.name}', email: 'user1@gmail.com')
-      User.create(name: '#{user_aged_10.name}', email: 'user11@gmail.com')
-      User.create(name: '#{user_aged_20.name}', email: 'user11@gmail.com')
-      User.create(name: '#{user_aged_20.name}', email: 'user2@gmail.com')
+      User.create(name: 'User#1', email: 'user1@gmail.com')
+      User.create(name: 'User#1', email: 'user11@gmail.com')
+      User.create(name: 'User#2', email: 'user11@gmail.com')
+      User.create(name: 'User#2', email: 'user2@gmail.com')
     end
 
     context 'with rowspan set to true for both column' do
@@ -70,10 +70,10 @@ describe 'column' do
         end
       end
       it("returns record to render") do
-        expect(report.records_to_render).to eq [{"Name" => {:content => user_aged_10.name, :rowspan => 2},
+        expect(report.records_to_render).to eq [{"Name" => {:content => 'User#1', :rowspan => 2},
                                                  "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
                                                 {"Email" => {:content => "user11@gmail.com", :rowspan => 2}},
-                                                {"Name" => {:content => user_aged_20.name, :rowspan => 2}}, {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}]
+                                                {"Name" => {:content => 'User#2', :rowspan => 2}}, {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}]
       end
     end
 
@@ -85,9 +85,9 @@ describe 'column' do
         end
       end
       it("returns record to render") do
-        expect(report.records_to_render).to eq [{"Name" => {:content => user_aged_10.name, :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
+        expect(report.records_to_render).to eq [{"Name" => {:content => 'User#1', :rowspan => 2}, "Email" => {:content => "user1@gmail.com", :rowspan => 1}},
                                                 {"Email" => {:content => "user11@gmail.com", :rowspan => 1}},
-                                                {"Name" => {:content => user_aged_20.name, :rowspan => 2}, "Email" => {:content => "user11@gmail.com", :rowspan => 1}},
+                                                {"Name" => {:content => 'User#2', :rowspan => 2}, "Email" => {:content => "user11@gmail.com", :rowspan => 1}},
                                                 {"Email" => {:content => "user2@gmail.com", :rowspan => 1}}]
       end
     end
@@ -101,7 +101,7 @@ describe 'column' do
       end
     end
     it("returns records") do
-      expect(report.records).to eq [{"Age" => 10, "Name" => user_aged_10.name}, {"Age" => 20, "Name" => user_aged_20.name}]
+      expect(report.records).to eq [{"Age" => 10, "Name" => 'User#1'}, {"Age" => 20, "Name" => 'User#2'}]
     end
     it("returns records with out pagination for all records") do
       expect(report.all_records).to eq [{"Age" => 10}, {"Age" => 20}] #should not render the name column
