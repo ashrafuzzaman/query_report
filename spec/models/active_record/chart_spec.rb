@@ -6,14 +6,14 @@ if defined? ActiveRecord
     it 'should have title and options' do
       options = {test: 'test'}
       chart = QueryReport::Chart::ChartBase.new("test", Object.new, options)
-      chart.title.should == 'test'
-      chart.options.should == {:width => 500, :height => 240, test: 'test'}
+      expect(chart.title).to eq 'test'
+      expect(chart.options).to eq(:width => 500, :height => 240, test: 'test')
     end
 
     it 'should be able to override options' do
       options = {test: 'test', :width => 550}
       chart = QueryReport::Chart::ChartBase.new("test", Object.new, options)
-      chart.options.should == {:width => 550, :height => 240, test: 'test'}
+      expect(chart.options).to eq(:width => 550, :height => 240, test: 'test')
     end
 
     it 'should add column and detect type' do
@@ -25,12 +25,12 @@ if defined? ActiveRecord
         100
       end
 
-      chart.columns.size.should be 2
-      chart.columns[0].title.should == 'Total charged'
-      chart.columns[0].type.should == :number
+      expect(chart.columns.size).to be 2
+      expect(chart.columns[0].title).to eq 'Total charged'
+      expect(chart.columns[0].type).to eq :number
 
-      chart.columns[1].title.should == 'Total paid'
-      chart.columns[1].type.should == :number
+      expect(chart.columns[1].title).to eq 'Total paid'
+      expect(chart.columns[1].type).to eq :number
     end
   end
 end

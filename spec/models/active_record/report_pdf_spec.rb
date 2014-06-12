@@ -27,12 +27,12 @@ if defined? ActiveRecord
         end
 
         #should not contain only on web column
-        report.all_records.should == [{'Name' => @user1.name},
-                                      {'Name' => @user2.name},
-                                      {'Name' => @user3.name}]
+        expect(report.all_records).to eq [{'Name' => @user1.name},
+                                          {'Name' => @user2.name},
+                                          {'Name' => @user3.name}]
 
         pdf = QueryReport::ReportPdf.new(report).to_pdf.render
-        pdf.should_not be nil
+        expect(pdf).not_to be_nil
       end
     end
 
@@ -57,12 +57,12 @@ if defined? ActiveRecord
         end
 
         #should not contain only on web column
-        report.all_records.should == [{'Name' => @user1.name},
-                                      {'Name' => @user2.name},
-                                      {'Name' => @user3.name}]
+        expect(report.all_records).to eq [{'Name' => @user1.name},
+                                          {'Name' => @user2.name},
+                                          {'Name' => @user3.name}]
 
         pdf = QueryReport::ReportPdf.new(report).to_pdf.render
-        pdf.should_not be nil
+        expect(pdf).not_to be_nil
       end
     end
 
@@ -97,12 +97,12 @@ if defined? ActiveRecord
         end
 
         #should not contain only on web column
-        report.all_records.should == [{'Name' => @user1.name},
-                                      {'Name' => @user2.name},
-                                      {'Name' => @user3.name}]
+        expect(report.all_records).to eq [{'Name' => @user1.name},
+                                          {'Name' => @user2.name},
+                                          {'Name' => @user3.name}]
 
         pdf = PdfReportTemplateTest.new(report).to_pdf.render
-        pdf.should_not be nil
+        expect(pdf).not_to be_nil
       end
       after do
         QueryReport.configure do |c|
@@ -124,12 +124,12 @@ if defined? ActiveRecord
           column :age, align: :right, show_total: true
         end
       end
-      subject { QueryReport::ReportPdf.new(@report).send :table_content_for, @report }
+      subject(:table_content) { QueryReport::ReportPdf.new(@report).send :table_content_for, @report }
 
-      it { should == [[{:content => "User#1", :align => :left}, {:content => "10", :align => :right}],
-                      [{:content => "User#2", :align => :left}, {:content => "20", :align => :right}],
-                      [{:content => "User#3", :align => :left}, {:content => "34", :align => :right}],
-                      [{:content => "Total"}, {:content => '64.0', :align => :right}]] }
+      it("returns report") { expect(table_content).to eq [[{:content => "User#1", :align => :left}, {:content => "10", :align => :right}],
+                                                          [{:content => "User#2", :align => :left}, {:content => "20", :align => :right}],
+                                                          [{:content => "User#3", :align => :left}, {:content => "34", :align => :right}],
+                                                          [{:content => "Total"}, {:content => '64.0', :align => :right}]] }
     end
   end
 end

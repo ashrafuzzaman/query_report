@@ -26,8 +26,9 @@ Gem::Specification.new do |s|
   s.add_dependency 'prawn', '~> 1.0'
 
   s.add_development_dependency 'rake', ['~> 10.3']
-  s.add_development_dependency 'rspec', ['~> 2.14']
-  s.add_development_dependency 'rspec-mocks', '~> 2.14'
+  s.add_development_dependency 'rspec', ['~> 3']
+  # s.add_development_dependency 'rspec-core', ['~> 3']
+  s.add_development_dependency 'rspec-mocks', '~> 3'
   s.add_development_dependency 'sqlite3', '~> 1.3'
   s.add_development_dependency 'database_cleaner', ['~> 1.2']
 end

@@ -18,10 +18,12 @@ if defined? ActiveRecord
     it 'applies pagination' do
       query = Object.new
       object.options = {per_page: 10}
-      query.stub(:page) { query }
-      query.stub(:per) { query }
-      query.should_receive(:page).with(25)
-      query.should_receive(:per).with(10)
+
+      allow(query).to receive(:page).and_return(query)
+      allow(query).to receive(:per).and_return(query)
+
+      expect(query).to receive(:page).with(25)
+      expect(query).to receive(:per).with(10)
       object.apply_pagination(query, page: 25)
     end
   end

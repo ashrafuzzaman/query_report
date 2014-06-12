@@ -11,21 +11,21 @@ if defined? ActiveRecord
       let(:report) { QueryReport::Report.new(params, template) }
       subject { report }
 
-      its(:params) { should be params }
-      its(:template) { should be template }
-      its(:options) { should == {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true} }
+      it("returns params") { expect(report.params).to be params }
+      it("returns template") { expect(report.template).to be template }
+      it("returns options") { expect(report.options).to eq(enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true) }
     end
 
     context 'when block not given' do
       it 'does not eval' do
-        QueryReport::Report.any_instance.should_not_receive(:instance_eval).and_return(nil)
+        expect_any_instance_of(QueryReport::Report).not_to receive(:instance_eval)
         QueryReport::Report.new({}, Object.new)
       end
     end
 
     context 'when block given' do
       it 'does eval block' do
-        QueryReport::Report.any_instance.should_receive(:instance_eval).and_return(nil)
+        expect_any_instance_of(QueryReport::Report).to receive(:instance_eval).and_return(nil)
         QueryReport::Report.new({}, Object.new) do
         end
       end
@@ -35,15 +35,15 @@ if defined? ActiveRecord
       context 'with out options' do
         let(:report) { QueryReport::Report.new({}, Object.new) }
         subject { report }
-        its(:chart_on_pdf?) { should == true }
-        its(:paginate?) { should == true }
+        it("returns chart_on_pdf?") { expect(report.chart_on_pdf?).to eq true }
+        it("returns paginate?") { expect(report.paginate?).to eq true }
       end
 
       context 'with options' do
         let(:report) { QueryReport::Report.new({}, Object.new, {chart_on_pdf: false, paginate: true}) }
         subject { report }
-        its(:chart_on_pdf?) { should == false }
-        its(:paginate?) { should == true }
+        it("returns chart_on_pdf?") { expect(report.chart_on_pdf?).to eq false }
+        it("returns paginate?") { expect(report.paginate?).to eq true }
       end
     end
   end

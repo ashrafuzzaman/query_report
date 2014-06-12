@@ -11,7 +11,7 @@ if defined? ActiveRecord
     let(:object) { DummyClass.new }
     before do
       object.columns = []
-      object.stub(:model_class).and_return(Readership)
+      allow(object).to receive(:model_class).and_return(Readership)
     end
 
     context 'defined columns' do
@@ -30,7 +30,7 @@ if defined? ActiveRecord
       subject(:column) { object.columns.first }
       it("returns") { expect(column.name).to be :user }
       it("returns") { expect(column.type).to be :integer }
-      its(:data) { should_not be nil }
+      it("returns data") { expect(column.data).not_to be_nil }
     end
 
     describe '#humanize' do
@@ -54,7 +54,7 @@ if defined? ActiveRecord
         subject(:column) { object.columns.first }
 
         it 'fetches property value' do
-          subject.value(record).should == 1
+          expect(subject.value(record)).to eq 1
         end
       end
     end
