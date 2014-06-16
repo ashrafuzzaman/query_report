@@ -19,7 +19,7 @@ Gem::Specification.new do |s|
 
   s.add_dependency 'railties', ['>= 3', '< 5']
   s.add_dependency 'ransack', '~> 1.0'
-  s.add_dependency 'google_visualr', '~> 2.0'
+  s.add_dependency 'google_visualr', '~> 2'
   s.add_dependency 'rmagick', '~> 2.13'
   s.add_dependency 'gruff', '~> 0.5'
   s.add_dependency 'kaminari', '~> 0.14'
