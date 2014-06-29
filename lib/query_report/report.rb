@@ -3,8 +3,7 @@ module QueryReport
   autoload :FilterModule, 'query_report/filter'
   autoload :PaginateModule, 'query_report/paginate'
   autoload :Record, 'query_report/record'
-  autoload :ColumnChartModule, 'query_report/chart/column_chart'
-  autoload :PieChartModule, 'query_report/chart/pie_chart'
+  autoload :ChartAdapterModule, 'query_report/chart_adapter'
 
   DEFAULT_OPTIONS = {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true}
 
@@ -15,8 +14,7 @@ module QueryReport
     include QueryReport::FilterModule
     include QueryReport::PaginateModule
     include QueryReport::Record
-    include QueryReport::ColumnChartModule
-    include QueryReport::PieChartModule
+    include QueryReport::ChartAdapterModule
 
     def initialize(params, template, options={}, &block)
       @params, @template = params, template

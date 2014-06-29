@@ -4,7 +4,7 @@
       <div class="span6">
         <div id="<%= chart_id %>" style="text-align: center;"></div>
       </div>
-      <%= render_chart(chart.prepare_visualr, chart_id) %>
+      <%= chart.render_chart(chart_id) %>
   <% end %>
   <div class="clearfix"></div>
 </div>

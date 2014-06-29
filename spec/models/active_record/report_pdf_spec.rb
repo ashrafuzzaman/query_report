@@ -36,36 +36,6 @@ if defined? ActiveRecord
       end
     end
 
-    context 'with charts' do
-      it "generates PDF report" do
-        report.query = User.scoped
-        report.instance_eval do
-          column :name
-
-          column_chart('Age') do
-            add 'Average age' do |query|
-              query.average(:age)
-            end
-          end
-
-          #has an issue to render the pie chart in the ruby 2.1.0
-          #pie_chart('Age') do
-          #  add 'Average age' do |query|
-          #    query.average(:age)
-          #  end
-          #end
-        end
-
-        #should not contain only on web column
-        expect(report.all_records).to eq [{'Name' => @user1.name},
-                                          {'Name' => @user2.name},
-                                          {'Name' => @user3.name}]
-
-        pdf = QueryReport::ReportPdf.new(report).to_pdf.render
-        expect(pdf).not_to be_nil
-      end
-    end
-
     context 'with custom layout' do
       before do
         class PdfReportTemplateTest < QueryReport::ReportPdf

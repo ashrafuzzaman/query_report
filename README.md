@@ -4,6 +4,7 @@
 [![Gem Version](https://badge.fury.io/rb/query_report.png)](http://badge.fury.io/rb/query_report)
 [![Code Climate](https://codeclimate.com/github/ashrafuzzaman/query_report.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
 [![Code coverage](https://codeclimate.com/github/ashrafuzzaman/query_report/coverage.png)](https://codeclimate.com/github/ashrafuzzaman/query_report)
+[![Dependencies](https://gemnasium.com/ashrafuzzaman/query_report.png)](https://gemnasium.com/ashrafuzzaman/query_report)
 
 ###Write the action with a simple DSL and get a report with PDF and CSV export, gorgeous charts, out of box filters, with I18n support, etc...  
 
