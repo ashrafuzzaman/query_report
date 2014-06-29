@@ -10,9 +10,6 @@ module QueryReport
       chart_adapter = ChartAdapter.new(filtered_query, chart_type, chart_title)
       block.call(chart_adapter)
       @charts << chart_adapter.chart
-
-      ap chart_adapter.chart.data
-      ap chart_adapter.chart
     end
 
     class ChartAdapter
