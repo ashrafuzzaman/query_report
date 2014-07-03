@@ -23,8 +23,8 @@ Gem::Specification.new do |s|
   s.add_dependency 'rmagick', '~> 2.13'
   s.add_dependency 'gruff', '~> 0.5'
   s.add_dependency 'kaminari', '~> 0.16'
-  s.add_dependency 'prawn', '~> 1.0.0'
-  s.add_dependency 'chartify', '~> 0.2.1'
+  s.add_dependency 'prawn', '= 1.0.0'
+  s.add_dependency 'chartify', '= 0.2.1'
 
   s.add_development_dependency 'rake', ['~> 10.3']
   s.add_development_dependency 'rspec', ['~> 3']
