@@ -7,12 +7,18 @@ module QueryReportEngineHelper
     value = comparator.param_value
 
     method_name = :"query_report_#{filter.type.to_s}_filter"
-    if main_app.respond_to? method_name
-      main_app.send method_name, search_tag_name, value, :placeholder => hint
-    elsif self.respond_to? method_name
-      self.send method_name, search_tag_name, value, :placeholder => hint
+    default_method_name = :"query_report_default_#{filter.type.to_s}_filter"
+    if respond_to? method_name
+      send method_name, search_tag_name, value, :placeholder => hint
+    elsif respond_to? default_method_name
+      send default_method_name, search_tag_name, value, :placeholder => hint
     else
-      raise QueryReport::FilterNotDefined, "#{filter.type.to_s} filter is not defined"
+      raise QueryReport::FilterNotDefined, %Q{#{filter.type.to_s} filter is not defined.
+        Please define a method as following,
+        def #{method_name}(name, value, options={})
+          text_field_tag name, value, options
+        end
+      }
     end
   end
 
