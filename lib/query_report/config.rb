@@ -8,5 +8,6 @@ module QueryReport
     config_accessor :allow_email_report
     config_accessor :record_table_class
     config_accessor :search_button_class
+    config_accessor :search_form_options
   end
 end
