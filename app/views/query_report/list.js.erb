@@ -4,6 +4,7 @@ if ($('#<%=params['target_dom_id']%> .query_report_content').length == 0) {
 } else {
     $('#<%=params['target_dom_id']%> .query_report_content').html('<%= escape_javascript(render :partial => 'query_report/content', locals: {report: @report})%>');
 }
+eval($('script.chart_script').text());
 <% else %>
 console.log("target_dom_id was not defined");
 <% end %>
