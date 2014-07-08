@@ -7,17 +7,19 @@ require 'chartify/factory'
 module QueryReport
   module ChartAdapterModule
     def chart(chart_type, chart_title, &block)
-      chart_adapter = ChartAdapter.new(filtered_query, chart_type, chart_title)
+      chart_adapter = ChartAdapter.new(filtered_query, all_records, chart_type, chart_title)
       block.call(chart_adapter)
       @charts << chart_adapter.chart
     end
 
     class ChartAdapter
-      attr_accessor :query, :chart_type, :chart
+      attr_reader :query, :records
+      attr_accessor :chart_type, :chart
       delegate :data, :data=, :columns, :columns=, :label_column, :label_column=, to: :chart
 
-      def initialize(query, chart_type, chart_title)
+      def initialize(query, records, chart_type, chart_title)
         @query = query
+        @records = records
         @chart_type = chart_type
         @chart = "Chartify::#{chart_type.to_s.camelize}Chart".constantize.new
         @chart.title = chart_title
