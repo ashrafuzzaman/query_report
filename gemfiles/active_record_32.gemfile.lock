@@ -1,7 +1,7 @@
 PATH
   remote: ../
   specs:
-    query_report (1.0.25)
+    query_report (1.1.4)
       google_visualr (~> 2.0)
       gruff (~> 0.5)
       kaminari (~> 0.14)

@@ -21,3 +21,4 @@ tmp
 _site
 .ruby-version
 vendor/bundle
+gemfiles/vendor
