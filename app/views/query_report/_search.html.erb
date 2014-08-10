@@ -1,5 +1,10 @@
+<% params_for_url = params
+   params_for_url.delete(:q)
+   params_for_url.delete(:custom_search) %>
+
 <%= search_form_for report.search, url: url_for({}), remote: @remote,
                     html: (QueryReport.config.search_form_options || {}).merge(method: :get) do |f| %>
+    <%= hash_to_hidden_fields params_for_url %>
     <% report.filters.each do |filter| %>
         <% filter.comparators.each do |comparator| %>
             <%= query_report_render_filter(filter, comparator) %>

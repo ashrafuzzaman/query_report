@@ -1,3 +1,7 @@
+require 'active_support/core_ext/object/to_query'
+require 'action_view'
+require 'action_view/helpers'
+require 'rack/utils'
 require 'query_report/errors'
 
 module QueryReportEngineHelper
@@ -29,5 +33,17 @@ module QueryReportEngineHelper
 
   def export_report_url_with_format(format)
     url_for(params.merge(format: format))
+  end
+
+  def hash_to_hidden_fields(hash)
+    cleaned_hash = hash.reject { |k, v| v.nil? }
+    pairs = cleaned_hash.to_query.split(Rack::Utils::DEFAULT_SEP)
+
+    tags = pairs.map do |pair|
+      key, value = pair.split('=', 2).map { |str| Rack::Utils.unescape(str) }
+      hidden_field_tag(key, value)
+    end
+
+    tags.join("\n").html_safe
   end
 end
