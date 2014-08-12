@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    query_report (1.1.5)
+    query_report (1.1.6)
       actionpack (>= 3)
       chartify (~> 0.3)
       google_visualr (~> 2)
