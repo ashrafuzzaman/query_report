@@ -2,8 +2,7 @@
    params_for_url.delete(:q)
    params_for_url.delete(:custom_search) %>
 
-<%= search_form_for report.search, url: url_for({}), remote: @remote,
-                    html: (QueryReport.config.search_form_options || {}).merge(method: :get) do |f| %>
+<%= query_report_search_form(report) do |f| %>
     <%= hash_to_hidden_fields params_for_url %>
     <% report.filters.each do |filter| %>
         <% filter.comparators.each do |comparator| %>
@@ -15,5 +14,5 @@
     <%= hidden_field_tag :subject %>
     <%= hidden_field_tag :message %>
     <%= hidden_field_tag :target_dom_id, @target_dom_id %>
-    <%= f.submit t('query_report.labels.search'), :class => QueryReport.config.search_button_class, :onclick => "$('#{@target_dom_id} #send_as_email').val(0);" %>
+    <%= submit_tag t('query_report.labels.search'), :class => QueryReport.config.search_button_class, :onclick => "$('#{@target_dom_id} #send_as_email').val(0);" %>
 <% end %>

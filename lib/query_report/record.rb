@@ -6,6 +6,10 @@ module QueryReport
       query.klass
     end
 
+    def array_record?
+      query.kind_of?(Array)
+    end
+
     def filtered_query
       apply
       @filtered_query
@@ -22,16 +26,18 @@ module QueryReport
     end
 
     def apply
-      @filtered_query ||= apply_filters(query.clone, @params)
-      @paginated_query ||= apply_pagination(@filtered_query, @params)
+      @filtered_query ||= array_record? ? query : apply_filters(query.clone, @params)
+      @paginated_query ||= array_record? ? query : apply_pagination(@filtered_query, @params)
     end
 
     def records
-      @records ||= map_record(paginated_query, true)
+      record_to_map = array_record? ? query : paginated_query
+      @records ||= map_record(record_to_map, true)
     end
 
     def all_records
-      @all_records ||= map_record(filtered_query, false)
+      record_to_map = array_record? ? query : filtered_query
+      @all_records ||= map_record(record_to_map, false)
     end
 
     def map_record(query, render_from_view)

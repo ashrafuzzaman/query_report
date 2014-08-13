@@ -46,4 +46,12 @@ module QueryReportEngineHelper
 
     tags.join("\n").html_safe
   end
+
+  def query_report_search_form(report, &block)
+    if report.array_record?
+      form_tag(url_for({}), (QueryReport.config.search_form_options || {}).merge({method: :get, remote: @remote}), &block)
+    else
+      search_form_for(report.search, url: url_for({}), remote: @remote, html: (QueryReport.config.search_form_options || {}).merge(method: :get), &block)
+    end
+  end
 end
