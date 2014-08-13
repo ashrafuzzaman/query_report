@@ -17,11 +17,6 @@ app.config.root = File.dirname(__FILE__)
 Rails.backtrace_cleaner.remove_silencers!
 app.initialize!
 
-# routes
-app.routes.draw do
-  resources :users
-end
-
 #models
 require 'fake_app/active_record/models' if defined? ActiveRecord
 require 'fake_app/data_mapper/models' if defined? DataMapper
@@ -30,27 +25,11 @@ require 'fake_app/mongo_mapper/models' if defined? MongoMapper
 
 # controllers
 class ApplicationController < ActionController::Base; end
-class UsersController < ApplicationController
-  def index
-    @users = User.page params[:page]
-    render :inline => <<-ERB
-<%= @users.map(&:name).join("\n") %>
-<%= paginate @users %>
-ERB
-  end
-end
 
-if defined? ActiveRecord
-  class AddressesController < ApplicationController
-    def index
-      @addresses = User::Address.page params[:page]
-      render :inline => <<-ERB
-  <%= @addresses.map(&:street).join("\n") %>
-  <%= paginate @addresses %>
-  ERB
-    end
-  end
-end
+# routes
+# app.routes.draw do
+#   get "users/index", :as => 'users'
+# end
 
 # helpers
 Object.const_set(:ApplicationHelper, Module.new)
