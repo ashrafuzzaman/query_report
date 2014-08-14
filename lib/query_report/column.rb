@@ -152,11 +152,13 @@ module QueryReport
       def total
         @total ||= begin
           if has_total?
-            report.records_to_render.inject(0) do |sum, r|
+            sum = 0
+            report.records_to_render.each do |r|
               r = report.content_from_element(r[humanize])
               r = strip_tags(r) if r.kind_of? String
-              sum + r.to_f
+              sum = sum + r.to_f
             end
+            sum.kind_of?(Float) ? sum.round(2) : sum
           else
             nil
           end
