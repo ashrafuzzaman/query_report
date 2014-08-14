@@ -1,7 +1,7 @@
 PATH
   remote: ..
   specs:
-    query_report (1.1.6)
+    query_report (1.2.1)
       actionpack (>= 3)
       chartify (~> 0.3)
       google_visualr (~> 2)
@@ -11,7 +11,7 @@ PATH
       prawn-table (~> 0.1)
       rack (>= 1.2)
       railties (>= 3, < 5)
-      ransack (~> 1.0)
+      ransack (~> 1.2)
       rmagick (~> 2.13)
 
 GEM
@@ -101,6 +101,14 @@ GEM
       rspec-support (~> 3.0.0)
     rspec-mocks (3.0.3)
       rspec-support (~> 3.0.0)
+    rspec-rails (3.0.2)
+      actionpack (>= 3.0)
+      activesupport (>= 3.0)
+      railties (>= 3.0)
+      rspec-core (~> 3.0.0)
+      rspec-expectations (~> 3.0.0)
+      rspec-mocks (~> 3.0.0)
+      rspec-support (~> 3.0.0)
     rspec-support (3.0.3)
     simplecov (0.9.0)
       docile (~> 1.1.0)
@@ -135,4 +143,5 @@ DEPENDENCIES
   rmagick (~> 2.13)
   rspec (~> 3)
   rspec-mocks (~> 3)
+  rspec-rails (~> 3)
   sqlite3 (~> 1.3)
