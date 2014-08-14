@@ -41,6 +41,7 @@ module QueryReport
     end
 
     def paginate?
+      return false if array_record? #do not paginate on the array records
       return true if @options[:paginate].nil?
       @options[:paginate]
     end

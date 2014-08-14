@@ -7,6 +7,10 @@ if defined? ActiveRecord
   describe QueryReport::ColumnModule do
     class DummyClass
       include QueryReport::ColumnModule
+
+      def array_record?
+        false
+      end
     end
     let(:object) { DummyClass.new }
     before do
