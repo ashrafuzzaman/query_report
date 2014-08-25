@@ -7,7 +7,7 @@ require 'chartify/factory'
 module QueryReport
   module ChartAdapterModule
     def chart(chart_type, chart_title, &block)
-      chart_adapter = ChartAdapter.new(filtered_query, all_records, chart_type, chart_title)
+      chart_adapter = ChartAdapter.new(filtered_query, records_without_pagination, chart_type, chart_title)
       block.call(chart_adapter)
       @charts << chart_adapter.chart
     end

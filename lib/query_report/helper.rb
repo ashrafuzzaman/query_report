@@ -42,8 +42,8 @@ module QueryReport
           end
           format.html { render('query_report/list') }
         end
-        format.json { render json: @report.all_records }
-        format.csv { send_data generate_csv_for_report(@report.all_records), :disposition => "attachment;" }
+        format.json { render json: @report.records_without_pagination }
+        format.csv { send_data generate_csv_for_report(@report.records_without_pagination), :disposition => "attachment;" }
         format.pdf { send_data pdf_for_report(options), :type => 'application/pdf', :disposition => 'inline' }
       end
     end

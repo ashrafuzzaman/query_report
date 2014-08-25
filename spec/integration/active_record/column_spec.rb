@@ -104,7 +104,7 @@ describe 'column' do
       expect(report.records).to eq [{"Age" => 10, "Name" => 'User#1'}, {"Age" => 20, "Name" => 'User#2'}]
     end
     it("returns records with out pagination for all records") do
-      expect(report.all_records).to eq [{"Age" => 10}, {"Age" => 20}] #should not render the name column
+      expect(report.records_without_pagination).to eq [{"Age" => 10}, {"Age" => 20}] #should not render the name column
     end
   end
 

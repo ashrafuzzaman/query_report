@@ -10,8 +10,8 @@ module QueryReport
   class Report
     attr_reader :params, :template, :options, :charts
 
-    include QueryReport::ColumnModule
     include QueryReport::FilterModule
+    include QueryReport::ColumnModule
     include QueryReport::PaginateModule
     include QueryReport::Record
     include QueryReport::ChartAdapterModule

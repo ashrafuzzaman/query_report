@@ -3,7 +3,7 @@ gemspec :path => '..'
 
 gem 'railties', '~> 3.2.18'
 gem 'activerecord', '~> 3.2.18', :require => 'active_record'
-gem 'ransack', '~> 1.2'
+gem 'ransack', '~> 1.2.3'
 gem 'rmagick', '~> 2.13'
 gem 'gruff', '~> 0.5'
 gem 'kaminari', '~> 0.15'

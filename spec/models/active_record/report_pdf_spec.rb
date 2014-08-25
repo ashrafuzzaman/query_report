@@ -27,9 +27,9 @@ if defined? ActiveRecord
         end
 
         #should not contain only on web column
-        expect(report.all_records).to eq [{'Name' => @user1.name},
-                                          {'Name' => @user2.name},
-                                          {'Name' => @user3.name}]
+        expect(report.records_without_pagination).to eq [{'Name' => @user1.name},
+                                                         {'Name' => @user2.name},
+                                                         {'Name' => @user3.name}]
 
         pdf = QueryReport::ReportPdf.new(report).to_pdf.render
         expect(pdf).not_to be_nil
@@ -67,9 +67,9 @@ if defined? ActiveRecord
         end
 
         #should not contain only on web column
-        expect(report.all_records).to eq [{'Name' => @user1.name},
-                                          {'Name' => @user2.name},
-                                          {'Name' => @user3.name}]
+        expect(report.records_without_pagination).to eq [{'Name' => @user1.name},
+                                                         {'Name' => @user2.name},
+                                                         {'Name' => @user3.name}]
 
         pdf = PdfReportTemplateTest.new(report).to_pdf.render
         expect(pdf).not_to be_nil

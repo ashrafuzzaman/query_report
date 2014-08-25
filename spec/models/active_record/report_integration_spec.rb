@@ -31,9 +31,9 @@ describe 'Integration' do
                                                           {'Name' => @user2.name, 'Age' => @user2.age},
                                                           {'Name' => @user3.name, 'Age' => @user3.age}] }
 
-    it("returns all_records") { expect(report.all_records).to eq [{'Name' => @user1.name},
-                                                                  {'Name' => @user2.name},
-                                                                  {'Name' => @user3.name}] }
+    it("returns all_records") { expect(report.records_without_pagination).to eq [{'Name' => @user1.name},
+                                                                                 {'Name' => @user2.name},
+                                                                                 {'Name' => @user3.name}] }
   end
 
   describe 'filter' do

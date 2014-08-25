@@ -139,7 +139,7 @@ DEPENDENCIES
   query_report!
   railties (~> 3.2.18)
   rake (~> 10.3)
-  ransack (~> 1.2)
+  ransack (~> 1.2.3)
   rmagick (~> 2.13)
   rspec (~> 3)
   rspec-mocks (~> 3)

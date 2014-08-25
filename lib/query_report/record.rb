@@ -35,9 +35,9 @@ module QueryReport
       @records ||= map_record(record_to_map, true)
     end
 
-    def all_records
+    def records_without_pagination
       record_to_map = array_record? ? query : filtered_query
-      @all_records ||= map_record(record_to_map, false)
+      @records_without_pagination ||= map_record(record_to_map, false)
     end
 
     def map_record(query, render_from_view)
@@ -59,7 +59,7 @@ module QueryReport
     end
 
     def all_records_to_render
-      @all_records_to_render ||= map_rowspan(all_records)
+      @all_records_to_render ||= map_rowspan(records_without_pagination)
     end
 
     def map_rowspan(recs)
