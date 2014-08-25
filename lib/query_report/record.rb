@@ -30,12 +30,17 @@ module QueryReport
       @filtered_paginated_query ||= array_record? ? query : apply_pagination(@filtered_query, @params)
     end
 
-    def records
+    # Returns records
+    # @param format [Symbol] supports [:html|:json|:csv|:pdf]
+    # @return [Array<Hash>] The key for the hash will be the translated keys
+    # [{'Name' => 'Ashraf', 'Email' => 'test@jitu.email'},
+    #  {'Name' => 'Razeen', 'Email' => 'test@razeen.email'}]
+    def records(format = :html)
       record_to_map = array_record? ? query : filtered_paginated_query
       @records ||= map_record(record_to_map, true)
     end
 
-    def records_without_pagination
+    def records_without_pagination(format = :html)
       record_to_map = array_record? ? query : filtered_query
       @records_without_pagination ||= map_record(record_to_map, false)
     end
