@@ -15,9 +15,9 @@ module QueryReport
       @filtered_query
     end
 
-    def paginated_query
+    def filtered_paginated_query
       apply
-      @paginated_query
+      @filtered_paginated_query
     end
 
     def search
@@ -27,11 +27,11 @@ module QueryReport
 
     def apply
       @filtered_query ||= array_record? ? query : apply_filters(query.clone, @params)
-      @paginated_query ||= array_record? ? query : apply_pagination(@filtered_query, @params)
+      @filtered_paginated_query ||= array_record? ? query : apply_pagination(@filtered_query, @params)
     end
 
     def records
-      record_to_map = array_record? ? query : paginated_query
+      record_to_map = array_record? ? query : filtered_paginated_query
       @records ||= map_record(record_to_map, true)
     end
 
