@@ -1,8 +1,7 @@
 require "query_report/engine"
+require "query_report/config"
 
 module QueryReport
-  autoload :Configuration, "query_report/config"
-
   def self.configure(&block)
     yield @config ||= QueryReport::Configuration.new
   end

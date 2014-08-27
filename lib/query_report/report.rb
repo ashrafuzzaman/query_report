@@ -1,11 +1,10 @@
 require 'query_report/filter_module/dsl'
 require 'query_report/column_module/column'
+require 'query_report/paginate'
+require 'query_report/record'
+require 'query_report/chart_adapter'
 
 module QueryReport
-  autoload :PaginateModule, 'query_report/paginate'
-  autoload :Record, 'query_report/record'
-  autoload :ChartAdapterModule, 'query_report/chart_adapter'
-
   DEFAULT_OPTIONS = {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true}
 
   class Report
