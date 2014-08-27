@@ -2,7 +2,7 @@ require 'spec_helper'
 require 'query_report/filter_module/dsl'
 
 if defined? ActiveRecord
-  describe QueryReport::FilterModule do
+  describe QueryReport::FilterModule::DSL do
     class DummyClass
       include QueryReport::FilterModule::DSL
     end

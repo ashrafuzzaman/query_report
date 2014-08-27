@@ -1,6 +1,5 @@
 require 'ransack'
 require 'kaminari'
-require 'google_visualr'
 require 'prawn'
 require 'prawn/table'
 require 'gruff'
