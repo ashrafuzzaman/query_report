@@ -1,10 +1,10 @@
 require 'spec_helper'
-require 'query_report/filter'
+require 'query_report/filter_module/dsl'
 
 if defined? ActiveRecord
   describe QueryReport::FilterModule do
     class DummyClass
-      include QueryReport::FilterModule
+      include QueryReport::FilterModule::DSL
     end
 
     let(:object) { DummyClass.new }

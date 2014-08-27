@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'query_report/filter'
+require 'query_report/filter_module/dsl'
 require 'query_report/filter_module/comparator'
 
 if defined? ActiveRecord

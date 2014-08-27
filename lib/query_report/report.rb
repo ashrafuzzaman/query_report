@@ -1,6 +1,7 @@
+require 'query_report/filter_module/dsl'
+
 module QueryReport
   autoload :ColumnModule, 'query_report/column'
-  autoload :FilterModule, 'query_report/filter'
   autoload :PaginateModule, 'query_report/paginate'
   autoload :Record, 'query_report/record'
   autoload :ChartAdapterModule, 'query_report/chart_adapter'
@@ -10,7 +11,7 @@ module QueryReport
   class Report
     attr_reader :params, :template, :options, :charts
 
-    include QueryReport::FilterModule
+    include QueryReport::FilterModule::DSL
     include QueryReport::ColumnModule
     include QueryReport::PaginateModule
     include QueryReport::Record
