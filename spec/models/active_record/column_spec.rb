@@ -1,5 +1,5 @@
 require 'spec_helper'
-require 'query_report/column'
+require 'query_report/column_module/column'
 require 'fake_app/active_record/config'
 require 'fake_app/active_record/models'
 

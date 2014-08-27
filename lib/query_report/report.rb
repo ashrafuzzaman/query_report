@@ -1,7 +1,7 @@
 require 'query_report/filter_module/dsl'
+require 'query_report/column_module/column'
 
 module QueryReport
-  autoload :ColumnModule, 'query_report/column'
   autoload :PaginateModule, 'query_report/paginate'
   autoload :Record, 'query_report/record'
   autoload :ChartAdapterModule, 'query_report/chart_adapter'
