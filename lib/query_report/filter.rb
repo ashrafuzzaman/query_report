@@ -4,7 +4,7 @@
 # The purpose of the filter module is to add feature
 # to support report tool to add custom and predefined filters
 
-require 'query_report/comparator'
+require 'query_report/filter_module/comparator'
 
 module QueryReport
   module FilterModule

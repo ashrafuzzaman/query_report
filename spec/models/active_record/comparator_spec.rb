@@ -1,6 +1,6 @@
 require 'spec_helper'
 require 'query_report/filter'
-require 'query_report/comparator'
+require 'query_report/filter_module/comparator'
 
 if defined? ActiveRecord
   describe QueryReport::FilterModule::Comparator do
