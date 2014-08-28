@@ -1,12 +1,12 @@
 require 'spec_helper'
-require 'query_report/column_module/column'
+require 'query_report/column_module/dsl'
 require 'fake_app/active_record/config'
 require 'fake_app/active_record/models'
 
 if defined? ActiveRecord
   describe QueryReport::ColumnModule do
     class DummyClass
-      include QueryReport::ColumnModule
+      include QueryReport::ColumnModule::DSL
 
       def array_record?
         false

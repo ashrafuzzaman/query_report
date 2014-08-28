@@ -1,5 +1,5 @@
 require 'query_report/filter_module/dsl'
-require 'query_report/column_module/column'
+require 'query_report/column_module/dsl'
 require 'query_report/paginate'
 require 'query_report/record'
 require 'query_report/chart_adapter'
@@ -11,7 +11,7 @@ module QueryReport
     attr_reader :params, :template, :options, :charts
 
     include QueryReport::FilterModule::DSL
-    include QueryReport::ColumnModule
+    include QueryReport::ColumnModule::DSL
     include QueryReport::PaginateModule
     include QueryReport::Record
     include QueryReport::ChartAdapterModule
