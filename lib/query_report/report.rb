@@ -8,7 +8,7 @@ module QueryReport
   DEFAULT_OPTIONS = {enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true}
 
   class Report
-    attr_reader :params, :template, :options, :charts
+    attr_reader :params, :template, :options
 
     include QueryReport::FilterModule::DSL
     include QueryReport::ColumnModule::DSL
@@ -18,8 +18,10 @@ module QueryReport
 
     def initialize(params, template, options={}, &block)
       @params, @template = params, template
-      @columns, @filters, @charts = [], [], []
       @options = QueryReport::DEFAULT_OPTIONS.merge options
+      initialize_filters
+      initialize_columns
+      initialize_charts
       instance_eval &block if block_given?
     end
 

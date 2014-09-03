@@ -10,6 +10,10 @@ module QueryReport
     module DSL
       attr_accessor :columns
 
+      def initialize_columns
+        @columns = []
+      end
+
       # Creates a filter and adds to the filters
       # @param name the column on which the filter is done on
       # @option options [Symbol] :type date | text | whatever

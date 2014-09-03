@@ -12,6 +12,10 @@ module QueryReport
     module DSL
       attr_accessor :filters, :search
 
+      def initialize_filters
+        @filters = []
+      end
+
       # Creates a filter
       # @param column the column on which the filter is done on, for manual filter the column name can be anything
       # @option options [Symbol] :type date | text | whatever
@@ -28,8 +32,6 @@ module QueryReport
       #    concat hidden_field_tag name, user_id, options
       #    text_field_tag "#{name}", user.name, class: 'user_search' #implement the filter, it can be autocomplete
       #  end
-      #
-
       def filter(column, options={}, &block)
         @filters ||= []
         @filters << Filter.new(@params, column, options, &block)
