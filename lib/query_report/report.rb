@@ -48,6 +48,17 @@ module QueryReport
       @options[:paginate]
     end
 
+    def data_type
+      @data_type ||= begin
+        case query.class
+          when ActiveRecord::Relation then
+            'ActiveRecord'
+          when Array then
+            'Array'
+        end
+      end
+    end
+
     # to support the helper methods
     def method_missing(meth, *args, &block)
       if @template.respond_to?(meth)

@@ -13,7 +13,7 @@ describe 'filter' do
 
   context 'without any filter applied' do
     subject(:report) do
-      reporter(User.scoped) do
+      reporter(User.send(ACTIVE_RECORD_SCOPE)) do
         filter :dob, type: :datetime, default: [21.years.ago, 1.months.from_now]
         column :name
       end
@@ -24,7 +24,7 @@ describe 'filter' do
   context 'with sorting applied' do
     context 'with ASC sorting' do
       subject(:report) do
-        reporter(User.scoped, {q: {s: 'age ASC'}}) do
+        reporter(User.send(ACTIVE_RECORD_SCOPE), {q: {s: 'age ASC'}}) do
           filter :age
           column :name
         end
@@ -34,7 +34,7 @@ describe 'filter' do
 
     context 'with DESC sorting' do
       subject(:report) do
-        reporter(User.scoped, {q: {s: 'age DESC'}}) do
+        reporter(User.send(ACTIVE_RECORD_SCOPE), {q: {s: 'age DESC'}}) do
           column :age
         end
       end
@@ -44,7 +44,7 @@ describe 'filter' do
 
   context 'with filter applied' do
     subject(:report) do
-      reporter(User.scoped, {q: {age_eq: '30'}}) do
+      reporter(User.send(ACTIVE_RECORD_SCOPE), {q: {age_eq: '30'}}) do
         column :age
       end
     end

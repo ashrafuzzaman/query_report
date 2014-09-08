@@ -8,7 +8,7 @@ RSpec.describe ApplicationController do
     include QueryReport::Helper
 
     def index
-      reporter(User.all) do
+      reporter(User) do
         filter :name
         filter :email, comp: {cont: 'Email'}
 

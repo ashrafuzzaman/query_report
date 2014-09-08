@@ -14,9 +14,6 @@ Bundler.require
 #require 'capybara/rspec'
 require 'database_cleaner'
 
-# Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
-require 'fake_gem' if defined? ActiveRecord
-
 if defined? Rails
   require 'fake_app/rails_app'
 
@@ -24,6 +21,11 @@ if defined? Rails
   require 'rspec/rails'
   require 'ransack'
 end
+
+# Simulate a gem providing a subclass of ActiveRecord::Base before the Railtie is loaded.
+
+require 'active_record'
+ACTIVE_RECORD_SCOPE = ActiveRecord::VERSION::MAJOR >= 4 ? :all : :scoped
 
 # Requires supporting files with custom matchers and macros, etc,
 # in ./support/ and its subdirectories.

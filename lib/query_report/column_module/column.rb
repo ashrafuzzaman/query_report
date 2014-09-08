@@ -12,7 +12,11 @@ module QueryReport
 
       def initialize(report, column_name, options={}, block = nil)
         @report, @name, @options = report, column_name, options
-        @type = @report.model_class.columns_hash[column_name.to_s].try(:type) || options[:type] || :string rescue :string
+        if @report.model_class
+          @type = @report.model_class.columns_hash[column_name.to_s].try(:type) || options[:type] || :string rescue :string
+        else
+          @type = :string
+        end
         @data = block || column_name.to_sym
       end
 
@@ -50,7 +54,9 @@ module QueryReport
       end
 
       def humanize
-        @humanize ||= options[:as] || (@report.model_class.human_attribute_name(name) unless @report.array_record?)
+        @humanize ||= options[:as] || begin
+          @report.model_class.human_attribute_name(name) if @report.model_class && !@report.array_record?
+        end
       end
 
       def value(record)

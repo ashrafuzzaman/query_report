@@ -4,14 +4,13 @@ PATH
     query_report (1.2.1)
       actionpack (>= 3)
       chartify (~> 0.3)
-      google_visualr (~> 2)
       gruff (~> 0.5)
       kaminari (~> 0.16)
       prawn (~> 1.2)
       prawn-table (~> 0.1)
       rack (>= 1.2)
       railties (>= 3, < 5)
-      ransack (~> 1.2)
+      ransack (>= 1.2, < 2)
       rmagick (~> 2.13)
 
 GEM
@@ -48,7 +47,6 @@ GEM
     diff-lcs (1.2.5)
     docile (1.1.5)
     erubis (2.7.0)
-    google_visualr (2.3.0)
     gruff (0.5.1)
       rmagick
     i18n (0.6.11)

@@ -46,5 +46,19 @@ if defined? ActiveRecord
         it("returns paginate?") { expect(report.paginate?).to eq true }
       end
     end
+
+    # describe '#data_type' do
+    #   let(:params) { {} }
+    #   let(:template) { Object.new }
+    #   let(:report) { QueryReport::Report.new(params, template) }
+    #   subject(:report) do
+    #     report = QueryReport::Report.new(params, template)
+    #     report.query = User.scoped
+    #   end
+    #
+    #   it("returns params") { expect(report.params).to be params }
+    #   it("returns template") { expect(report.template).to be template }
+    #   it("returns options") { expect(report.options).to eq(enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true) }
+    # end
   end
 end

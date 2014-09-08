@@ -3,7 +3,7 @@ module QueryReport
     attr_accessor :query
 
     def model_class
-      query.klass
+      query.klass if query.respond_to? :klass
     end
 
     def array_record?
