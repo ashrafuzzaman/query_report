@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'fake_app/active_record/config'
 require 'fake_app/active_record/models'
 require 'query_report/report'
+require 'integration_helper'
 
 if defined? ActiveRecord
   describe QueryReport::Report do
@@ -48,17 +49,13 @@ if defined? ActiveRecord
     end
 
     # describe '#data_type' do
-    #   let(:params) { {} }
-    #   let(:template) { Object.new }
-    #   let(:report) { QueryReport::Report.new(params, template) }
     #   subject(:report) do
-    #     report = QueryReport::Report.new(params, template)
-    #     report.query = User.scoped
+    #     reporter(User.send(ACTIVE_RECORD_SCOPE)) do
+    #       column :name
+    #     end
     #   end
     #
-    #   it("returns params") { expect(report.params).to be params }
-    #   it("returns template") { expect(report.template).to be template }
-    #   it("returns options") { expect(report.options).to eq(enable_chart: true, chart_on_web: true, chart_on_pdf: true, paginate: true) }
+    #   it("returns params") { expect(report.data_type).to be 'ActiveRecord' }
     # end
   end
 end

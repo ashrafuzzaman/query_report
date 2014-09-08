@@ -48,14 +48,13 @@ module QueryReport
       @options[:paginate]
     end
 
+    #TODO: Use this to divide the business logic of filter/paginate etc to different classes
     def data_type
-      @data_type ||= begin
-        case query.class
-          when ActiveRecord::Relation then
-            'ActiveRecord'
-          when Array then
-            'Array'
-        end
+      case query.class
+        when ActiveRecord::Relation then
+          'ActiveRecord'
+        when Array then
+          'Array'
       end
     end
 
