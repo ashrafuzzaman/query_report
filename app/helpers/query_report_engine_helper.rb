@@ -54,4 +54,8 @@ module QueryReportEngineHelper
       search_form_for(report.search, url: url_for({}), remote: @remote, html: (QueryReport.config.search_form_options || {}).merge(method: :get), &block)
     end
   end
+  
+  def get_column_header(column)
+    (column.options[:custom_header]? column.options[:custom_header]: column.humanize)
+  end
 end

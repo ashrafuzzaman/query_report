@@ -84,7 +84,7 @@ class InvoicesController < ApplicationController
       end
       column :total_paid, show_total: true
       column :total_charged, show_total: true
-      column :paid
+      column :paid,custom_header:'Payed'
     end
   end
 end
